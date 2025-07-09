@@ -152,7 +152,7 @@ class _BannerCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                 child: Image.asset(
-                  'assets/images/curativo_splash.png',
+                  'assets/images/band-aid.png',
                   fit: BoxFit.cover,
                 ),
               ),

@@ -1,19 +1,21 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as img;
+
+// Impor halaman Anda, pastikan path-nya benar
 import '/screens/home_screen.dart';
 import '/screens/result_screen.dart';
 
+// --- Anda tidak perlu mengubah bagian ini ---
 const Map<int, String> labelLuka = {
   0: 'Luka Lebam',
   1: 'Luka Gores',
   2: 'Luka Sayat',
-  3: 'Luka Bakar Derajat 3',
-  4: 'Luka Bakar Derajat 2',
-  // 5: 'Luka Bakar Derajat 1',
+  3: 'Luka Bakar',
 };
 
 const Map<int, String> rekomendasiLuka = {
@@ -21,9 +23,8 @@ const Map<int, String> rekomendasiLuka = {
   1: 'Cuci luka dengan air bersih, oleskan antiseptik, dan tutup dengan perban.',
   2: 'Bersihkan luka, hentikan pendarahan ringan, tutup dengan kasa steril.',
   3: 'Segera bawa ke fasilitas medis. Jangan oleskan apapun ke luka bakar derajat 3.',
-  4: 'Gunakan salep luka bakar, hindari pecahnya lepuhan. Bila parah, hubungi dokter.',
-  // 5: 'Dinginkan luka dengan air mengalir 10-15 menit, lalu tutup longgar dengan kain bersih.',
 };
+// -----------------------------------------
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -38,14 +39,192 @@ class _ScanScreenState extends State<ScanScreen> {
   late Interpreter _interpreter;
   final int _inputSize = 640;
   bool _modelLoaded = false;
-  String _result = '';
-  String _rekomendasi = '';
+  bool _isProcessing = false; // State untuk mengontrol loading indicator
 
   @override
   void initState() {
     super.initState();
-    print('🚀 initState dimulai');
     _loadModel();
+  }
+
+  @override
+  void dispose() {
+    _interpreter.close(); // Penting: Melepaskan sumber daya model
+    super.dispose();
+  }
+
+  Future<void> _loadModel() async {
+    try {
+      _interpreter = await Interpreter.fromAsset(
+        'assets/models/best_float32.tflite',
+      );
+
+      // Cetak bentuk input/output untuk verifikasi
+      print("✅ Model berhasil dimuat.");
+      print("   - Input shape: ${_interpreter.getInputTensor(0).shape}");
+      print("   - Output shape: ${_interpreter.getOutputTensor(0).shape}");
+
+      setState(() => _modelLoaded = true);
+    } catch (e) {
+      print("❌ Gagal memuat model: $e");
+    }
+  }
+
+  Future<List<List<List<List<double>>>>> _preprocessImage(
+    File imageFile,
+  ) async {
+    final bytes = await imageFile.readAsBytes();
+    final rawImage = img.decodeImage(bytes);
+    final resizedImage = img.copyResize(
+      rawImage!,
+      width: _inputSize,
+      height: _inputSize,
+    );
+
+    // Konversi gambar ke format List<double> dan normalisasi (0-1)
+    final imageBytes = resizedImage.getBytes(order: img.ChannelOrder.rgb);
+    final normalizedPixels = imageBytes.map((byte) => byte / 255.0).toList();
+
+    // Ubah struktur list menjadi [1, 640, 640, 3]
+    int pixelIndex = 0;
+    final imageList = List.generate(
+      1,
+      (_) => List.generate(
+        _inputSize,
+        (_) => List.generate(_inputSize, (_) {
+          final r = normalizedPixels[pixelIndex++];
+          final g = normalizedPixels[pixelIndex++];
+          final b = normalizedPixels[pixelIndex++];
+          return [r, g, b];
+        }),
+      ),
+    );
+    return imageList;
+  }
+
+  Future<void> _runModel() async {
+    if (!_modelLoaded || imageFile == null || _isProcessing) return;
+
+    setState(() => _isProcessing = true);
+
+    try {
+      final input = await _preprocessImage(imageFile!);
+
+      final outputShape = _interpreter.getOutputTensor(0).shape;
+      final classCount = outputShape[1] - 5; // Harusnya 6
+      final detectionCount = outputShape[2]; // Harusnya 8400
+
+      // Siapkan buffer output
+      final output = List.filled(
+        1 * (5 + classCount) * detectionCount,
+        0.0,
+      ).reshape([1, (5 + classCount), detectionCount]);
+
+      // Jalankan inferensi
+      _interpreter.run(input, output);
+
+      double maxScore = 0.0;
+      int bestClassIndex = -1;
+      final rawOutput = output[0]; // Shape [11, 8400] atau [10, 8400]
+
+      for (int i = 0; i < detectionCount; i++) {
+        final confidence = sigmoid(rawOutput[4][i]);
+
+        if (confidence < 0.3) continue; // Ambang batas kepercayaan
+
+        // Ambil semua skor kelas (dari indeks 5 sampai akhir)
+        final classScores = List.generate(
+          classCount,
+          (j) => sigmoid(rawOutput[5 + j][i]),
+        );
+
+        final maxClassScore = classScores.reduce(max);
+        final classIndex = classScores.indexOf(maxClassScore);
+        final score = confidence * maxClassScore;
+
+        if (score > maxScore) {
+          maxScore = score;
+          bestClassIndex = classIndex;
+        }
+      }
+
+      if (bestClassIndex != -1) {
+        final hasilDeteksi = labelLuka[bestClassIndex] ?? 'Tidak Diketahui';
+        final hasilRekomendasi =
+            rekomendasiLuka[bestClassIndex] ?? 'Tidak ada rekomendasi';
+
+        // Navigasi ke halaman hasil
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (_) => ResultScreen(
+                  result: hasilDeteksi,
+                  rekomendasi: hasilRekomendasi,
+                ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Tidak ada luka yang terdeteksi dengan jelas.'),
+          ),
+        );
+      }
+    } catch (e) {
+      print("❌ Terjadi error saat menjalankan model: $e");
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Terjadi error: $e')));
+    } finally {
+      setState(() => _isProcessing = false);
+    }
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(source: source);
+      if (pickedFile != null) {
+        setState(() => imageFile = File(pickedFile.path));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Gagal mengambil gambar: $e')));
+    }
+  }
+
+  void _showPickOptionsDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (context) => SafeArea(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Kamera'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _pickImage(ImageSource.camera);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Galeri'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _pickImage(ImageSource.gallery);
+                  },
+                ),
+              ],
+            ),
+          ),
+    );
+  }
+
+  double sigmoid(double x) {
+    return 1 / (1 + exp(-x));
   }
 
   @override
@@ -139,34 +318,13 @@ class _ScanScreenState extends State<ScanScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-              if (_result.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Deteksi: $_result',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Rekomendasi: $_rekomendasi',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed:
-                      (imageFile == null || !_modelLoaded)
+                      (imageFile == null || !_modelLoaded || _isProcessing)
                           ? null
-                          : () {
-                            _runModel();
-                          },
+                          : _runModel,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF000080),
                     padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -175,185 +333,30 @@ class _ScanScreenState extends State<ScanScreen> {
                     ),
                     elevation: 0,
                   ),
-                  child: const Text(
-                    'PINDAI LUKA',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child:
+                      _isProcessing
+                          ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 3,
+                            ),
+                          )
+                          : const Text(
+                            'PINDAI LUKA',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                 ),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> _loadModel() async {
-    try {
-      _interpreter = await Interpreter.fromAsset(
-        'assets/models/best_float32.tflite',
-      );
-      _interpreter.allocateTensors();
-      setState(() => _modelLoaded = true);
-    } catch (e) {
-      print("Gagal load model: $e");
-    }
-  }
-
-  Future<List<List<List<List<double>>>>> _preprocessImage(
-    File imageFile,
-  ) async {
-    final rawImage = img.decodeImage(await imageFile.readAsBytes());
-    final resizedImage = img.copyResize(
-      rawImage!,
-      width: _inputSize,
-      height: _inputSize,
-    );
-
-    final bytes = resizedImage.getBytes(order: img.ChannelOrder.rgb);
-
-    int index = 0;
-    List<List<List<List<double>>>> imageList = [
-      List.generate(
-        _inputSize,
-        (y) => List.generate(_inputSize, (x) {
-          final r = bytes[index++] / 255.0;
-          final g = bytes[index++] / 255.0;
-          final b = bytes[index++] / 255.0;
-          return [r, g, b];
-        }),
-      ),
-    ];
-
-    return imageList;
-  }
-
-  Future<void> _runModel() async {
-    if (!_modelLoaded || imageFile == null) {
-      print("❌ Model belum siap atau gambar belum dipilih.");
-      return;
-    }
-
-    final input = await _preprocessImage(imageFile!);
-    final inputBuffer = input.reshape([1, _inputSize, _inputSize, 3]);
-    // final rawOutput = List.generate(10, (_) => List.filled(8400, 0.0));
-    // final outputBuffer = [rawOutput];
-    final outputBuffer = List.generate(
-      1,
-      (_) => List.generate(10, (_) => List.filled(8400, 0.0)),
-    );
-
-    _interpreter.run(inputBuffer, outputBuffer);
-
-    final rawOutput = outputBuffer[0]; // [10][8400]
-    final detections = List.generate(
-      8400,
-      (i) => List.generate(10, (j) => rawOutput[j][i]),
-    );
-    print('Sample detection: ${detections[0]}');
-    // final detections = List.generate(
-    //   8400,
-    //   (i) => List.generate(10, (j) => rawOutput[j][i]),
-    // );
-    // final detections = outputBuffer[0];
-
-    double maxScore = -1.0;
-    int maxClassIndex = -1;
-
-    for (var det in detections) {
-      final objectness = det[4];
-      if (objectness < 0.25) continue; 
-      if (det.length < 5 + labelLuka.length) continue;
-
-      for (int classIndex = 0; classIndex < 5; classIndex++) {
-        final classProb = det[5 + classIndex];
-        final score = objectness * classProb;
-
-        print('Objectness: $objectness, Score: $score for class $classIndex');
-
-        if (score > maxScore) {
-          maxScore = score;
-          maxClassIndex = classIndex;
-        }
-      }
-    }
-
-    print('🔍 maxClassIndex: $maxClassIndex');
-    print('✅ maxScore: $maxScore');
-
-    final hasilDeteksi = labelLuka[maxClassIndex] ?? 'Tidak diketahui';
-    final hasilRekomendasi =
-        rekomendasiLuka[maxClassIndex] ?? 'Tidak ada rekomendasi';
-
-    setState(() {
-      _result = hasilDeteksi;
-      _rekomendasi = hasilRekomendasi;
-    });
-
-    // Navigasi ke halaman hasil
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder:
-            (_) => ResultScreen(
-              result: hasilDeteksi,
-              rekomendasi: hasilRekomendasi,
-            ),
-      ),
-    );
-
-    // Setelah kembali dari ResultScreen, reset hasil deteksi
-    setState(() {
-      _result = '';
-      _rekomendasi = '';
-    });
-  }
-
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? pickedFile = await _picker.pickImage(source: source);
-      if (pickedFile != null) {
-        setState(() {
-          imageFile = File(pickedFile.path);
-        });
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Gagal mengambil gambar: $e')));
-    }
-  }
-
-  void _showPickOptionsDialog(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder:
-          (context) => SafeArea(
-            child: Wrap(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.photo_camera),
-                  title: const Text('Kamera'),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _pickImage(ImageSource.camera);
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.photo_library),
-                  title: const Text('Galeri'),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _pickImage(ImageSource.gallery);
-                  },
-                ),
-              ],
-            ),
-          ),
     );
   }
 }
