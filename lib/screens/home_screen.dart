@@ -195,21 +195,52 @@ class EmergencyKitSlider extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            children: const [
+            children: [
               EmergencyKitCard(
                 title: 'Pertolongan Pertama',
                 description: '🩺 Langkah awal saat darurat.',
                 imageAsset: 'assets/images/first-aid.png',
+                steps: [
+                  {
+                    'title': 'Cek Kesadaran',
+                    'description': 'Pastikan korban sadar.',
+                  },
+                  {
+                    'title': 'Hubungi Bantuan',
+                    'description': 'Telepon 112/119.',
+                  },
+                ],
               ),
               EmergencyKitCard(
                 title: 'P3K Luka Ringan',
                 description: '🩹 Perawatan luka kecil.',
                 imageAsset: 'assets/images/p3k.png',
+                steps: [
+                  {
+                    'title': 'Perlengkapan P3K',
+                    'imageAsset': 'assets/images/p3k.png',
+                    'description': 'Perlengkapan pertolongan pertama dapat membantu kita ketika terjadi keadaan darurat.',
+                  },
+                  {
+                    'title': 'Hubungi Bantuan',
+                    'description': 'Telepon 112/119.',
+                  },
+                ],
               ),
               EmergencyKitCard(
                 title: 'CPR Darurat',
                 description: '❤️ Bantuan hidup dasar.',
                 imageAsset: 'assets/images/cpr.png',
+                steps: [
+                  {
+                    'title': 'Cek Kesadaran',
+                    'description': 'Pastikan korban sadar.',
+                  },
+                  {
+                    'title': 'Hubungi Bantuan',
+                    'description': 'Telepon 112/119.',
+                  },
+                ],
               ),
             ],
           ),
