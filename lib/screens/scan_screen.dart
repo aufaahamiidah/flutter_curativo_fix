@@ -116,9 +116,9 @@ class _ScanScreenState extends State<ScanScreen> {
 
       // Siapkan buffer output
       final output = List.filled(
-        1 * (5 + classCount) * detectionCount,
+        1 * (4 + classCount) * detectionCount,
         0.0,
-      ).reshape([1, (5 + classCount), detectionCount]);
+      ).reshape([1, (4 + classCount), detectionCount]);
 
       // Jalankan inferensi
       _interpreter.run(input, output);
@@ -135,7 +135,7 @@ class _ScanScreenState extends State<ScanScreen> {
         // Ambil semua skor kelas (dari indeks 5 sampai akhir)
         final classScores = List.generate(
           classCount,
-          (j) => sigmoid(rawOutput[5 + j][i]),
+          (j) => sigmoid(rawOutput[4 + j][i]),
         );
 
         final maxClassScore = classScores.reduce(max);
