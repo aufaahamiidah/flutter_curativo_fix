@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '/screens/home_screen.dart';
+// import '/screens/home_screen.dart';
+import '/screens/first_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -8,7 +9,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 3)).then((value){
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const HomeScreen(),
+        MaterialPageRoute(builder: (context) => const LandingPage(),
         ), 
         (route) => false);
     });
