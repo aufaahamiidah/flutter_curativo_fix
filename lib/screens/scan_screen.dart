@@ -16,14 +16,41 @@ const Map<int, String> labelLuka = {
   1: 'Luka Gores',
   2: 'Luka Sayat',
   3: 'Luka Bakar',
+  4: 'Tidak ada luka',
 };
 
-const Map<int, String> rekomendasiLuka = {
-  0: 'Kompres dingin dan istirahatkan area yang lebam.',
-  1: 'Cuci luka dengan air bersih, oleskan antiseptik, dan tutup dengan perban.',
-  2: 'Bersihkan luka, hentikan pendarahan ringan, tutup dengan kasa steril.',
-  3: 'Segera bawa ke fasilitas medis. Jangan oleskan apapun ke luka bakar derajat 3.',
+const Map<int, List<String>> rekomendasiLuka = {
+  0: [
+    'Kompres dingin area yang lebam selama 10–15 menit setiap jam pada 24 jam pertama.',
+    'Hindari tekanan berat pada area tersebut.',
+    'Istirahatkan bagian tubuh yang terkena.',
+    'Jika nyeri atau bengkak bertambah parah, segera konsultasi ke dokter.',
+  ],
+  1: [
+    'Cuci luka dengan air bersih atau larutan saline.',
+    'Keringkan dengan kain bersih dan oleskan antiseptik ringan.',
+    'Tutup luka dengan perban steril.',
+    'Ganti perban setiap hari dan hindari menggaruk luka.',
+  ],
+  2: [
+    'Hentikan perdarahan dengan menekan luka menggunakan kain bersih.',
+    'Setelah darah berhenti, bersihkan luka dengan air bersih.',
+    'Oleskan antiseptik dan tutup dengan kasa steril.',
+    'Jika luka dalam atau perdarahan berlanjut, segera ke fasilitas medis.',
+  ],
+  3: [
+    'Dinginkan luka bakar dengan air mengalir selama 10–20 menit (hindari es).',
+    'Tutup luka dengan kain bersih non-lengket.',
+    'Jangan oleskan mentega, pasta gigi, atau bahan lain.',
+    'Jika luka bakar parah (derajat 2/3), segera ke fasilitas medis.',
+  ],
+  4: [
+    'Tidak ditemukan tanda-tanda luka.',
+    'Tidak perlu tindakan medis.',
+    'Jika ada gejala lain seperti nyeri atau kemerahan, periksa kembali atau konsultasi ke tenaga medis.',
+  ],
 };
+
 // -----------------------------------------
 
 class ScanScreen extends StatefulWidget {
@@ -111,8 +138,8 @@ class _ScanScreenState extends State<ScanScreen> {
       final input = await _preprocessImage(imageFile!);
 
       final outputShape = _interpreter.getOutputTensor(0).shape;
-      final classCount = outputShape[1] - 5; // Harusnya 6
-      final detectionCount = outputShape[2]; // Harusnya 8400
+      final classCount = outputShape[1] - 4;
+      final detectionCount = outputShape[2];
 
       // Siapkan buffer output
       final output = List.filled(
@@ -148,10 +175,9 @@ class _ScanScreenState extends State<ScanScreen> {
         }
       }
 
-      if (bestClassIndex != -1) {
+      if (bestClassIndex != -1 && maxScore > 0.3) {
         final hasilDeteksi = labelLuka[bestClassIndex] ?? 'Tidak Diketahui';
-        final hasilRekomendasi =
-            rekomendasiLuka[bestClassIndex] ?? 'Tidak ada rekomendasi';
+        final hasilRekomendasi = rekomendasiLuka[bestClassIndex] ?? [];
 
         // Navigasi ke halaman hasil
         await Navigator.push(
@@ -161,13 +187,20 @@ class _ScanScreenState extends State<ScanScreen> {
                 (_) => ResultScreen(
                   result: hasilDeteksi,
                   rekomendasi: hasilRekomendasi,
+                  score: maxScore,
                 ),
           ),
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Tidak ada luka yang terdeteksi dengan jelas.'),
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (_) => ResultScreen(
+                  result: 'Luka tidak terdeteksi',
+                  rekomendasi: [],
+                  score: 0.0,
+                ),
           ),
         );
       }
