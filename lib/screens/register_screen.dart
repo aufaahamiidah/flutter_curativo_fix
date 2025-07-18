@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '/screens/login_screen.dart'; 
-import '/screens/home_screen.dart'; 
-import '/widgets/generic_button.dart'; 
-import '/widgets/custom_text_field.dart'; 
+
+import 'package:flutter_curativo/services/auth_service.dart';
+import '/screens/login_screen.dart';
+import '/screens/home_screen.dart';
+import '/widgets/generic_button.dart';
+import '/widgets/custom_text_field.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -12,18 +14,19 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController _nameController = TextEditingController(); 
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController(); 
+  final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
-  
-  String? _selectedGender; 
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  String? _selectedGender;
   final List<String> _genderOptions = ['Laki-laki', 'Perempuan', 'Lainnya'];
 
   @override
   void dispose() {
-    _nameController.dispose(); 
+    _nameController.dispose();
     _emailController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
@@ -32,9 +35,9 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -48,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/images/Curativo.png', 
+                'assets/images/Curativo.png',
                 height: 100,
                 width: 100,
               ),
@@ -82,18 +85,25 @@ class _RegisterPageState extends State<RegisterPage> {
                     'Pilih Jenis Kelamin',
                     style: TextStyle(color: Color(0xFFA0A0A0)),
                   ),
-                  icon: const Icon(Icons.arrow_drop_down, color: Color(0xFFA0A0A0)),
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Color(0xFFA0A0A0),
+                  ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    prefixIcon: Icon(Icons.wc_outlined, color: Color(0xFFA0A0A0)),
+                    prefixIcon: Icon(
+                      Icons.wc_outlined,
+                      color: Color(0xFFA0A0A0),
+                    ),
                     contentPadding: EdgeInsets.symmetric(vertical: 16.0),
                   ),
-                  items: _genderOptions.map((String gender) {
-                    return DropdownMenuItem<String>(
-                      value: gender,
-                      child: Text(gender),
-                    );
-                  }).toList(),
+                  items:
+                      _genderOptions.map((String gender) {
+                        return DropdownMenuItem<String>(
+                          value: gender,
+                          child: Text(gender),
+                        );
+                      }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedGender = newValue;
@@ -120,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _passwordController,
                 hintText: 'Masukkan Password',
                 icon: Icons.lock_outline,
-                isPassword: true, 
+                isPassword: true,
               ),
               const SizedBox(height: 16),
               CustomTextField(
@@ -134,15 +144,24 @@ class _RegisterPageState extends State<RegisterPage> {
                 width: double.infinity,
                 child: GenericButton(
                   text: 'DAFTAR',
-                  onPressed: () {
-                    String name = _nameController.text; 
-                    String email = _emailController.text;
-                    String phoneNumber = _phoneNumberController.text; 
-                    String password = _passwordController.text;
-                    String confirmPassword = _confirmPasswordController.text;
+                  onPressed: () async {
+                    String name = _nameController.text.trim();
+                    String email = _emailController.text.trim();
+                    String phoneNumber = _phoneNumberController.text.trim();
+                    String password = _passwordController.text.trim();
+                    String confirmPassword =
+                        _confirmPasswordController.text.trim();
+                    String? gender = _selectedGender;
 
-                    if (name.isEmpty || email.isEmpty || phoneNumber.isEmpty || password.isEmpty || confirmPassword.isEmpty || _selectedGender == null) {
-                      _showSnackBar('Semua field harus diisi dan jenis kelamin harus dipilih.');
+                    if (name.isEmpty ||
+                        email.isEmpty ||
+                        phoneNumber.isEmpty ||
+                        password.isEmpty ||
+                        confirmPassword.isEmpty ||
+                        gender == null) {
+                      _showSnackBar(
+                        'Semua field harus diisi dan jenis kelamin harus dipilih.',
+                      );
                       return;
                     }
 
@@ -151,13 +170,31 @@ class _RegisterPageState extends State<RegisterPage> {
                       return;
                     }
 
-                    _showSnackBar('Pendaftaran berhasil! Menuju Home Screen.');
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    final auth = AuthService();
+                    final result = await auth.registerWithDetails(
+                      name: name,
+                      email: email,
+                      password: password,
+                      confirmPassword: confirmPassword,
+                      phone: phoneNumber,
+                      gender: gender,
                     );
+
+                    if (result['success']) {
+                      _showSnackBar(
+                        'Pendaftaran berhasil! Menuju Home Screen.',
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                      );
+                    } else {
+                      _showSnackBar(result['message'] ?? 'Pendaftaran gagal.');
+                    }
                   },
-                  type: ButtonType.elevated, 
+                  type: ButtonType.elevated,
                   backgroundColor: const Color(0xFF000080),
                   textColor: Colors.white,
                   fontSize: 18,
@@ -174,7 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     'Sudah punya akun?',
                     style: TextStyle(fontSize: 14, color: Color(0xFF666666)),
                   ),
-                  GenericButton( 
+                  GenericButton(
                     text: 'Masuk',
                     onPressed: () {
                       Navigator.push(
@@ -185,7 +222,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       );
                     },
                     type: ButtonType.text,
-                    textColor: const Color(0xFF000080), 
+                    textColor: const Color(0xFF000080),
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     padding: EdgeInsets.zero,

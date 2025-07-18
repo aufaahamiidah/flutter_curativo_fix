@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '/screens/login_screen.dart'; 
-import '/screens/register_screen.dart'; 
-import '/widgets/generic_button.dart'; 
+import '/screens/login_screen.dart';
+import '/screens/register_screen.dart';
+import '/widgets/generic_button.dart';
+
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -13,20 +14,19 @@ class LandingPage extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/first_screen.jpg', 
-              fit: BoxFit.cover, 
+              'assets/images/first_screen.jpg',
+              fit: BoxFit.cover,
             ),
           ),
           Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.4), 
-            ),
+            child: Container(color: Colors.black.withOpacity(0.4)),
           ),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end, // Posisikan tombol di bagian bawah
+                mainAxisAlignment:
+                    MainAxisAlignment.end, // Posisikan tombol di bagian bawah
                 children: [
                   const SizedBox(height: 40),
                   const Text(
@@ -38,7 +38,7 @@ class LandingPage extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 150), 
+                  const SizedBox(height: 150),
                   SizedBox(
                     width: double.infinity,
                     child: GenericButton(
@@ -46,11 +46,13 @@ class LandingPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
                         );
                       },
-                      type: ButtonType.elevated, 
-                      backgroundColor: const Color(0xFF000080), 
+                      type: ButtonType.elevated,
+                      backgroundColor: const Color(0xFF000080),
                       textColor: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -66,19 +68,21 @@ class LandingPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegisterPage()),
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          ),
                         );
                       },
-                      type: ButtonType.outlined, 
-                      textColor: Colors.white, 
-                      borderColor: Colors.white, 
+                      type: ButtonType.outlined,
+                      textColor: Colors.white,
+                      borderColor: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  const SizedBox(height: 40), 
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
