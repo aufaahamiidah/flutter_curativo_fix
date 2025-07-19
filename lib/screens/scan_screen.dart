@@ -154,6 +154,7 @@ class _ScanScreenState extends State<ScanScreen> {
       int bestClassIndex = -1;
       final rawOutput = output[0]; // Shape [11, 8400] atau [10, 8400]
 
+      final List<Rect> boxes = [];
       for (int i = 0; i < detectionCount; i++) {
         final confidence = sigmoid(rawOutput[4][i]);
 
@@ -173,6 +174,16 @@ class _ScanScreenState extends State<ScanScreen> {
           maxScore = score;
           bestClassIndex = classIndex;
         }
+        // Ambil bounding box dari output YOLO
+        final cx = rawOutput[0][i] * _inputSize;
+        final cy = rawOutput[1][i] * _inputSize;
+        final w = rawOutput[2][i] * _inputSize;
+        final h = rawOutput[3][i] * _inputSize;
+
+        final left = cx - w / 2;
+        final top = cy - h / 2;
+
+        boxes.add(Rect.fromLTWH(left, top, w, h));
       }
 
       if (bestClassIndex != -1 && maxScore > 0.3) {
@@ -188,6 +199,8 @@ class _ScanScreenState extends State<ScanScreen> {
                   result: hasilDeteksi,
                   rekomendasi: hasilRekomendasi,
                   score: maxScore,
+                  imageFile: imageFile,
+                  boundingBoxes: boxes,
                 ),
           ),
         );

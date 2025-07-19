@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/screens/main_tab_view.dart';
 
 import 'package:flutter_curativo/services/auth_service.dart';
 import '/screens/login_screen.dart';
@@ -184,11 +185,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       _showSnackBar(
                         'Pendaftaran berhasil! Menuju Home Screen.',
                       );
-                      Navigator.pushReplacement(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
+                          builder: (context) => const MainTabView(),
                         ),
+                        (route) => false,
                       );
                     } else {
                       _showSnackBar(result['message'] ?? 'Pendaftaran gagal.');

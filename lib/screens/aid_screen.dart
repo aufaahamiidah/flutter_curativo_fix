@@ -8,7 +8,6 @@ class AidScreen extends StatefulWidget {
   @override
   State<AidScreen> createState() => _AidScreenState();
 }
-
 class _AidScreenState extends State<AidScreen> {
   @override
   Widget build(BuildContext context) {
@@ -105,7 +104,7 @@ class _AidScreenState extends State<AidScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
+      // bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
     );
   }
 

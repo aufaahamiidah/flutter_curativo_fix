@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/screens/detail_injury_screen.dart';
 import '/widgets/custom_bottom_navbar.dart';
 import '/services/injury_services.dart';
+import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -33,6 +35,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Gagal mengambil data: $e')));
+    }
+  }
+
+  String formatTanggal(String isoDateString) {
+    try {
+      final dateTime = DateTime.parse(isoDateString).toLocal();
+      final hari = DateFormat('EEEE', 'id_ID').format(dateTime);
+      final tanggal = DateFormat('dd/MM/yyyy HH:mm', 'id_ID').format(dateTime);
+      return '$hari, $tanggal';
+    } catch (e) {
+      return '-';
     }
   }
 
@@ -88,9 +101,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 width: 70,
                                 height: 70,
                                 fit: BoxFit.cover,
-                                errorBuilder:
-                                    (context, error, stackTrace) =>
-                                        const Icon(Icons.broken_image),
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    width: 70,
+                                    height: 70,
+                                    color: Colors.grey[300],
+                                    child: const Icon(
+                                      Icons.image_not_supported,
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -106,7 +126,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     ),
                                   ),
                                   Text(
-                                    item['location'] ?? '-',
+                                    formatTanggal(item['detected_at'] ?? ''),
                                     style: const TextStyle(
                                       color: Colors.black54,
                                     ),
@@ -128,7 +148,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          // TODO: implement detail view
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder:
+                                                  (_) =>
+                                                      DetailScreen(data: item),
+                                            ),
+                                          );
                                         },
                                         child: const Text("Detail"),
                                       ),
@@ -148,7 +175,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   },
                 ),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 3),
+      // bottomNavigationBar: const CustomBottomNavBar(currentIndex: 3),
     );
   }
 }

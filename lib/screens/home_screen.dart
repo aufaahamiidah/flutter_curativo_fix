@@ -1,6 +1,5 @@
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
-import '/widgets/custom_bottom_navbar.dart';
 import '/widgets/emergency_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,21 +12,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: const [
-            SizedBox(height: 22),
-            _Greetings(),
-            SizedBox(height: 22),
-            _BannerCard(),
-            SizedBox(height: 22),
-            EmergencyKitSlider(),
-            Expanded(child: SizedBox()),
-          ],
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            bottom: 16,
+          ), // agar tidak terlalu mepet
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              SizedBox(height: 22),
+              _Greetings(),
+              SizedBox(height: 22),
+              _BannerCard(),
+              SizedBox(height: 22),
+              EmergencyKitSlider(),
+            ],
+          ),
         ),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 0),
     );
   }
 }
@@ -45,10 +48,7 @@ class _Greetings extends StatelessWidget {
           ShaderMask(
             shaderCallback:
                 (bounds) => const LinearGradient(
-                  colors: [
-                    Color(0xFF00009C), // warna awal
-                    Color(0xFFA80000), // warna akhir
-                  ],
+                  colors: [Color(0xFF00009C), Color(0xFFA80000)],
                 ).createShader(
                   Rect.fromLTWH(0, 0, bounds.width, bounds.height),
                 ),
@@ -57,7 +57,7 @@ class _Greetings extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.white, // penting: harus putih untuk efek gradient
+                color: Colors.white,
               ),
             ),
           ),
@@ -74,7 +74,7 @@ class _Greetings extends StatelessWidget {
                   height: 15,
                   width: 15,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFA80000),
+                    color: Color(0xFFA80000),
                     borderRadius: BorderRadius.circular(7.5),
                   ),
                   child: const Center(
@@ -150,7 +150,7 @@ class _BannerCard extends StatelessWidget {
               width: 100,
               height: 100,
               child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
                 child: Image.asset(
                   'assets/images/band-aid.png',
                   fit: BoxFit.cover,
@@ -219,7 +219,8 @@ class EmergencyKitSlider extends StatelessWidget {
                   {
                     'title': 'Perlengkapan P3K',
                     'imageAsset': 'assets/images/p3k.png',
-                    'description': 'Perlengkapan pertolongan pertama dapat membantu kita ketika terjadi keadaan darurat.',
+                    'description':
+                        'Perlengkapan pertolongan pertama dapat membantu kita ketika terjadi keadaan darurat.',
                   },
                   {
                     'title': 'Hubungi Bantuan',
