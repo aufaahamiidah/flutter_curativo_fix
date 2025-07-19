@@ -212,7 +212,7 @@ class EmergencyKitSlider extends StatelessWidget {
                 ],
               ),
               EmergencyKitCard(
-                title: 'P3K Luka Ringan',
+                title: 'Perlengkapan P3K',
                 description: '🩹 Perawatan luka kecil.',
                 imageAsset: 'assets/images/p3k.png',
                 steps: [
@@ -222,8 +222,16 @@ class EmergencyKitSlider extends StatelessWidget {
                     'description': 'Perlengkapan pertolongan pertama dapat membantu kita ketika terjadi keadaan darurat.',
                   },
                   {
-                    'title': 'Hubungi Bantuan',
-                    'description': 'Telepon 112/119.',
+                    'title': 'Barang Keperluan Pribadi',
+                    'description': '1. Sarung tangan non steril satu kali pakai\n2. Sabun cuci tangan\n3. Kantong ziplock\n4. Handuk',
+                  },
+                  {
+                    'title': 'Perlengkapan P3K - Perban',
+                    'description': '1. Perban elastis atau gulung\n2. Perban segitiga atau mitela\n3. Perban kasa\n4. Kompres kasa steril dan non steril\n5. Pita perban perekat\n6. Plester luka\n7. Pembalut non perekat',
+                  },
+                  {
+                    'title': 'Perlengkapan P3K - Instrumen dan barang-barang penting',
+                    'description': '1. Gunting\n2. Pinset splinter\n3. Pinset biasa\n4. Peniti\n5. Kompres dingin atau es\n6. Bidai\n7. Sendok takar\n8. Garam rehidrasi atau oralit',
                   },
                 ],
               ),
