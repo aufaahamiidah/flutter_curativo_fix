@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '/screens/register_screen.dart'; 
-import '/screens/home_screen.dart'; 
-import '/widgets/generic_button.dart'; 
-import '/widgets/custom_text_field.dart'; 
+import '/screens/register_screen.dart';
+import '/screens/home_screen.dart';
+// import '/screens/forgot_password_screen.dart'; // Anda mungkin perlu membuat halaman ini
+import '/widgets/generic_button.dart';
+import '/widgets/custom_text_field.dart';
+import 'package:flutter_curativo/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,9 +14,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // Controller untuk text fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  // State untuk checkbox dan loading indicator
   bool _rememberMe = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -23,10 +29,69 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  // Fungsi untuk menampilkan SnackBar dengan lebih aman
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    // Pastikan widget masih terpasang sebelum menampilkan SnackBar
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: _isLoading ? Colors.blueGrey : Colors.red,
+        ),
+      );
+    }
+  }
+
+  // Fungsi utama untuk menangani proses login
+  Future<void> _login() async {
+    // Validasi input
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      _showSnackBar('Email dan password harus diisi.');
+      return;
+    }
+
+    // Mulai loading indicator
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Panggil service untuk otentikasi
+      final authService = AuthService();
+      final result = await authService.login(email, password);
+
+      // Pastikan widget masih ada di tree sebelum navigasi atau menampilkan SnackBar
+      if (!mounted) return;
+
+      if (result['success']) {
+        // Jika berhasil, navigasi ke HomeScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        // Jika gagal, tampilkan pesan error dari service
+        _showSnackBar(
+          result['message'] ??
+              'Login gagal. Periksa kembali email dan password Anda.',
+        );
+      }
+    } catch (e) {
+      // Tangani error yang tidak terduga
+      if (mounted) {
+        _showSnackBar('Terjadi kesalahan: ${e.toString()}');
+      }
+    } finally {
+      // Hentikan loading indicator setelah proses selesai (baik berhasil maupun gagal)
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -40,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/images/Curativo.png', 
+                'assets/images/Curativo.png',
                 height: 100,
                 width: 100,
               ),
@@ -65,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                 controller: _passwordController,
                 hintText: 'Masukkan Password',
                 icon: Icons.lock_outline,
-                isPassword: true, 
+                isPassword: true,
               ),
               const SizedBox(height: 16),
               Row(
@@ -87,19 +152,25 @@ class _LoginPageState extends State<LoginPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          side: const BorderSide(color: Colors.grey, width: 1.5),
+                          side: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.5,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       const Text(
                         'Ingat saya',
-                        style: TextStyle(fontSize: 14, color: Color(0xFF666666)),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF666666),
+                        ),
                       ),
                     ],
                   ),
-                  TextButton( 
+                  TextButton(
                     onPressed: () {
-                      _showSnackBar('Fungsionalitas lupa kata sandi belum diimplementasikan.');
+                      _showSnackBar('Fitur Lupa Kata Sandi belum diimplementasikan.');
                     },
                     child: const Text(
                       'Lupa kata sandi?',
@@ -116,23 +187,10 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 width: double.infinity,
                 child: GenericButton(
-                  text: 'MASUK',
-                  onPressed: () {
-                    String email = _emailController.text;
-                    String password = _passwordController.text;
-
-                    if (email.isEmpty || password.isEmpty) {
-                      _showSnackBar('Email dan password harus diisi.');
-                      return;
-                    }
-                    _showSnackBar('Login berhasil! Menuju Home Screen.');
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
-                    );
-                  },
-                  type: ButtonType.elevated, 
-                  backgroundColor: const Color(0xFF000080), 
+                  text: _isLoading ? 'Loading...' : 'MASUK',
+                  onPressed: _isLoading ? () {} : _login,
+                  type: ButtonType.elevated,
+                  backgroundColor: const Color(0xFF000080),
                   textColor: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -148,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                     'Belum punya akun?',
                     style: TextStyle(fontSize: 14, color: Color(0xFF666666)),
                   ),
-                  GenericButton( 
+                  GenericButton(
                     text: 'Daftar',
                     onPressed: () {
                       Navigator.push(
@@ -158,12 +216,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     },
-                    type: ButtonType.text, 
-                    textColor: const Color(0xFF000080), 
+                    type: ButtonType.text,
+                    textColor: const Color(0xFF000080),
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    padding: EdgeInsets.zero, 
-                    borderRadius: BorderRadius.zero, 
+                    padding: EdgeInsets.zero,
+                    borderRadius: BorderRadius.zero,
                   ),
                 ],
               ),

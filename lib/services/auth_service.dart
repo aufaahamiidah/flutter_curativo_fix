@@ -3,55 +3,138 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  final String baseUrl = 'http://10.0.2.2:8000/api'; // pakai 127.0.0.1 jika bukan emulator
+  final String baseUrl =
+      'https://4a4ebdb11b48.ngrok-free.app/api'; // gunakan 127.0.0.1 jika bukan emulator
 
+  /// Fungsi Login
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/login'),
-      body: {
-        'email': email,
-        'password': password,
-      },
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/login'),
+        headers: {'Accept': 'application/json'},
+        body: {'email': email, 'password': password},
+      );
 
-    final data = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', data['token']);
-      await prefs.setString('role', data['user']['role']);
-      return {'success': true, 'user': data['user']};
-    } else {
-      return {'success': false, 'message': data['message'] ?? 'Login gagal'};
+      print('📡 [LOGIN] Status Code: ${response.statusCode}');
+      print('📡 [LOGIN] Body: ${response.body}');
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', data['token']);
+        await prefs.setString('role', data['user']['role']);
+        await prefs.setString('name', data['user']['name']);
+        await prefs.setString('email', data['user']['email']);
+        await prefs.setString('id', data['user']['id']);
+
+        print('✅ Login berhasil. Token disimpan.');
+        return {'success': true, 'user': data['user']};
+      } else {
+        final message = data['message'] ?? 'Login gagal';
+        print('⚠️ Login gagal: $message');
+        return {'success': false, 'message': message};
+      }
+    } catch (e) {
+      print('❌ [ERROR LOGIN] $e');
+      return {
+        'success': false,
+        'message': 'Terjadi kesalahan pada saat login. Pastikan server aktif.',
+      };
     }
   }
 
-  Future<Map<String, dynamic>> register(String name, String email, String password) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/register'),
-      body: {
-        'name': name,
-        'email': email,
-        'password': password,
-      },
-    );
+  /// Fungsi Register
+  Future<Map<String, dynamic>> registerWithDetails({
+    required String name,
+    required String email,
+    required String password,
+    required String confirmPassword,
+    required String phone,
+    required String gender,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/register'),
+        headers: {'Accept': 'application/json'},
+        body: {
+          'name': name,
+          'email': email,
+          'password': password,
+          'password_confirmation': confirmPassword,
+          'no_telp': phone,
+          'jenis_kelamin': gender,
+        },
+      );
 
-    final data = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', data['token']);
-      return {'success': true, 'user': data['user']};
-    } else {
-      return {'success': false, 'message': data['message'] ?? 'Register gagal'};
+      print('📡 [REGISTER] Status Code: ${response.statusCode}');
+      print('📡 [REGISTER] Body: ${response.body}');
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', data['token']);
+        await prefs.setString('role', data['user']['role']);
+        await prefs.setString('name', data['user']['name']);
+        return {'success': true, 'user': data['user']};
+      } else {
+        final message = data['message'] ?? 'Register gagal';
+        print('⚠️ Register gagal: $message');
+        return {'success': false, 'message': message};
+      }
+    } catch (e) {
+      print('❌ [ERROR REGISTER] $e');
+      return {
+        'success': false,
+        'message': 'Terjadi kesalahan saat mendaftar. Coba lagi nanti.',
+      };
     }
   }
 
+  /// Logout (hapus token)
   Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    await prefs.remove('role');
+    await prefs.remove('name');
+    await prefs.remove('email');
+    await prefs.remove('id');
+    print('👋 Logout: Token dan data user dihapus');
   }
 
+  Future<bool> isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    return token != null && token.isNotEmpty;
+  }
+
+  /// Ambil token dari penyimpanan
   Future<String?> getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
+
+  /// Ambil role
+  Future<String?> getRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('role');
+  }
+
+  /// Ambil nama user
+  Future<String?> getName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('name');
+  }
+
+  Future<Map<String, String?>> getUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    return {
+      'name': prefs.getString('name'),
+      'email': prefs.getString('email'),
+      'role': prefs.getString('role'),
+      'id': prefs.getString('id'),
+    };
+  }
+
 }

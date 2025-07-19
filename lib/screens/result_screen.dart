@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
   final String result;
-  final String rekomendasi;
+  final List<String> rekomendasi;
+  final double score;
 
   const ResultScreen({
     super.key,
     required this.result,
     required this.rekomendasi,
+    required this.score,
   });
 
   @override
@@ -17,7 +19,7 @@ class ResultScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
-            Navigator.pop(context); // Kembali ke ScanScreen
+            Navigator.pop(context);
           },
         ),
         title: const Text('Hasil Deteksi'),
@@ -28,20 +30,58 @@ class ResultScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// HASIL DETEKSI
             Text(
               'Deteksi:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text(result, style: TextStyle(fontSize: 18)),
+            Text(result, style: const TextStyle(fontSize: 18)),
 
             const SizedBox(height: 20),
+
+            /// SCORE
             Text(
-              'Rekomendasi:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              'Tingkat Keyakinan:',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text(rekomendasi, style: TextStyle(fontSize: 16)),
+            Text(
+              '${(score * 100).toStringAsFixed(2)}%',
+              style: const TextStyle(fontSize: 16),
+            ),
+
+            const SizedBox(height: 20),
+
+            /// REKOMENDASI
+            Text(
+              'Rekomendasi:',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            if (rekomendasi.isEmpty)
+              const Text(
+                '- Tidak ada rekomendasi',
+                style: TextStyle(fontSize: 16),
+              )
+            else
+              ...rekomendasi.map(
+                (point) => Padding(
+                  padding: const EdgeInsets.only(bottom: 6.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('• ', style: TextStyle(fontSize: 16)),
+                      Expanded(
+                        child: Text(
+                          point,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),

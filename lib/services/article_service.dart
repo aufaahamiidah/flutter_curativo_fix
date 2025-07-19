@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ArticleService {
-  final String baseUrl = 'http://10.0.2.2:8000/api';
+  final String baseUrl = 'https://4a4ebdb11b48.ngrok-free.app/api';
 
   Future<String> _getRolePath() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -19,10 +19,7 @@ class ArticleService {
 
     final response = await http.get(
       Uri.parse('$baseUrl$path'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/json',
-      },
+      headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
     );
 
     if (response.statusCode == 200) {
@@ -42,10 +39,7 @@ class ArticleService {
 
     final response = await http.get(
       url,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/json',
-      },
+      headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
     );
 
     if (response.statusCode == 200) {
