@@ -8,7 +8,6 @@ class ResultScreen extends StatefulWidget {
   final List<String> rekomendasi;
   final double score;
   final File? imageFile;
-  final List<Rect>? boundingBoxes;
 
   const ResultScreen({
     super.key,
@@ -16,7 +15,6 @@ class ResultScreen extends StatefulWidget {
     required this.rekomendasi,
     required this.score,
     this.imageFile,
-    this.boundingBoxes,
   });
 
   @override
@@ -27,7 +25,7 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   void initState() {
     super.initState();
-    _saveHistory();
+    _saveHistory(); // Simpan ke database, termasuk gambar
   }
 
   Future<void> _saveHistory() async {
@@ -41,10 +39,7 @@ class _ResultScreenState extends State<ResultScreen> {
 
       await InjuryHistoryService().addInjuryHistory(
         label: widget.result,
-        recommendation:
-            widget.rekomendasi.isNotEmpty
-                ? widget.rekomendasi.join(', ')
-                : null,
+        recommendation: widget.rekomendasi.join(', '), // ✅ PERBAIKAN
         detectedAt: DateTime.now(),
         scores: widget.score,
         image: base64Image,
@@ -70,35 +65,6 @@ class _ResultScreenState extends State<ResultScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (widget.imageFile != null) ...[
-              SizedBox(
-                width: double.infinity,
-                height: 300, // Sesuaikan tinggi jika perlu
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Image.file(widget.imageFile!, fit: BoxFit.cover),
-                    if (widget.boundingBoxes != null)
-                      ...widget.boundingBoxes!.map(
-                        (box) => Positioned(
-                          left: box.left,
-                          top: box.top,
-                          width: box.width,
-                          height: box.height,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.red, width: 2),
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-            ],
-
-            // Hasil Deteksi
             const Text(
               'Deteksi:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -107,8 +73,6 @@ class _ResultScreenState extends State<ResultScreen> {
             Text(widget.result, style: const TextStyle(fontSize: 18)),
 
             const SizedBox(height: 20),
-
-            // Skor Keyakinan
             const Text(
               'Tingkat Keyakinan:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -120,8 +84,6 @@ class _ResultScreenState extends State<ResultScreen> {
             ),
 
             const SizedBox(height: 20),
-
-            // Rekomendasi
             const Text(
               'Rekomendasi:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

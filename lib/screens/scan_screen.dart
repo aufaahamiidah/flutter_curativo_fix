@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as img;
 
-// Impor halaman Anda, pastikan path-nya benar
-import '/screens/home_screen.dart';
-import '/screens/result_screen.dart';
+import '../screens/result_screen.dart';
+import '../screens/home_screen.dart';
+import '../services/injury_services.dart';
 
-// --- Anda tidak perlu mengubah bagian ini ---
 const Map<int, String> labelLuka = {
   0: 'Luka Lebam',
   1: 'Luka Gores',
@@ -51,10 +51,10 @@ const Map<int, List<String>> rekomendasiLuka = {
   ],
 };
 
-// -----------------------------------------
-
 class ScanScreen extends StatefulWidget {
-  const ScanScreen({super.key});
+  final Function()? onScanCompleted; // optional callback
+
+  const ScanScreen({Key? key, this.onScanCompleted}) : super(key: key);
 
   @override
   State<ScanScreen> createState() => _ScanScreenState();
@@ -66,7 +66,7 @@ class _ScanScreenState extends State<ScanScreen> {
   late Interpreter _interpreter;
   final int _inputSize = 640;
   bool _modelLoaded = false;
-  bool _isProcessing = false; // State untuk mengontrol loading indicator
+  bool _isProcessing = false;
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   void dispose() {
-    _interpreter.close(); // Penting: Melepaskan sumber daya model
+    _interpreter.close();
     super.dispose();
   }
 
@@ -85,12 +85,6 @@ class _ScanScreenState extends State<ScanScreen> {
       _interpreter = await Interpreter.fromAsset(
         'assets/models/best_float32.tflite',
       );
-
-      // Cetak bentuk input/output untuk verifikasi
-      print("✅ Model berhasil dimuat.");
-      print("   - Input shape: ${_interpreter.getInputTensor(0).shape}");
-      print("   - Output shape: ${_interpreter.getOutputTensor(0).shape}");
-
       setState(() => _modelLoaded = true);
     } catch (e) {
       print("❌ Gagal memuat model: $e");
@@ -107,14 +101,11 @@ class _ScanScreenState extends State<ScanScreen> {
       width: _inputSize,
       height: _inputSize,
     );
-
-    // Konversi gambar ke format List<double> dan normalisasi (0-1)
     final imageBytes = resizedImage.getBytes(order: img.ChannelOrder.rgb);
     final normalizedPixels = imageBytes.map((byte) => byte / 255.0).toList();
 
-    // Ubah struktur list menjadi [1, 640, 640, 3]
     int pixelIndex = 0;
-    final imageList = List.generate(
+    return List.generate(
       1,
       (_) => List.generate(
         _inputSize,
@@ -126,46 +117,37 @@ class _ScanScreenState extends State<ScanScreen> {
         }),
       ),
     );
-    return imageList;
   }
 
   Future<void> _runModel() async {
     if (!_modelLoaded || imageFile == null || _isProcessing) return;
-
     setState(() => _isProcessing = true);
 
     try {
       final input = await _preprocessImage(imageFile!);
-
       final outputShape = _interpreter.getOutputTensor(0).shape;
       final classCount = outputShape[1] - 4;
       final detectionCount = outputShape[2];
 
-      // Siapkan buffer output
       final output = List.filled(
         1 * (4 + classCount) * detectionCount,
         0.0,
       ).reshape([1, (4 + classCount), detectionCount]);
 
-      // Jalankan inferensi
       _interpreter.run(input, output);
 
       double maxScore = 0.0;
       int bestClassIndex = -1;
-      final rawOutput = output[0]; // Shape [11, 8400] atau [10, 8400]
+      final rawOutput = output[0];
 
-      final List<Rect> boxes = [];
       for (int i = 0; i < detectionCount; i++) {
         final confidence = sigmoid(rawOutput[4][i]);
+        if (confidence < 0.3) continue;
 
-        if (confidence < 0.3) continue; // Ambang batas kepercayaan
-
-        // Ambil semua skor kelas (dari indeks 5 sampai akhir)
         final classScores = List.generate(
           classCount,
           (j) => sigmoid(rawOutput[4 + j][i]),
         );
-
         final maxClassScore = classScores.reduce(max);
         final classIndex = classScores.indexOf(maxClassScore);
         final score = confidence * maxClassScore;
@@ -174,24 +156,43 @@ class _ScanScreenState extends State<ScanScreen> {
           maxScore = score;
           bestClassIndex = classIndex;
         }
-        // Ambil bounding box dari output YOLO
-        final cx = rawOutput[0][i] * _inputSize;
-        final cy = rawOutput[1][i] * _inputSize;
-        final w = rawOutput[2][i] * _inputSize;
-        final h = rawOutput[3][i] * _inputSize;
-
-        final left = cx - w / 2;
-        final top = cy - h / 2;
-
-        boxes.add(Rect.fromLTWH(left, top, w, h));
       }
 
-      if (bestClassIndex != -1 && maxScore > 0.3) {
-        final hasilDeteksi = labelLuka[bestClassIndex] ?? 'Tidak Diketahui';
-        final hasilRekomendasi = rekomendasiLuka[bestClassIndex] ?? [];
+      final String hasilDeteksi =
+          bestClassIndex != -1 && maxScore > 0.3
+              ? labelLuka[bestClassIndex] ?? 'Tidak Diketahui'
+              : 'Luka tidak terdeteksi';
 
-        // Navigasi ke halaman hasil
-        await Navigator.push(
+      final List<String> hasilRekomendasi =
+          bestClassIndex != -1 && maxScore > 0.3
+              ? rekomendasiLuka[bestClassIndex] ?? []
+              : [];
+
+      String? base64Image;
+      if (imageFile != null) {
+        final bytes = await imageFile!.readAsBytes();
+        base64Image = base64Encode(bytes);
+      }
+
+      await InjuryHistoryService().addInjuryHistory(
+        label: hasilDeteksi,
+        recommendation:
+            hasilRekomendasi.join(', ').trim().isEmpty
+                ? '-'
+                : hasilRekomendasi.join(', '),
+        detectedAt: DateTime.now(),
+        scores: maxScore,
+        image: base64Image,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('✅ Hasil berhasil disimpan ke riwayat.')),
+      );
+
+      await Future.delayed(const Duration(milliseconds: 800));
+
+      if (mounted) {
+        final result = await Navigator.push(
           context,
           MaterialPageRoute(
             builder:
@@ -199,29 +200,20 @@ class _ScanScreenState extends State<ScanScreen> {
                   result: hasilDeteksi,
                   rekomendasi: hasilRekomendasi,
                   score: maxScore,
-                  imageFile: imageFile,
-                  boundingBoxes: boxes,
                 ),
           ),
         );
-      } else {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder:
-                (_) => ResultScreen(
-                  result: 'Luka tidak terdeteksi',
-                  rekomendasi: [],
-                  score: 0.0,
-                ),
-          ),
-        );
+
+        // trigger refresh if ResultScreen returns true
+        if (result == true || widget.onScanCompleted != null) {
+          widget.onScanCompleted?.call();
+        }
       }
     } catch (e) {
-      print("❌ Terjadi error saat menjalankan model: $e");
+      print("❌ Error saat inferensi: $e");
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Terjadi error: $e')));
+      ).showSnackBar(SnackBar(content: Text('❌ Terjadi error: $e')));
     } finally {
       setState(() => _isProcessing = false);
     }
@@ -269,9 +261,7 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 
-  double sigmoid(double x) {
-    return 1 / (1 + exp(-x));
-  }
+  double sigmoid(double x) => 1 / (1 + exp(-x));
 
   @override
   Widget build(BuildContext context) {
@@ -296,11 +286,7 @@ class _ScanScreenState extends State<ScanScreen> {
         actions: [
           IconButton(
             icon: const Icon(FeatherIcons.rotateCcw),
-            onPressed: () {
-              setState(() {
-                imageFile = null;
-              });
-            },
+            onPressed: () => setState(() => imageFile = null),
           ),
         ],
       ),
@@ -313,11 +299,7 @@ class _ScanScreenState extends State<ScanScreen> {
               const SizedBox(height: 22),
               const Text(
                 'Unggah foto luka',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF333333),
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               GestureDetector(
@@ -377,7 +359,6 @@ class _ScanScreenState extends State<ScanScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    elevation: 0,
                   ),
                   child:
                       _isProcessing

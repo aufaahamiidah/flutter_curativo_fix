@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final String baseUrl =
-      'https://4a4ebdb11b48.ngrok-free.app/api'; // gunakan 127.0.0.1 jika bukan emulator
+      'https://f79dd42978fe.ngrok-free.app/api'; // gunakan 127.0.0.1 jika bukan emulator
 
   /// Fungsi Login
   Future<Map<String, dynamic>> login(String email, String password) async {

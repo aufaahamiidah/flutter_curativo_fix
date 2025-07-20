@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InjuryHistoryService {
-  final String baseUrl = 'https://4a4ebdb11b48.ngrok-free.app/api';
+  final String baseUrl = 'https://f79dd42978fe.ngrok-free.app/api';
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -39,7 +39,11 @@ class InjuryHistoryService {
     final path = await _getRolePath();
     final response = await http.get(
       Uri.parse('$baseUrl$path/$id'),
-      headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
     );
 
     if (response.statusCode == 200) {
@@ -50,7 +54,7 @@ class InjuryHistoryService {
     }
   }
 
-  /// ✅ Tambah riwayat luka
+  /// Tambah riwayat luka
   Future<bool> addInjuryHistory({
     required String label,
     String? image,
@@ -113,11 +117,17 @@ class InjuryHistoryService {
   Future<bool> deleteInjuryHistory(String id) async {
     final token = await _getToken();
     final path = await _getRolePath();
-    final response = await http.delete(
+    try {
+      final response = await http.delete(
       Uri.parse('$baseUrl$path/$id'),
       headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
     );
 
-    return response.statusCode == 200;
+    return response.statusCode == 200 || response.statusCode == 204;
+    } catch (e) {
+      print('Delete error: $e');
+      return false;
+    }
+    
   }
 }

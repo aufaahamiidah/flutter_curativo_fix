@@ -15,13 +15,29 @@ class MainTabView extends StatefulWidget {
 class _MainTabViewState extends State<MainTabView> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = const [
-    HomeScreen(),
-    AidScreen(),
-    ScanScreen(),
-    HistoryScreen(),
-    ProfileScreen(),
-  ];
+  final GlobalKey<HistoryScreenState> _historyKey =
+      GlobalKey<HistoryScreenState>();
+
+  late List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      const HomeScreen(),
+      const AidScreen(),
+      ScanScreen(
+        onScanCompleted: () {
+          _historyKey.currentState?.refreshHistory();
+          setState(() {
+            _selectedIndex = 3; // langsung ke Riwayat
+          });
+        },
+      ),
+      HistoryScreen(key: _historyKey),
+      const ProfileScreen(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
