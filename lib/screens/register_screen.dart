@@ -3,7 +3,7 @@ import 'package:flutter_curativo/screens/main_tab_view.dart';
 
 import 'package:flutter_curativo/services/auth_service.dart';
 import '/screens/login_screen.dart';
-import '/screens/home_screen.dart';
+// import '/screens/home_screen.dart';
 import '/widgets/generic_button.dart';
 import '/widgets/custom_text_field.dart';
 

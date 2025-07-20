@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_curativo/screens/main_tab_view.dart';
 import '/screens/register_screen.dart';
-import '/screens/home_screen.dart';
+// import '/screens/home_screen.dart';
 // import '/screens/forgot_password_screen.dart'; // Anda mungkin perlu membuat halaman ini
 import '/widgets/generic_button.dart';
 import '/widgets/custom_text_field.dart';
