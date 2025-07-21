@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/screens/main_tab_view.dart';
 import '/screens/register_screen.dart';
-import '/screens/home_screen.dart';
+// import '/screens/home_screen.dart';
 // import '/screens/forgot_password_screen.dart'; // Anda mungkin perlu membuat halaman ini
 import '/widgets/generic_button.dart';
 import '/widgets/custom_text_field.dart';
@@ -68,9 +69,10 @@ class _LoginPageState extends State<LoginPage> {
 
       if (result['success']) {
         // Jika berhasil, navigasi ke HomeScreen
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const MainTabView()),
+          (Route<dynamic> route) => false,
         );
       } else {
         // Jika gagal, tampilkan pesan error dari service
@@ -170,7 +172,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      _showSnackBar('Fitur Lupa Kata Sandi belum diimplementasikan.');
+                      _showSnackBar(
+                        'Fitur Lupa Kata Sandi belum diimplementasikan.',
+                      );
                     },
                     child: const Text(
                       'Lupa kata sandi?',

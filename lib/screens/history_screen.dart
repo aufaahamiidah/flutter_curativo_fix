@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import '/widgets/custom_bottom_navbar.dart';
+import 'package:intl/intl.dart';
 import '/services/injury_services.dart';
+import 'detail_injury_screen.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  HistoryScreenState createState() => HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
+class HistoryScreenState extends State<HistoryScreen> {
+  final injuryService = InjuryHistoryService();
   List<dynamic> scanHistory = [];
   bool isLoading = true;
-
-  final injuryService = InjuryHistoryService();
 
   @override
   void initState() {
@@ -22,6 +22,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Future<void> _loadHistory() async {
+    setState(() => isLoading = true);
     try {
       final data = await injuryService.fetchInjuryHistory();
       setState(() {
@@ -36,119 +37,196 @@ class _HistoryScreenState extends State<HistoryScreen> {
     }
   }
 
+  Future<void> _deleteItem(String id) async {
+    final confirm = await showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+            title: const Text("Hapus Riwayat"),
+            content: const Text("Yakin ingin menghapus item ini?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("Batal"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("Hapus"),
+              ),
+            ],
+          ),
+    );
+
+    if (confirm == true) {
+      final success = await injuryService.deleteInjuryHistory(id);
+      if (success) {
+        _loadHistory(); // Refresh list
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Riwayat berhasil dihapus")),
+        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Gagal menghapus data")));
+      }
+    }
+  }
+
+  Future<void> _deleteAllItems() async {
+    final confirm = await showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+            title: const Text("Hapus Semua Riwayat"),
+            content: const Text("Yakin ingin menghapus semua riwayat?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("Batal"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("Hapus Semua"),
+              ),
+            ],
+          ),
+    );
+
+    if (confirm == true) {
+      bool allDeleted = true;
+      for (var item in scanHistory) {
+        final success = await injuryService.deleteInjuryHistory(
+          item['id'].toString(),
+        );
+        if (!success) allDeleted = false;
+      }
+
+      _loadHistory();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            allDeleted
+                ? "Semua riwayat berhasil dihapus"
+                : "Beberapa item gagal dihapus",
+          ),
+        ),
+      );
+    }
+  }
+
+  String formatTanggal(String? iso) {
+    if (iso == null || iso.isEmpty) return '-';
+    try {
+      final dt = DateTime.parse(iso).toLocal();
+      final hari = DateFormat('EEEE', 'id_ID').format(dt);
+      final tanggal = DateFormat('dd/MM/yyyy HH:mm', 'id_ID').format(dt);
+      return '$hari, $tanggal';
+    } catch (e) {
+      return '-';
+    }
+  }
+
+  void refreshHistory() {
+    _loadHistory();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Riwayat Pindai',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black),
         ),
-        centerTitle: false,
-        actions: [
-          TextButton(
-            onPressed: () {
-              // TODO: implement delete all function
-            },
-            child: const Text(
-              'Hapus Riwayat',
-              style: TextStyle(color: Colors.black54),
-            ),
-          ),
-        ],
         backgroundColor: Colors.white,
         elevation: 0,
+        actions: [
+          if (scanHistory.isNotEmpty)
+            TextButton(
+              onPressed: _deleteAllItems,
+              child: const Text(
+                'Hapus Semua',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+        ],
       ),
-      body: SafeArea(
-        child:
-            isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : scanHistory.isEmpty
-                ? const Center(child: Text("Belum ada riwayat."))
-                : ListView.builder(
-                  padding: const EdgeInsets.all(12),
-                  itemCount: scanHistory.length,
-                  itemBuilder: (context, index) {
-                    final item = scanHistory[index];
-
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(color: Colors.blue.shade100),
-                      ),
-                      margin: const EdgeInsets.only(bottom: 12),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                item['image'] ?? '',
-                                width: 70,
-                                height: 70,
-                                fit: BoxFit.cover,
-                                errorBuilder:
-                                    (context, error, stackTrace) =>
-                                        const Icon(Icons.broken_image),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item['label'] ?? '-',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    item['location'] ?? '-',
-                                    style: const TextStyle(
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          // TODO: implement edit
-                                        },
-                                        child: const Text("Edit"),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          // TODO: implement delete
-                                        },
-                                        child: const Text("Hapus"),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          // TODO: implement detail view
-                                        },
-                                        child: const Text("Detail"),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons.health_and_safety,
-                              color: Colors.amber,
-                            ),
+      body:
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : RefreshIndicator(
+                onRefresh: _loadHistory,
+                child:
+                    scanHistory.isEmpty
+                        ? ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: const [
+                            SizedBox(height: 200),
+                            Center(child: Text("Belum ada riwayat.")),
                           ],
+                        )
+                        : ListView.builder(
+                          padding: const EdgeInsets.all(12),
+                          itemCount: scanHistory.length,
+                          itemBuilder: (_, index) {
+                            final item = scanHistory[index];
+                            return Card(
+                              margin: const EdgeInsets.only(bottom: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: BorderSide(color: Colors.blue.shade100),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item['label'] ?? '-',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      formatTanggal(item['detected_at']),
+                                      style: const TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        TextButton(
+                                          onPressed:
+                                              () => _deleteItem(
+                                                item['id'].toString(),
+                                              ),
+                                          child: const Text("Hapus"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (_) => DetailScreen(
+                                                      data: item,
+                                                    ),
+                                              ),
+                                            );
+                                          },
+                                          child: const Text("Detail"),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    );
-                  },
-                ),
-      ),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 3),
+              ),
     );
   }
 }

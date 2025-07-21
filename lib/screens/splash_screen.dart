@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '/screens/home_screen.dart';
+import 'package:flutter_curativo/screens/main_tab_view.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import '/screens/home_screen.dart';
 import '/screens/first_screen.dart';
 import 'package:flutter_curativo/services/auth_service.dart';
 
@@ -25,13 +26,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => loggedIn ? const HomeScreen() : const LandingPage(),
-          ),
-        );
-      }
-
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => loggedIn ? const MainTabView() : const LandingPage(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

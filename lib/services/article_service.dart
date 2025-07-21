@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ArticleService {
-  final String baseUrl = 'https://4a4ebdb11b48.ngrok-free.app/api';
+  final String baseUrl = 'https://teal-walrus-824468.hostingersite.com/api';
 
   Future<String> _getRolePath() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

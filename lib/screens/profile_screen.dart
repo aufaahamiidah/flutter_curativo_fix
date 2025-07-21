@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_curativo/screens/first_screen.dart';
-import '/widgets/custom_bottom_navbar.dart';
+// import '/widgets/custom_bottom_navbar.dart';
 import '/services/profile_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -147,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 4),
+      // bottomNavigationBar: const CustomBottomNavBar(currentIndex: 4),
     );
   }
 }

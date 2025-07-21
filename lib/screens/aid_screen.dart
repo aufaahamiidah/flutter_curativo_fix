@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
-import '/widgets/custom_bottom_navbar.dart';
+// import '/widgets/custom_bottom_navbar.dart';
 
 class AidScreen extends StatefulWidget {
   const AidScreen({super.key});
@@ -105,7 +105,7 @@ class _AidScreenState extends State<AidScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
+      // bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
     );
   }
 
