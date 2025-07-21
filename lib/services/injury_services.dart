@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InjuryHistoryService {
-  final String baseUrl = 'https://f79dd42978fe.ngrok-free.app/api';
+  final String baseUrl = 'https://teal-walrus-824468.hostingersite.com/api';
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -24,6 +24,7 @@ class InjuryHistoryService {
       Uri.parse('$baseUrl$path'),
       headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
     );
+
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -119,15 +120,17 @@ class InjuryHistoryService {
     final path = await _getRolePath();
     try {
       final response = await http.delete(
-      Uri.parse('$baseUrl$path/$id'),
-      headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
-    );
+        Uri.parse('$baseUrl$path/$id'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
 
-    return response.statusCode == 200 || response.statusCode == 204;
+      return response.statusCode == 200 || response.statusCode == 204;
     } catch (e) {
       print('Delete error: $e');
       return false;
     }
-    
   }
 }

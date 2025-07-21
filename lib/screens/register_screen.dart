@@ -185,8 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       _showSnackBar(
                         'Pendaftaran berhasil! Menuju Home Screen.',
                       );
-                      Navigator.pushAndRemoveUntil(
-                        context,
+                      Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder: (context) => const MainTabView(),
                         ),

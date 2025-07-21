@@ -6,7 +6,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as img;
-
+import 'package:flutter_curativo/screens/main_tab_view.dart';
 import '../screens/result_screen.dart';
 import '../screens/home_screen.dart';
 import '../services/injury_services.dart';
@@ -280,7 +280,7 @@ class _ScanScreenState extends State<ScanScreen> {
           onPressed:
               () => Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => const HomeScreen()),
+                MaterialPageRoute(builder: (_) => const MainTabView()),
               ),
         ),
         actions: [

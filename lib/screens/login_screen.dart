@@ -69,9 +69,10 @@ class _LoginPageState extends State<LoginPage> {
 
       if (result['success']) {
         // Jika berhasil, navigasi ke HomeScreen
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const MainTabView()),
+          (Route<dynamic> route) => false,
         );
       } else {
         // Jika gagal, tampilkan pesan error dari service

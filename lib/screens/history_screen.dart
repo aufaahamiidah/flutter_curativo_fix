@@ -1,5 +1,3 @@
-// history_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '/services/injury_services.dart';
@@ -157,64 +155,77 @@ class HistoryScreenState extends State<HistoryScreen> {
       body:
           isLoading
               ? const Center(child: CircularProgressIndicator())
-              : scanHistory.isEmpty
-              ? const Center(child: Text("Belum ada riwayat."))
               : RefreshIndicator(
                 onRefresh: _loadHistory,
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(12),
-                  itemCount: scanHistory.length,
-                  itemBuilder: (_, index) {
-                    final item = scanHistory[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(color: Colors.blue.shade100),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item['label'] ?? '-',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              formatTanggal(item['detected_at']),
-                              style: const TextStyle(color: Colors.black54),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                TextButton(
-                                  onPressed:
-                                      () => _deleteItem(item['id'].toString()),
-                                  child: const Text("Hapus"),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (_) => DetailScreen(data: item),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text("Detail"),
-                                ),
-                              ],
-                            ),
+                child:
+                    scanHistory.isEmpty
+                        ? ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: const [
+                            SizedBox(height: 200),
+                            Center(child: Text("Belum ada riwayat.")),
                           ],
+                        )
+                        : ListView.builder(
+                          padding: const EdgeInsets.all(12),
+                          itemCount: scanHistory.length,
+                          itemBuilder: (_, index) {
+                            final item = scanHistory[index];
+                            return Card(
+                              margin: const EdgeInsets.only(bottom: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: BorderSide(color: Colors.blue.shade100),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item['label'] ?? '-',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      formatTanggal(item['detected_at']),
+                                      style: const TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        TextButton(
+                                          onPressed:
+                                              () => _deleteItem(
+                                                item['id'].toString(),
+                                              ),
+                                          child: const Text("Hapus"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (_) => DetailScreen(
+                                                      data: item,
+                                                    ),
+                                              ),
+                                            );
+                                          },
+                                          child: const Text("Detail"),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    );
-                  },
-                ),
               ),
     );
   }

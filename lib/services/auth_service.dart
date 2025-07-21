@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final String baseUrl =
-      'https://f79dd42978fe.ngrok-free.app/api'; // gunakan 127.0.0.1 jika bukan emulator
+      'https://teal-walrus-824468.hostingersite.com/api'; // gunakan 127.0.0.1 jika bukan emulator
 
   /// Fungsi Login
   Future<Map<String, dynamic>> login(String email, String password) async {
@@ -14,10 +14,6 @@ class AuthService {
         headers: {'Accept': 'application/json'},
         body: {'email': email, 'password': password},
       );
-
-      print('📡 [LOGIN] Status Code: ${response.statusCode}');
-      print('📡 [LOGIN] Body: ${response.body}');
-
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
@@ -25,10 +21,8 @@ class AuthService {
         await prefs.setString('token', data['token']);
         await prefs.setString('role', data['user']['role']);
         await prefs.setString('name', data['user']['name']);
-        await prefs.setString('email', data['user']['email']);
-        await prefs.setString('id', data['user']['id']);
-
-        print('✅ Login berhasil. Token disimpan.');
+        await prefs.setString('email', data['user']['email']); // tambahkan ini
+        await prefs.setString('id', data['user']['id']); // tambahkan ini
         return {'success': true, 'user': data['user']};
       } else {
         final message = data['message'] ?? 'Login gagal';
@@ -67,9 +61,6 @@ class AuthService {
         },
       );
 
-      print('📡 [REGISTER] Status Code: ${response.statusCode}');
-      print('📡 [REGISTER] Body: ${response.body}');
-
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
@@ -77,6 +68,9 @@ class AuthService {
         await prefs.setString('token', data['token']);
         await prefs.setString('role', data['user']['role']);
         await prefs.setString('name', data['user']['name']);
+        await prefs.setString('id', data['user']['id'].toString());
+        await prefs.setString('email', data['user']['email']);
+
         return {'success': true, 'user': data['user']};
       } else {
         final message = data['message'] ?? 'Register gagal';
@@ -136,5 +130,4 @@ class AuthService {
       'id': prefs.getString('id'),
     };
   }
-
 }
