@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../services/injury_services.dart';
 
@@ -7,14 +6,20 @@ class ResultScreen extends StatefulWidget {
   final String result;
   final List<String> rekomendasi;
   final double score;
-  final File? imageFile;
+  final File imageFile;
+  final Rect? boxRect;
+  final int originalWidth;
+  final int originalHeight;
 
   const ResultScreen({
     super.key,
     required this.result,
     required this.rekomendasi,
     required this.score,
-    this.imageFile,
+    required this.imageFile,
+    required this.boxRect,
+    required this.originalWidth,
+    required this.originalHeight,
   });
 
   @override
@@ -22,30 +27,49 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _saveHistory(); // Simpan ke database, termasuk gambar
-  }
+  bool _isSaving = false;
 
   Future<void> _saveHistory() async {
+    if (_isSaving) return;
+
+    setState(() {
+      _isSaving = true;
+    });
+
     try {
-      String? base64Image;
-
-      if (widget.imageFile != null) {
-        final bytes = await widget.imageFile!.readAsBytes();
-        base64Image = base64Encode(bytes);
-      }
-
-      await InjuryHistoryService().addInjuryHistory(
+      // Gunakan fungsi baru yang mendukung upload gambar WebP ke Supabase
+      await InjuryHistoryService().addInjuryHistoryWithImage(
         label: widget.result,
-        recommendation: widget.rekomendasi.join(', '), // ✅ PERBAIKAN
+        imageFile: widget.imageFile, // Akan dikonversi ke WebP di service
+        recommendation: widget.rekomendasi.join(', '),
         detectedAt: DateTime.now(),
         scores: widget.score,
-        image: base64Image,
       );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Riwayat berhasil disimpan'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
     } catch (e) {
       print('❌ Gagal menyimpan riwayat: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Gagal menyimpan riwayat'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+        });
+      }
     }
   }
 
@@ -56,8 +80,21 @@ class _ResultScreenState extends State<ResultScreen> {
         title: const Text('Hasil Deteksi'),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => Navigator.pop(context),
+          icon:
+              _isSaving
+                  ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                  : const Icon(Icons.close),
+          onPressed:
+              _isSaving
+                  ? null
+                  : () async {
+                    await _saveHistory();
+                    Navigator.pop(context, true);
+                  },
         ),
       ),
       body: SingleChildScrollView(
@@ -65,6 +102,64 @@ class _ResultScreenState extends State<ResultScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'Gambar:',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            AspectRatio(
+              aspectRatio: 1,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final viewSize = constraints.biggest;
+                  final scaleX = viewSize.width / widget.originalWidth;
+                  final scaleY = viewSize.height / widget.originalHeight;
+                  final scaledRect =
+                      widget.boxRect != null
+                          ? Rect.fromLTWH(
+                            widget.boxRect!.left * viewSize.width,
+                            widget.boxRect!.top * viewSize.height,
+                            widget.boxRect!.width * viewSize.width,
+                            widget.boxRect!.height * viewSize.height,
+                          )
+                          : null;
+                  if (scaledRect != null) {
+                    print(
+                      '🟥 Scaled Bounding Box: '
+                      'left=${scaledRect.left}, '
+                      'top=${scaledRect.top}, '
+                      'width=${scaledRect.width}, '
+                      'height=${scaledRect.height}',
+                    );
+                  }
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Image.file(
+                          widget.imageFile,
+                          fit: BoxFit.contain,
+                        ), // Ubah dari cover ke contain
+                      ),
+                      if (scaledRect != null)
+                        Positioned(
+                          left: scaledRect.left,
+                          top: scaledRect.top,
+                          width: scaledRect.width,
+                          height: scaledRect.height,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.2),
+                              border: Border.all(color: Colors.green, width: 2),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 20),
             const Text(
               'Deteksi:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

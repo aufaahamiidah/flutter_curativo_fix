@@ -86,10 +86,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             value: user?['jenis_kelamin'] ?? '-',
                           ),
                           InfoTile(
-                            title: 'Tanggal Lahir',
-                            value: user?['tanggal_lahir'] ?? '-',
-                          ),
-                          InfoTile(
                             title: 'Email',
                             value: user?['email'] ?? '-',
                           ),
@@ -106,7 +102,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       child: Column(
                         children: [
-                          OptionButton(text: 'Edit Profile'),
                           const SizedBox(height: 10),
                           OptionButton(text: 'Tentang Aplikasi'),
                         ],
