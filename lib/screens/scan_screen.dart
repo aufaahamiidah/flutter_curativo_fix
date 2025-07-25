@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,8 +8,8 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter_curativo/screens/main_tab_view.dart';
 import '../screens/result_screen.dart';
-import '../screens/home_screen.dart';
-import '../services/injury_services.dart';
+// import '../screens/home_screen.dart';
+// import '../services/injury_services.dart';
 
 const Map<int, String> labelLuka = {
   0: 'Luka Lebam',
@@ -89,8 +89,6 @@ class _ScanScreenState extends State<ScanScreen> {
   Future<List<List<List<List<double>>>>> _preprocessImage(
     File imageFile,
   ) async {
-    
-
     final bytes = await imageFile.readAsBytes();
     final rawImage = img.decodeImage(bytes);
 
@@ -120,18 +118,15 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Future<void> _runModel() async {
-
-    
     if (!_modelLoaded || imageFile == null || _isProcessing) return;
     setState(() => _isProcessing = true);
 
     try {
       final input = await _preprocessImage(imageFile!);
       // Ambil ukuran asli gambar (bukan hasil resize 640x640)
-final originalImage = img.decodeImage(await imageFile!.readAsBytes())!;
-final originalWidth = originalImage.width;
-final originalHeight = originalImage.height;
-
+      final originalImage = img.decodeImage(await imageFile!.readAsBytes())!;
+      final originalWidth = originalImage.width;
+      final originalHeight = originalImage.height;
 
       // Output shape = [1, 8, 8400]
       final output = List.generate(
@@ -169,21 +164,29 @@ final originalHeight = originalImage.height;
           bestIndex = i;
           print("🧩 Index $i Score: $maxScore");
           print("🧩 Index $i Score: $bestClassIndex");
-          
+
           // Koordinat bounding box dalam format normalized (0-1)
-          this.x = x - w / 2;  // koordinat x (kiri)
-          this.y = y - h / 2;  // koordinat y (atas)
-          this.w = w;          // lebar
-          this.h = h;          // tinggi
-          
+          this.x = x - w / 2; // koordinat x (kiri)
+          this.y = y - h / 2; // koordinat y (atas)
+          this.w = w; // lebar
+          this.h = h; // tinggi
+
           // Clamp nilai agar tetap dalam range 0-1
           this.x = this.x.clamp(0.0, 1.0);
           this.y = this.y.clamp(0.0, 1.0);
-          this.w = this.w.clamp(0.0, 1.0 - this.x); // pastikan tidak melebihi batas kanan
-          this.h = this.h.clamp(0.0, 1.0 - this.y); // pastikan tidak melebihi batas bawah
-          
+          this.w = this.w.clamp(
+            0.0,
+            1.0 - this.x,
+          ); // pastikan tidak melebihi batas kanan
+          this.h = this.h.clamp(
+            0.0,
+            1.0 - this.y,
+          ); // pastikan tidak melebihi batas bawah
+
           // Debug print untuk koordinat yang sudah di-clamp
-          print('🔧 Clamped coordinates: x=${this.x.toStringAsFixed(4)}, y=${this.y.toStringAsFixed(4)}, w=${this.w.toStringAsFixed(4)}, h=${this.h.toStringAsFixed(4)}');
+          print(
+            '🔧 Clamped coordinates: x=${this.x.toStringAsFixed(4)}, y=${this.y.toStringAsFixed(4)}, w=${this.w.toStringAsFixed(4)}, h=${this.h.toStringAsFixed(4)}',
+          );
         }
       }
 
@@ -194,13 +197,11 @@ final originalHeight = originalImage.height;
         // final y = bestBox[1];
         // final w = bestBox[2];
         // final h = bestBox[3];
-        
+
         print('🚫 Deteksi berhasil dengan koordinat yang sudah di-clamp.');
       } else {
         print('🚫 Tidak ada deteksi dengan skor di atas threshold.');
       }
-
-      
 
       final String hasilDeteksi =
           bestClassIndex != -1
@@ -211,35 +212,43 @@ final originalHeight = originalImage.height;
           bestClassIndex != -1 ? rekomendasiLuka[bestClassIndex] ?? [] : [];
 
       final double hasilScore = bestClassIndex != -1 ? maxScore : 0.0;
-      
+
       print('📦 Hasil Score: $hasilScore');
-      print("📢 Deteksi selesai. ClassIndex: $bestClassIndex, Score: $maxScore");
-      
+      print(
+        "📢 Deteksi selesai. ClassIndex: $bestClassIndex, Score: $maxScore",
+      );
 
       await Future.delayed(const Duration(milliseconds: 800));
 
       if (mounted) {
         print('🔎 Final bestClassIndex=$bestClassIndex, maxScore=$maxScore');
-        print('📤 Sending bounding box: x=${this.x}, y=${this.y}, w=${this.w}, h=${this.h}');
+        print(
+          '📤 Sending bounding box: x=${this.x}, y=${this.y}, w=${this.w}, h=${this.h}',
+        );
         final result = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ResultScreen(
-              result: hasilDeteksi,
-              rekomendasi: hasilRekomendasi,
-              score: maxScore,
-              imageFile: imageFile!,
-              boxRect: Rect.fromLTWH(this.x, this.y, this.w, this.h), // Gunakan koordinat yang sudah di-clamp
-              originalWidth: originalWidth,
-              originalHeight: originalHeight
-            ),
+            builder:
+                (_) => ResultScreen(
+                  result: hasilDeteksi,
+                  rekomendasi: hasilRekomendasi,
+                  score: maxScore,
+                  imageFile: imageFile!,
+                  boxRect: Rect.fromLTWH(
+                    this.x,
+                    this.y,
+                    this.w,
+                    this.h,
+                  ), // Gunakan koordinat yang sudah di-clamp
+                  originalWidth: originalWidth,
+                  originalHeight: originalHeight,
+                ),
           ),
         );
 
         if (result == true || widget.onScanCompleted != null) {
           widget.onScanCompleted?.call();
         }
-        
       }
     } catch (e) {
       print("❌ Error saat inferensi: $e");

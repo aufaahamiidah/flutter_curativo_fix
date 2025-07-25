@@ -161,29 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      const Text(
-                        'Ingat saya',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF666666),
-                        ),
-                      ),
                     ],
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      _showSnackBar(
-                        'Fitur Lupa Kata Sandi belum diimplementasikan.',
-                      );
-                    },
-                    child: const Text(
-                      'Lupa kata sandi?',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF000080),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                   ),
                 ],
               ),

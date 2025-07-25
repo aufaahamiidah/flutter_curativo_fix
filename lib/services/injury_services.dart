@@ -21,21 +21,29 @@ class InjuryHistoryService {
   }
 
   /// ✅ Ambil semua riwayat luka
-  Future<List<dynamic>> fetchInjuryHistory() async {
-    final token = await _getToken();
-    final path = await _getRolePath();
-    final response = await http.get(
-      Uri.parse('$baseUrl$path'),
-      headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
-    );
+  Future<Map<String, dynamic>> fetchInjuryHistory({int page = 1}) async {
+  final token = await _getToken();
+  final path = await _getRolePath();
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return data['data'];
-    } else {
-      throw Exception('Gagal mengambil riwayat luka');
-    }
+  final response = await http.get(
+    Uri.parse('$baseUrl$path?page=$page'),
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return {
+      'items': data['data'] as List,
+      'pagination': data['pagination'],
+    };
+  } else {
+    throw Exception('Gagal mengambil riwayat luka');
   }
+}
+
 
   /// ✅ Ambil detail luka berdasarkan ID (fungsi show di Laravel)
   Future<Map<String, dynamic>> getInjuryDetail(String id) async {
