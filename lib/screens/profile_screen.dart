@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/screens/about_screen.dart';
 import 'package:flutter_curativo/screens/first_screen.dart';
 // import '/widgets/custom_bottom_navbar.dart';
 import '/services/profile_service.dart';
@@ -103,7 +104,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         children: [
                           const SizedBox(height: 10),
-                          OptionButton(text: 'Tentang Aplikasi'),
+                          OptionButton(
+                            text: 'Tentang Aplikasi',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AboutAppScreen(),
+                                ),
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -169,8 +180,13 @@ class InfoTile extends StatelessWidget {
 
 class OptionButton extends StatelessWidget {
   final String text;
+  final VoidCallback onTap;
 
-  const OptionButton({super.key, required this.text});
+  const OptionButton({
+    super.key,
+    required this.text,
+    required this.onTap,
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -182,9 +198,7 @@ class OptionButton extends StatelessWidget {
       child: ListTile(
         title: Text(text),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () {
-          // Aksi ketika tombol ditekan
-        },
+        onTap: onTap,
       ),
     );
   }

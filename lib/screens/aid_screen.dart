@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 // import '/widgets/custom_bottom_navbar.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class AidScreen extends StatefulWidget {
   const AidScreen({super.key});
@@ -108,6 +110,17 @@ class _AidScreenState extends State<AidScreen> {
       // bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
     );
   }
+  Future<void> _callEmergencyNumber(String phoneNumber) async {
+  final Uri url = Uri(scheme: 'tel', path: phoneNumber);
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Tidak bisa melakukan panggilan')),
+    );
+  }
+}
+
 
   void _showEmergencyModal(BuildContext context, String title, String content) {
     showModalBottomSheet(
@@ -170,51 +183,59 @@ class _BannerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 330 / 130,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        decoration: const BoxDecoration(
-          color: Color(0xFFA80000),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Icon(FeatherIcons.phone, color: Colors.white, size: 36),
-            const SizedBox(width: 20),
-            const Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Kontak Darurat\n112',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      height: 1.5,
+      child: GestureDetector(
+        onTap: () {
+          // sementara gunakan nomor pribadi
+          final Uri url = Uri(scheme: 'tel', path: '088216194722');
+          launchUrl(url);
+        },
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          decoration: const BoxDecoration(
+            color: Color(0xFFA80000),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(FeatherIcons.phone, color: Colors.white, size: 36),
+              const SizedBox(width: 20),
+              const Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Kontak Darurat\n112',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        height: 1.5,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Indonesia',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      height: 1.5,
+                    SizedBox(height: 8),
+                    Text(
+                      'Indonesia',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        height: 1.5,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
 
 class _EmergencyTile extends StatelessWidget {
   final String title;

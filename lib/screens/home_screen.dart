@@ -1,4 +1,4 @@
-import 'package:feather_icons/feather_icons.dart';
+// import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import '/widgets/emergency_card.dart';
 
@@ -224,15 +224,19 @@ class EmergencyKitSlider extends StatelessWidget {
                   },
                   {
                     'title': 'Barang Keperluan Pribadi',
-                    'description': '1. Sarung tangan non steril satu kali pakai\n2. Sabun cuci tangan\n3. Kantong ziplock\n4. Handuk',
+                    'description':
+                        '1. Sarung tangan non steril satu kali pakai\n2. Sabun cuci tangan\n3. Kantong ziplock\n4. Handuk',
                   },
                   {
                     'title': 'Perlengkapan P3K - Perban',
-                    'description': '1. Perban elastis atau gulung\n2. Perban segitiga atau mitela\n3. Perban kasa\n4. Kompres kasa steril dan non steril\n5. Pita perban perekat\n6. Plester luka\n7. Pembalut non perekat',
+                    'description':
+                        '1. Perban elastis atau gulung\n2. Perban segitiga atau mitela\n3. Perban kasa\n4. Kompres kasa steril dan non steril\n5. Pita perban perekat\n6. Plester luka\n7. Pembalut non perekat',
                   },
                   {
-                    'title': 'Perlengkapan P3K - Instrumen dan barang-barang penting',
-                    'description': '1. Gunting\n2. Pinset splinter\n3. Pinset biasa\n4. Peniti\n5. Kompres dingin atau es\n6. Bidai\n7. Sendok takar\n8. Garam rehidrasi atau oralit',
+                    'title':
+                        'Perlengkapan P3K - Instrumen dan barang-barang penting',
+                    'description':
+                        '1. Gunting\n2. Pinset splinter\n3. Pinset biasa\n4. Peniti\n5. Kompres dingin atau es\n6. Bidai\n7. Sendok takar\n8. Garam rehidrasi atau oralit',
                   },
                 ],
               ),

@@ -15,18 +15,27 @@ class HistoryScreenState extends State<HistoryScreen> {
   List<dynamic> scanHistory = [];
   bool isLoading = true;
 
+  // Pagination state
+  int currentPage = 1;
+  int lastPage = 1;
+  int totalItems = 0;
+  final int perPage = 15;
+
   @override
   void initState() {
     super.initState();
     _loadHistory();
   }
 
-  Future<void> _loadHistory() async {
+  Future<void> _loadHistory({int page = 1}) async {
     setState(() => isLoading = true);
     try {
-      final data = await injuryService.fetchInjuryHistory();
+      final data = await injuryService.fetchInjuryHistory(page: page);
       setState(() {
-        scanHistory = data;
+        scanHistory = data['items'];
+        currentPage = data['pagination']['current_page'];
+        lastPage = data['pagination']['last_page'];
+        totalItems = data['pagination']['total'];
         isLoading = false;
       });
     } catch (e) {
@@ -57,7 +66,7 @@ class HistoryScreenState extends State<HistoryScreen> {
     if (confirm == true) {
       final success = await injuryService.deleteInjuryHistory(id);
       if (success) {
-        _loadHistory(); // Refresh list
+        _loadHistory(page: currentPage); // Tetap di halaman yang sama
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Riwayat berhasil dihapus")),
         );
@@ -98,7 +107,7 @@ class HistoryScreenState extends State<HistoryScreen> {
         if (!success) allDeleted = false;
       }
 
-      _loadHistory();
+      _loadHistory(page: 1); // Kembali ke halaman 1
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -125,7 +134,7 @@ class HistoryScreenState extends State<HistoryScreen> {
   }
 
   void refreshHistory() {
-    _loadHistory();
+    _loadHistory(page: currentPage);
   }
 
   @override
@@ -153,7 +162,7 @@ class HistoryScreenState extends State<HistoryScreen> {
           isLoading
               ? const Center(child: CircularProgressIndicator())
               : RefreshIndicator(
-                onRefresh: _loadHistory,
+                onRefresh: () => _loadHistory(page: currentPage),
                 child:
                     scanHistory.isEmpty
                         ? ListView(
@@ -163,65 +172,117 @@ class HistoryScreenState extends State<HistoryScreen> {
                             Center(child: Text("Belum ada riwayat.")),
                           ],
                         )
-                        : ListView.builder(
-                          padding: const EdgeInsets.all(12),
-                          itemCount: scanHistory.length,
-                          itemBuilder: (_, index) {
-                            final item = scanHistory[index];
-                            return Card(
-                              margin: const EdgeInsets.only(bottom: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                side: BorderSide(color: Colors.blue.shade100),
-                              ),
-                              child: Padding(
+                        : Column(
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
                                 padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item['label'] ?? '-',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                itemCount: scanHistory.length,
+                                itemBuilder: (_, index) {
+                                  final item = scanHistory[index];
+                                  final globalIndex =
+                                      (currentPage - 1) * perPage + index + 1;
+
+                                  return Card(
+                                    margin: const EdgeInsets.only(bottom: 12),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      side: BorderSide(
+                                        color: Colors.blue.shade100,
                                       ),
                                     ),
-                                    Text(
-                                      formatTanggal(item['detected_at']),
-                                      style: const TextStyle(
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Row(
-                                      children: [
-                                        TextButton(
-                                          onPressed:
-                                              () => _deleteItem(
-                                                item['id'].toString(),
-                                              ),
-                                          child: const Text("Hapus"),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (_) => DetailScreen(
-                                                      data: item,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "$globalIndex. ${item['label'] ?? '-'}",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            formatTanggal(item['detected_at']),
+                                            style: const TextStyle(
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Row(
+                                            children: [
+                                              TextButton(
+                                                onPressed:
+                                                    () => _deleteItem(
+                                                      item['id'].toString(),
                                                     ),
+                                                child: const Text("Hapus"),
                                               ),
-                                            );
-                                          },
-                                          child: const Text("Detail"),
-                                        ),
-                                      ],
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder:
+                                                          (_) => DetailScreen(
+                                                            data: item,
+                                                          ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: const Text("Detail"),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            if (lastPage > 1)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed:
+                                          currentPage > 1
+                                              ? () => _loadHistory(
+                                                page: currentPage - 1,
+                                              )
+                                              : null,
+                                      style: ElevatedButton.styleFrom(
+                                        shape: const CircleBorder(),
+                                        padding: const EdgeInsets.all(12),
+                                      ),
+                                      child: const Icon(Icons.chevron_left),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Text('Halaman $currentPage dari $lastPage'),
+                                    const SizedBox(width: 16),
+                                    ElevatedButton(
+                                      onPressed:
+                                          currentPage < lastPage
+                                              ? () => _loadHistory(
+                                                page: currentPage + 1,
+                                              )
+                                              : null,
+                                      style: ElevatedButton.styleFrom(
+                                        shape: const CircleBorder(),
+                                        padding: const EdgeInsets.all(12),
+                                      ),
+                                      child: const Icon(Icons.chevron_right),
                                     ),
                                   ],
                                 ),
                               ),
-                            );
-                          },
+                          ],
                         ),
               ),
     );
