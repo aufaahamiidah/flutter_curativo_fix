@@ -22,8 +22,13 @@ class DetailScreen extends StatelessWidget {
     final detectedAt = data['detected_at'] ?? '';
     final label = data['label'] ?? '-';
     final recommendation = data['recommendation'] ?? '-';
-    final scores = data['scores']?.toStringAsFixed(2) ?? '-';
     final imageUrl = data['image'];
+
+    final rawScore = data['scores'];
+    final doubleScore =
+        rawScore is double
+            ? rawScore
+            : double.tryParse(rawScore.toString()) ?? 0.0;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Detail Luka')),
@@ -41,10 +46,54 @@ class DetailScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 200,
                     fit: BoxFit.cover,
-                    errorBuilder:
-                        (context, error, stackTrace) =>
-                            const Icon(Icons.broken_image, size: 100),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        width: double.infinity,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.broken_image, size: 50, color: Colors.grey),
+                          SizedBox(height: 8),
+                          Text('Gagal memuat gambar', style: TextStyle(color: Colors.grey)),
+                        ],
+                      ),
+                    ),
                   ),
+                ),
+              )
+            else
+              Container(
+                width: double.infinity,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
+                    SizedBox(height: 8),
+                    Text('Tidak ada gambar', style: TextStyle(color: Colors.grey)),
+                  ],
                 ),
               ),
             const SizedBox(height: 20),
@@ -57,7 +106,10 @@ class DetailScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 6),
-            Text('$scores%', style: const TextStyle(fontSize: 16)),
+            Text(
+              '${(doubleScore * 100).toStringAsFixed(2)}%',
+              style: const TextStyle(fontSize: 16),
+            ),
             const SizedBox(height: 16),
             Text(
               'Tanggal Deteksi:',
@@ -68,7 +120,6 @@ class DetailScreen extends StatelessWidget {
               formatTanggal(detectedAt),
               style: const TextStyle(fontSize: 16),
             ),
-
             const SizedBox(height: 16),
             Text(
               'Rekomendasi:',

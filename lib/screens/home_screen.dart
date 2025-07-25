@@ -61,36 +61,36 @@ class _Greetings extends StatelessWidget {
               ),
             ),
           ),
-          Stack(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(FeatherIcons.bell, color: Color(0xFFA80000)),
-              ),
-              Positioned(
-                right: 10,
-                top: 5,
-                child: Container(
-                  height: 15,
-                  width: 15,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFA80000),
-                    borderRadius: BorderRadius.circular(7.5),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "2",
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Stack(
+          //   children: [
+          //     IconButton(
+          //       onPressed: () {},
+          //       icon: const Icon(FeatherIcons.bell, color: Color(0xFFA80000)),
+          //     ),
+          //     Positioned(
+          //       right: 10,
+          //       top: 5,
+          //       child: Container(
+          //         height: 15,
+          //         width: 15,
+          //         decoration: BoxDecoration(
+          //           color: Color(0xFFA80000),
+          //           borderRadius: BorderRadius.circular(7.5),
+          //         ),
+          //         child: const Center(
+          //           child: Text(
+          //             "2",
+          //             style: TextStyle(
+          //               fontSize: 10,
+          //               fontWeight: FontWeight.w600,
+          //               color: Colors.white,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

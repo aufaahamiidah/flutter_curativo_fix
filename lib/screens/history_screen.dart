@@ -31,9 +31,6 @@ class HistoryScreenState extends State<HistoryScreen> {
       });
     } catch (e) {
       setState(() => isLoading = false);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Gagal mengambil data: $e')));
     }
   }
 

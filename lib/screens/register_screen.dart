@@ -23,7 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
       TextEditingController();
 
   String? _selectedGender;
-  final List<String> _genderOptions = ['Laki-laki', 'Perempuan', 'Lainnya'];
+  final List<String> _genderOptions = ['Laki-laki', 'Perempuan'];
 
   @override
   void dispose() {
