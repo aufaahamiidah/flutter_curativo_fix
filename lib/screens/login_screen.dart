@@ -20,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   // State untuk checkbox dan loading indicator
-  bool _rememberMe = false;
   bool _isLoading = false;
 
   @override
