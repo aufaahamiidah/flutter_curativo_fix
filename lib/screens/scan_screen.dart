@@ -8,8 +8,13 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter_curativo/screens/main_tab_view.dart';
 import '../screens/result_screen.dart';
+// Add these missing imports:
+import '../widgets/image_picker_card.dart';
+import '../widgets/scan_instruction_card.dart';
+import '../widgets/generic_button.dart';
 // import '../screens/home_screen.dart';
 // import '../services/injury_services.dart';
+import '../widgets/custom_app_bar.dart';
 
 const Map<int, String> labelLuka = {
   0: 'Luka Lebam',
@@ -211,7 +216,7 @@ class _ScanScreenState extends State<ScanScreen> {
       final List<String> hasilRekomendasi =
           bestClassIndex != -1 ? rekomendasiLuka[bestClassIndex] ?? [] : [];
 
-      final double hasilScore = bestClassIndex != -1 ? maxScore : 0.0;
+      final double hasilScore = (bestClassIndex != -1 && maxScore >=3)? maxScore : -1.0;
 
       print('📦 Hasil Score: $hasilScore');
       print(
@@ -312,121 +317,112 @@ class _ScanScreenState extends State<ScanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Pindai Luka',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 1,
+      backgroundColor: const Color(0xFFFAFAFA),
+      appBar: CustomAppBar(
+        title: 'Pindai Luka',
         leading: IconButton(
-          icon: const Icon(FeatherIcons.arrowLeft),
-          onPressed:
-              () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const MainTabView()),
-              ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(FeatherIcons.rotateCcw),
-            onPressed: () => setState(() => imageFile = null),
+          icon: const Icon(
+            FeatherIcons.arrowLeft,
+            color: Colors.white,
           ),
-        ],
+          onPressed: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const MainTabView()),
+          ),
+        ),
       ),
-
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 22),
+              // Image Picker Section
               const Text(
-                'Unggah foto luka',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                'Unggah Foto Luka',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF333333),
+                ),
               ),
-              const SizedBox(height: 20),
-              GestureDetector(
+              const SizedBox(height: 16),
+              
+              ImagePickerCard(
+                imageFile: imageFile,
                 onTap: () => _showPickOptionsDialog(context),
-                child: Container(
-                  width: double.infinity,
-                  height: 250,
+                hintText: 'Ketuk untuk memilih foto',
+                height: 280,
+              ),
+              
+              const SizedBox(height: 24),
+              
+              // Instructions Card
+              const ScanInstructionCard(
+                instructions: [
+                  'Pastikan pencahayaan cukup terang',
+                  'Fokuskan kamera pada area luka',
+                  'Hindari bayangan pada foto',
+                  'Ambil foto dari jarak yang tepat',
+                ],
+              ),
+              
+              const SizedBox(height: 32),
+              
+              // Scan Button - Centered
+              Center(
+                child: GenericButton(
+                  text: _isProcessing ? 'MEMPROSES...' : 'PINDAI LUKA',
+                  onPressed: (imageFile == null || !_modelLoaded || _isProcessing)
+                      ? () {}
+                      : _runModel,
+                  type: ButtonType.elevated,
+                  backgroundColor: (imageFile == null || !_modelLoaded || _isProcessing)
+                      ? Colors.grey[400]
+                      : const Color(0xFFE53E3E), // Warna merah
+                  padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              
+              if (_isProcessing) ...[
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
+                    color: const Color(0xFFE53E3E).withOpacity(0.1), // Background merah muda
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: const Color(0xFFCCCCCC),
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: const Color(0xFFF7F7F7),
-                    image:
-                        imageFile != null
-                            ? DecorationImage(
-                              image: FileImage(imageFile!),
-                              fit: BoxFit.cover,
-                            )
-                            : null,
-                  ),
-                  child:
-                      imageFile == null
-                          ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.camera_alt_outlined,
-                                size: 60,
-                                color: Color(0xFFA0A0A0),
-                              ),
-                              SizedBox(height: 15),
-                              Text(
-                                'Ketuk untuk memilih foto',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF666666),
-                                ),
-                              ),
-                            ],
-                          )
-                          : null,
-                ),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed:
-                      (imageFile == null || !_modelLoaded || _isProcessing)
-                          ? null
-                          : _runModel,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF000080),
-                    padding: const EdgeInsets.symmetric(vertical: 15.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      color: const Color(0xFFE53E3E).withOpacity(0.3), // Border merah
+                      width: 1,
                     ),
                   ),
-                  child:
-                      _isProcessing
-                          ? const SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 3,
-                            ),
-                          )
-                          : const Text(
-                            'PINDAI LUKA',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Color(0xFFE53E3E), // Progress indicator merah
                           ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Text(
+                        'Sedang menganalisis gambar...',
+                        style: TextStyle(
+                          color: Color(0xFFE53E3E), // Teks merah
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
+              
+              const SizedBox(height: 20),
             ],
           ),
         ),

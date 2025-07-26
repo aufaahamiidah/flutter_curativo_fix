@@ -101,6 +101,7 @@ class DetailScreen extends StatelessWidget {
             const SizedBox(height: 6),
             Text(label, style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 16),
+            if (doubleScore >= 0.3)...[
             Text(
               'Tingkat Keyakinan:',
               style: Theme.of(context).textTheme.titleMedium,
@@ -110,6 +111,7 @@ class DetailScreen extends StatelessWidget {
               '${(doubleScore * 100).toStringAsFixed(2)}%',
               style: const TextStyle(fontSize: 16),
             ),
+            ],
             const SizedBox(height: 16),
             Text(
               'Tanggal Deteksi:',
