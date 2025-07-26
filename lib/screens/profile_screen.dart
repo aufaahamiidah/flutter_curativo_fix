@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_curativo/screens/about_screen.dart';
-import 'package:flutter_curativo/screens/first_screen.dart';
+import 'package:flutter_curativo/widgets/profile_header.dart';
+import 'package:flutter_curativo/widgets/personal_info_card.dart';
+import 'package:flutter_curativo/widgets/profile_menu_card.dart';
+import 'package:flutter_curativo/widgets/logout_button.dart';
 import '/services/profile_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -60,121 +61,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFFAFAFA),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  // Header image
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/header.png',
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        bottom: -40,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: getRandomColor(user?['name']),
-                          child: Text(
-                            getInitials(user?['name']),
-                            style: const TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  // Header dengan gradient overlay
+                  ProfileHeader(
+                    user: user,
+                    getRandomColor: getRandomColor,
+                    getInitials: getInitials,
                   ),
-                  const SizedBox(height: 50),
-                  // Nama username
-                  Text(
-                    user?['name'] ?? '-',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // Informasi user
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Column(
-                      children: [
-                        InfoTile(
-                          title: 'Nama Lengkap',
-                          value: user?['name'] ?? '-',
-                        ),
-                        InfoTile(
-                          title: 'Jenis kelamin',
-                          value: user?['jenis_kelamin'] ?? '-',
-                        ),
-                        InfoTile(
-                          title: 'Email',
-                          value: user?['email'] ?? '-',
-                        ),
-                        InfoTile(
-                          title: 'No. Telepon',
-                          value: user?['no_telp'] ?? '-',
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // Tombol Tentang Aplikasi
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        OptionButton(
-                          text: 'Tentang Aplikasi',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const AboutAppScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+                  
                   const SizedBox(height: 30),
+                  
+                  // Informasi Personal Card
+                  PersonalInfoCard(user: user),
+                  
+                  const SizedBox(height: 20),
+                  
+                  // Menu Options
+                  const ProfileMenuCard(),
+                  
+                  const SizedBox(height: 30),
+                  
                   // Tombol Logout
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 100,
-                        vertical: 15,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs.clear();
-
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => const LandingPage(),
-                        ),
-                        (route) => false,
-                      );
-                    },
-                    child: const Text(
-                      'LOGOUT',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+                  const LogoutButton(),
+                  
                   const SizedBox(height: 30),
                 ],
               ),
@@ -184,19 +98,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class InfoTile extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
   final String title;
   final String value;
 
-  const InfoTile({super.key, required this.title, required this.value});
+  const InfoTile({
+    super.key,
+    required this.icon,
+    required this.iconColor,
+    required this.title,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Text('$title: ', style: const TextStyle(fontWeight: FontWeight.bold)),
-          Expanded(child: Text(value)),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: iconColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              icon,
+              color: iconColor,
+              size: 16,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF666666),
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    color: Color(0xFF333333),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -204,11 +161,13 @@ class InfoTile extends StatelessWidget {
 }
 
 class OptionButton extends StatelessWidget {
+  final IconData icon;
   final String text;
   final VoidCallback onTap;
 
   const OptionButton({
     super.key,
+    required this.icon,
     required this.text,
     required this.onTap,
   });
@@ -216,13 +175,27 @@ class OptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFF1F1F1),
-        borderRadius: BorderRadius.circular(12),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       child: ListTile(
-        title: Text(text),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        leading: Icon(
+          icon,
+          color: const Color(0xFFE53E3E),
+          size: 24,
+        ),
+        title: Text(
+          text,
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF333333),
+          ),
+        ),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          size: 16,
+          color: Color(0xFF999999),
+        ),
         onTap: onTap,
       ),
     );
