@@ -57,7 +57,7 @@ class _MainTabViewState extends State<MainTabView> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: const Color(0xFF00009C),
+        selectedItemColor: const Color.fromARGB(255, 156, 8, 0),
         unselectedItemColor: const Color(0xFF6D6D6D),
         backgroundColor: Colors.white,
         items: [

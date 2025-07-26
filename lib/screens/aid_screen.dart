@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
-// import '/widgets/custom_bottom_navbar.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import '../widgets/emergency_header.dart';
+import '../widgets/emergency_contact_card.dart';
+import '../widgets/emergency_action_card.dart';
+import '../widgets/section_header.dart';
 
 class AidScreen extends StatefulWidget {
   const AidScreen({super.key});
@@ -15,112 +17,120 @@ class _AidScreenState extends State<AidScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 32),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Berikan Bantuan',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/images/home_plus.png',
-                    width: 70,
-                    height: 70,
-                  ),
-                ],
+      backgroundColor: const Color(0xFFF8F9FA),
+      body: Column(
+        children: [
+          EmergencyHeader(
+            title: 'Berikan Bantuan',
+            subtitle: 'Panduan pertolongan pertama darurat',
+            trailing: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Image.asset(
+                'assets/images/home_plus.png',
+                width: 40,
+                height: 40,
               ),
             ),
-            const SizedBox(height: 32),
-            const _BannerCard(),
-            const SizedBox(height: 32),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Konten Darurat',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+          ),
+          const SizedBox(height: 20),
+          const EmergencyContactCard(
+            title: 'Kontak Darurat 112',
+            subtitle: 'Hubungi layanan darurat Indonesia',
+            phoneNumber: '112',
+            icon: FeatherIcons.phone,
+          ),
+          const SizedBox(height: 24),
+          const SectionHeader(
+            title: 'Panduan Darurat',
+            subtitle: 'Langkah-langkah pertolongan pertama',
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              children: [
+                EmergencyActionCard(
+                  title: 'Tersedak (Dewasa, Lansia)',
+                  subtitle: 'Heimlich maneuver untuk dewasa',
+                  icon: Icons.person,
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    'Tersedak (Dewasa, Lansia)',
+                    'Jika seseorang dewasa atau lansia tersedak dan masih bisa batuk atau bersuara, biarkan mereka batuk untuk mencoba mengeluarkan objek tersebut. Jika tidak bisa bernapas atau bicara, lakukan Heimlich maneuver.',
                   ),
                 ),
-              ),
+                EmergencyActionCard(
+                  title: 'Tersedak (Anak Kecil)',
+                  subtitle: 'Teknik khusus untuk anak-anak',
+                  icon: Icons.child_care,
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    'Tersedak (Anak Kecil)',
+                    'Untuk anak kecil, posisikan mereka membungkuk ke depan dan tepuk punggung mereka lima kali dengan telapak tangan. Jika tidak berhasil, lakukan dorongan perut.',
+                  ),
+                ),
+                EmergencyActionCard(
+                  title: 'Tersedak (Bayi)',
+                  subtitle: 'Penanganan khusus untuk bayi',
+                  icon: Icons.baby_changing_station,
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    'Tersedak (Bayi)',
+                    'Letakkan bayi telungkup di lengan Anda, kepala lebih rendah dari tubuh. Berikan lima tepukan di punggung, lalu lima tekanan dada jika belum berhasil.',
+                  ),
+                ),
+                EmergencyActionCard(
+                  title: 'Pendarahan Parah',
+                  subtitle: 'Cara menghentikan pendarahan',
+                  icon: Icons.bloodtype,
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    'Pendarahan Parah',
+                    'Tekan langsung pada luka dengan kain bersih atau perban. Jika darah menembus, tambahkan lapisan lain tanpa melepas yang pertama. Angkat bagian yang berdarah lebih tinggi dari jantung jika memungkinkan.',
+                  ),
+                ),
+                EmergencyActionCard(
+                  title: 'Serangan Jantung',
+                  subtitle: 'Tanda dan penanganan darurat',
+                  icon: Icons.favorite,
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    'Serangan Jantung',
+                    'Panggil bantuan medis segera. Berikan aspirin jika tersedia dan korban tidak alergi. Posisikan korban duduk dengan nyaman, longgarkan pakaian ketat.',
+                  ),
+                ),
+                EmergencyActionCard(
+                  title: 'Stroke',
+                  subtitle: 'Deteksi dini dan penanganan',
+                  icon: Icons.psychology,
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    'Stroke',
+                    'Gunakan tes FAST: Face (wajah), Arms (lengan), Speech (bicara), Time (waktu). Jika ada tanda stroke, segera hubungi layanan darurat.',
+                  ),
+                ),
+                EmergencyActionCard(
+                  title: 'Luka Bakar',
+                  subtitle: 'Penanganan luka bakar ringan hingga berat',
+                  icon: Icons.local_fire_department,
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    'Luka Bakar',
+                    'Dinginkan luka bakar dengan air mengalir selama 10-20 menit. Jangan gunakan es. Tutup dengan kain bersih yang lembab. Untuk luka bakar parah, segera cari bantuan medis.',
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-            const SizedBox(height: 22),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                children: [
-                  _EmergencyTile(
-                    title: 'Tersedak (Dewasa, Lansia)',
-                    onTap:
-                        () => _showEmergencyModal(
-                          context,
-                          'Tersedak (Dewasa, Lansia)',
-                          'Jika seseorang dewasa atau lansia tersedak dan masih bisa batuk atau bersuara, biarkan mereka batuk untuk mencoba mengeluarkan objek tersebut. Jika tidak bisa bernapas atau bicara, lakukan Heimlich maneuver.',
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  _EmergencyTile(
-                    title: 'Tersedak (Anak Kecil)',
-                    onTap:
-                        () => _showEmergencyModal(
-                          context,
-                          'Tersedak (Anak Kecil)',
-                          'Untuk anak kecil, posisikan mereka membungkuk ke depan dan tepuk punggung mereka lima kali dengan telapak tangan. Jika tidak berhasil, lakukan dorongan perut.',
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  _EmergencyTile(
-                    title: 'Tersedak (Bayi)',
-                    onTap:
-                        () => _showEmergencyModal(
-                          context,
-                          'Tersedak (Bayi)',
-                          'Letakkan bayi telungkup di lengan Anda, kepala lebih rendah dari tubuh. Berikan lima tepukan di punggung, lalu lima tekanan dada jika belum berhasil.',
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  _EmergencyTile(
-                    title: 'Pendarahan Parah',
-                    onTap:
-                        () => _showEmergencyModal(
-                          context,
-                          'Pendarahan Parah',
-                          'Tekan langsung area yang berdarah dengan kain bersih. Jangan lepaskan tekanan sampai bantuan medis tiba. Jika memungkinkan, angkat bagian tubuh yang berdarah.',
-                        ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-      // bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
     );
   }
-  Future<void> _callEmergencyNumber(String phoneNumber) async {
-  final Uri url = Uri(scheme: 'tel', path: phoneNumber);
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Tidak bisa melakukan panggilan')),
-    );
-  }
-}
-
 
   void _showEmergencyModal(BuildContext context, String title, String content) {
     showModalBottomSheet(
@@ -132,145 +142,66 @@ class _AidScreenState extends State<AidScreen> {
           initialChildSize: 0.9,
           minChildSize: 0.6,
           maxChildSize: 0.95,
-          builder:
-              (_, controller) => Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Stack(
-                  children: [
-                    ListView(
-                      controller: controller,
-                      children: [
-                        const SizedBox(height: 40),
-                        Text(
+          builder: (_, controller) => Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFFE53E3E),
+                        Color(0xFFD53F8C),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
                           title,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          content,
-                          style: const TextStyle(fontSize: 16, height: 1.5),
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: IconButton(
-                        icon: const Icon(Icons.close),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: ListView(
+                    controller: controller,
+                    padding: const EdgeInsets.all(20),
+                    children: [
+                      Text(
+                        content,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          height: 1.6,
+                          color: Color(0xFF333333),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
-    );
-  }
-}
-
-class _BannerCard extends StatelessWidget {
-  const _BannerCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 330 / 130,
-      child: GestureDetector(
-        onTap: () {
-          // sementara gunakan nomor pribadi
-          final Uri url = Uri(scheme: 'tel', path: '088216194722');
-          launchUrl(url);
-        },
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          decoration: const BoxDecoration(
-            color: Color(0xFFA80000),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Icon(FeatherIcons.phone, color: Colors.white, size: 36),
-              const SizedBox(width: 20),
-              const Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Kontak Darurat\n112',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        height: 1.5,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Indonesia',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        height: 1.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-class _EmergencyTile extends StatelessWidget {
-  final String title;
-  final VoidCallback onTap;
-
-  const _EmergencyTile({required this.title, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const Icon(Icons.chevron_right, color: Colors.red),
-          ],
-        ),
-      ),
     );
   }
 }
