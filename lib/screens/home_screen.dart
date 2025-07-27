@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '/widgets/gradient_header.dart';
-import '/widgets/action_banner_card.dart';
-import '/widgets/kit_slider_section.dart';
+import '/widgets/headers/gradient_header.dart';
+import '/widgets/cards/action_banner_card.dart';
+import '/widgets/lists/kit_slider_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

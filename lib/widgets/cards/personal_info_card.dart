@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'info_tile.dart';
+import '../lists/info_tile.dart';
 
 class PersonalInfoCard extends StatelessWidget {
   final Map<String, dynamic>? user;

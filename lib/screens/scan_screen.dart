@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-// import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,13 +7,10 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter_curativo/screens/main_tab_view.dart';
 import '../screens/result_screen.dart';
-// Add these missing imports:
-import '../widgets/image_picker_card.dart';
-import '../widgets/scan_instruction_card.dart';
-import '../widgets/generic_button.dart';
-// import '../screens/home_screen.dart';
-// import '../services/injury_services.dart';
-import '../widgets/custom_app_bar.dart';
+import '../widgets/cards/image_picker_card.dart';
+import '../widgets/cards/scan_instruction_card.dart';
+import '../widgets/common/generic_button.dart';
+import '../widgets/common/custom_app_bar.dart';
 
 const Map<int, String> labelLuka = {
   0: 'Luka Lebam',

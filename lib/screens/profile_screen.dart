@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_curativo/widgets/profile_header.dart';
-import 'package:flutter_curativo/widgets/personal_info_card.dart';
-import 'package:flutter_curativo/widgets/profile_menu_card.dart';
-import 'package:flutter_curativo/widgets/logout_button.dart';
 import '/services/profile_service.dart';
+import 'package:flutter_curativo/widgets/headers/profile_header.dart';
+import 'package:flutter_curativo/widgets/cards/personal_info_card.dart';
+import 'package:flutter_curativo/widgets/cards/profile_menu_card.dart';
+import 'package:flutter_curativo/widgets/profile/logout_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

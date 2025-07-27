@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '/services/injury_services.dart';
-import '/widgets/history_card.dart';
-import '/widgets/pagination_controls.dart';
-import '/widgets/empty_state_widget.dart';
-import '/widgets/custom_app_bar.dart';
 import 'detail_injury_screen.dart';
+import '/widgets/cards/history_card.dart';
+import '/widgets/navigation/pagination_controls.dart';
+import '/widgets/lists/empty_state_widget.dart';
+import '/widgets/common/custom_app_bar.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});

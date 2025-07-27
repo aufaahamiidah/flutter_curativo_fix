@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_curativo/widgets/custom_app_bar.dart';
-import 'package:flutter_curativo/widgets/app_info_card.dart';
-import 'package:flutter_curativo/widgets/feature_highlight.dart';
+import 'package:flutter_curativo/widgets/common/custom_app_bar.dart';
+import 'package:flutter_curativo/widgets/cards/app_info_card.dart';
+import 'package:flutter_curativo/widgets/lists/feature_highlight.dart';
 
 class AboutAppScreen extends StatelessWidget {
   const AboutAppScreen({super.key});

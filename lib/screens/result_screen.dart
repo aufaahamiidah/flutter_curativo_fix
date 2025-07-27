@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../services/injury_services.dart';
-import '../widgets/result_card.dart';
-import '../widgets/recommendation_list.dart';
-// import '../widgets/generic_button.dart';
-import '../widgets/custom_app_bar.dart';
+import '../widgets/cards/result_card.dart';
+import '../widgets/lists/recommendation_list.dart';
+import '../widgets/common/custom_app_bar.dart';
 
 class ResultScreen extends StatefulWidget {
   final String result;

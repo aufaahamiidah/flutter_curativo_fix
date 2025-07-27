@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/screens/login_screen.dart';
 import '/screens/register_screen.dart';
-import '/widgets/generic_button.dart';
+import '/widgets/common/generic_button.dart';
 
 
 class LandingPage extends StatelessWidget {

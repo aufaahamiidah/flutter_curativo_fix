@@ -3,9 +3,9 @@ import 'package:flutter_curativo/screens/main_tab_view.dart';
 import '/screens/register_screen.dart';
 // import '/screens/home_screen.dart';
 // import '/screens/forgot_password_screen.dart'; // Anda mungkin perlu membuat halaman ini
-import '/widgets/generic_button.dart';
-import '/widgets/custom_text_field.dart';
 import 'package:flutter_curativo/services/auth_service.dart';
+import '/widgets/common/generic_button.dart';
+import '/widgets/common/custom_text_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

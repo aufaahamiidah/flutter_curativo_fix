@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/result_card.dart';
+import '../widgets/common/custom_app_bar.dart';
+import '../widgets/cards/result_card.dart';
 
 class DetailScreen extends StatelessWidget {
   final Map<String, dynamic> data;

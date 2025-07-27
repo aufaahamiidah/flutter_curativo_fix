@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../widgets/emergency_header.dart';
-import '../widgets/emergency_contact_card.dart';
-import '../widgets/emergency_action_card.dart';
-import '../widgets/section_header.dart';
+import '../widgets/emergency/emergency_header.dart';
+import '../widgets/emergency/emergency_contact_card.dart';
+import '../widgets/emergency/emergency_action_card.dart';
+import '../widgets/headers/section_header.dart';
 
 class AidScreen extends StatefulWidget {
   const AidScreen({super.key});

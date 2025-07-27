@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_curativo/screens/about_screen.dart';
-import 'option_button.dart';
+import '../common/option_button.dart';
 
 class ProfileMenuCard extends StatelessWidget {
   const ProfileMenuCard({super.key});

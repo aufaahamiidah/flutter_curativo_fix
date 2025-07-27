@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '/widgets/emergency_card.dart';
+import '/widgets/emergency/emergency_card.dart';
+
 
 class KitSliderSection extends StatelessWidget {
   final String title;
