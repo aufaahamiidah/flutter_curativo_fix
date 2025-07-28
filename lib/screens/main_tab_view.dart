@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 import 'home_screen.dart';
 import 'aid_screen.dart';
 import 'scan_screen.dart';
@@ -6,7 +7,9 @@ import 'history_screen.dart';
 import 'profile_screen.dart';
 
 class MainTabView extends StatefulWidget {
-  const MainTabView({super.key});
+  final Function(Locale)? onLanguageChanged;
+  
+  const MainTabView({super.key, this.onLanguageChanged});
 
   @override
   State<MainTabView> createState() => _MainTabViewState();
@@ -35,7 +38,7 @@ class _MainTabViewState extends State<MainTabView> {
         },
       ),
       HistoryScreen(key: _historyKey),
-      const ProfileScreen(),
+      ProfileScreen(onLanguageChanged: widget.onLanguageChanged),
     ];
   }
 
@@ -51,6 +54,8 @@ class _MainTabViewState extends State<MainTabView> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
@@ -61,8 +66,8 @@ class _MainTabViewState extends State<MainTabView> {
         unselectedItemColor: const Color(0xFF6D6D6D),
         backgroundColor: Colors.white,
         items: [
-          _buildNavItem(Icons.home, 'Beranda'),
-          _buildNavItem(Icons.medical_services, 'Bantuan'),
+          _buildNavItem(Icons.home, localizations.home),
+          _buildNavItem(Icons.medical_services, localizations.help),
           BottomNavigationBarItem(
             icon: Container(
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -70,22 +75,22 @@ class _MainTabViewState extends State<MainTabView> {
                 color: const Color(0xFF00009C),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.qr_code_scanner, color: Colors.white),
-                  SizedBox(height: 4),
+                  const Icon(Icons.qr_code_scanner, color: Colors.white),
+                  const SizedBox(height: 4),
                   Text(
-                    'Scan',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    localizations.scan,
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ],
               ),
             ),
             label: ' ',
           ),
-          _buildNavItem(Icons.history, 'Riwayat'),
-          _buildNavItem(Icons.person_outline, 'Akun'),
+          _buildNavItem(Icons.history, localizations.history),
+          _buildNavItem(Icons.person_outline, localizations.account),
         ],
       ),
     );

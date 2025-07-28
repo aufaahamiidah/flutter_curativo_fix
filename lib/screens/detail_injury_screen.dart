@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 import '../widgets/common/custom_app_bar.dart';
-import '../widgets/cards/result_card.dart';
+// import '../widgets/cards/result_card.dart';
 
 class DetailScreen extends StatelessWidget {
   final Map<String, dynamic> data;
 
   const DetailScreen({super.key, required this.data});
 
-  String formatTanggal(String isoDateString) {
+  String formatTanggal(String isoDateString, String locale) {
     try {
       final dateTime = DateTime.parse(isoDateString).toLocal();
-      final hari = DateFormat('EEEE', 'id_ID').format(dateTime);
-      final tanggal = DateFormat('dd/MM/yyyy HH:mm', 'id_ID').format(dateTime);
+      final hari = DateFormat('EEEE', locale).format(dateTime);
+      final tanggal = DateFormat('dd/MM/yyyy HH:mm', locale).format(dateTime);
       return '$hari, $tanggal';
     } catch (e) {
       return '-';
@@ -33,6 +34,13 @@ class DetailScreen extends StatelessWidget {
         cleaned = cleaned.replaceAll(RegExp(r'^\([^)]*\),?\s*'), '');
         cleaned = cleaned.replaceAll(RegExp(r'^\d+[.)],?\s*'), '');
         
+        // Hapus koma di awal dan akhir kalimat
+        cleaned = cleaned.replaceAll(RegExp(r'^,\s*'), '');
+        cleaned = cleaned.replaceAll(RegExp(r',\s*$'), '');
+        
+        // Hapus spasi berlebih
+        cleaned = cleaned.replaceAll(RegExp(r'\s+'), ' ').trim();
+        
         if (cleaned.isNotEmpty) {
           points.add(cleaned);
         }
@@ -41,13 +49,19 @@ class DetailScreen extends StatelessWidget {
     
     // Jika tidak ada poin yang ditemukan, kembalikan teks asli sebagai satu poin
     if (points.isEmpty) {
-      points.add(recommendation);
+      // Bersihkan teks asli dari koma yang tidak perlu
+      String cleanedOriginal = recommendation
+          .replaceAll(RegExp(r'^,\s*'), '')
+          .replaceAll(RegExp(r',\s*$'), '')
+          .replaceAll(RegExp(r'\s+'), ' ')
+          .trim();
+      points.add(cleanedOriginal);
     }
     
     return points;
   }
 
-  Widget _buildImageSection(String? imageUrl) {
+  Widget _buildImageSection(String? imageUrl, BuildContext context) {
     return Container(
       width: double.infinity,
       height: 250,
@@ -85,14 +99,15 @@ class DetailScreen extends StatelessWidget {
                     ),
                   );
                 },
-                errorBuilder: (context, error, stackTrace) => _buildErrorImage(),
+                errorBuilder: (context, error, stackTrace) => _buildErrorImage(context),
               )
-            : _buildNoImage(),
+            : _buildNoImage(context),
       ),
     );
   }
 
-  Widget _buildErrorImage() {
+  Widget _buildErrorImage(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       height: 250,
@@ -111,7 +126,7 @@ class DetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Gagal memuat gambar',
+            localizations.failedToLoadImage,
             style: TextStyle(
               color: Colors.grey[600],
               fontSize: 16,
@@ -123,7 +138,8 @@ class DetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNoImage() {
+  Widget _buildNoImage(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       height: 250,
@@ -142,7 +158,7 @@ class DetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Tidak ada gambar',
+            localizations.noImage,
             style: TextStyle(
               color: Colors.grey[600],
               fontSize: 16,
@@ -223,7 +239,7 @@ class DetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRecommendationCard(String recommendation) {
+  Widget _buildRecommendationCard(String recommendation, AppLocalizations localizations) {
     final points = _parseRecommendationToPoints(recommendation);
     
     return Container(
@@ -262,10 +278,10 @@ class DetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Rekomendasi Penanganan',
-                  style: TextStyle(
+                  localizations.treatmentRecommendationTitle,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF333333),
@@ -317,10 +333,15 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     final detectedAt = data['detected_at'] ?? '';
     final label = data['label'] ?? '-';
     final recommendation = data['recommendation'] ?? '-';
     final imageUrl = data['image'];
+
+    // Tentukan locale berdasarkan bahasa yang dipilih
+    final currentLocale = Localizations.localeOf(context);
+    final localeString = currentLocale.languageCode == 'id' ? 'id_ID' : 'en_US';
 
     final rawScore = data['scores'];
     final doubleScore = rawScore is double
@@ -329,8 +350,8 @@ class DetailScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      appBar: const CustomAppBar(
-        title: 'Detail Hasil Deteksi',
+      appBar: CustomAppBar(
+        title: localizations.detailDetectionResult,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -338,12 +359,12 @@ class DetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header dengan gambar
-            _buildImageSection(imageUrl),
+            _buildImageSection(imageUrl, context),
             const SizedBox(height: 24),
             
             // Jenis Luka
             _buildInfoCard(
-              title: 'Jenis Luka Terdeteksi',
+              title: localizations.detectedWoundType,
               content: label,
               icon: Icons.medical_services_outlined,
               backgroundColor: const Color(0xFFF0F8FF),
@@ -352,21 +373,20 @@ class DetailScreen extends StatelessWidget {
             // Tingkat Keyakinan (hanya jika >= 0.3) - Tanpa warna
             if (doubleScore >= 0.3) 
               _buildInfoCard(
-                title: 'Tingkat Keyakinan',
+                title: localizations.confidenceLevel,
                 content: '${(doubleScore * 100).toStringAsFixed(1)}%',
                 icon: Icons.analytics_outlined,
               ),
             
-            // Tanggal Deteksi
+            // Tanggal Deteksi dengan locale yang sesuai
             _buildInfoCard(
-              title: 'Waktu Deteksi',
-              content: formatTanggal(detectedAt),
+              title: localizations.detectionTime,
+              content: formatTanggal(detectedAt, localeString),
               icon: Icons.access_time_outlined,
             ),
             
             // Rekomendasi dengan bullet points
-            _buildRecommendationCard(recommendation),
-            
+            _buildRecommendationCard(recommendation, localizations),
             const SizedBox(height: 20),
           ],
         ),

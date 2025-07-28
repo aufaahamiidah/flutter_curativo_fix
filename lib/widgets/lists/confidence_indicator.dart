@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 
 class ConfidenceIndicator extends StatelessWidget {
   final double score;
@@ -22,16 +23,17 @@ class ConfidenceIndicator extends StatelessWidget {
     return Colors.red;
   }
 
-  String _getScoreLabel(double score) {
-    if (score >= 0.8) return 'Tinggi';
-    if (score >= 0.6) return 'Sedang';
-    return 'Rendah';
+  String _getScoreLabel(BuildContext context, double score) {
+    final localizations = AppLocalizations.of(context)!;
+    if (score >= 0.8) return localizations.confidenceHigh;
+    if (score >= 0.6) return localizations.confidenceMedium;
+    return localizations.confidenceLow;
   }
 
   @override
   Widget build(BuildContext context) {
     final scoreColor = progressColor ?? _getScoreColor(score);
-    final scoreLabel = label ?? _getScoreLabel(score);
+    final scoreLabel = label ?? _getScoreLabel(context, score);
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

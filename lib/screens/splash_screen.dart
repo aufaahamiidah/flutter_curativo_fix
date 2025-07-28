@@ -6,7 +6,9 @@ import '/screens/first_screen.dart';
 import 'package:flutter_curativo/services/auth_service.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final Function(Locale)? onLanguageChanged;
+  
+  const SplashScreen({super.key, this.onLanguageChanged});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -28,7 +30,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => loggedIn ? const MainTabView() : const LandingPage(),
+        builder: (_) => loggedIn 
+            ? MainTabView(onLanguageChanged: widget.onLanguageChanged) 
+            : LandingPage(onLanguageChanged: widget.onLanguageChanged),
       ),
     );
   }

@@ -6,6 +6,7 @@ import '/widgets/cards/history_card.dart';
 import '/widgets/navigation/pagination_controls.dart';
 import '/widgets/lists/empty_state_widget.dart';
 import '/widgets/common/custom_app_bar.dart';
+import '../l10n/app_localizations.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -44,31 +45,34 @@ class HistoryScreenState extends State<HistoryScreen> {
       });
     } catch (e) {
       setState(() => isLoading = false);
-      _showErrorSnackBar('Gagal memuat riwayat');
+      final localizations = AppLocalizations.of(context)!;
+      _showErrorSnackBar(localizations.failedToLoadHistory);
     }
   }
 
   Future<void> _deleteItem(String id) async {
+    final localizations = AppLocalizations.of(context)!;
     final confirm = await _showDeleteDialog(
-      title: "Hapus Riwayat",
-      content: "Yakin ingin menghapus item ini?",
+      title: localizations.deleteHistory,
+      content: localizations.confirmDelete,
     );
 
     if (confirm == true) {
       final success = await injuryService.deleteInjuryHistory(id);
       if (success) {
         _loadHistory(page: currentPage);
-        _showSuccessSnackBar("Riwayat berhasil dihapus");
+        _showSuccessSnackBar(localizations.historyDeleted);
       } else {
-        _showErrorSnackBar("Gagal menghapus data");
+        _showErrorSnackBar(localizations.failedToDelete);
       }
     }
   }
 
   Future<void> _deleteAllItems() async {
+    final localizations = AppLocalizations.of(context)!;
     final confirm = await _showDeleteDialog(
-      title: "Hapus Semua Riwayat",
-      content: "Yakin ingin menghapus semua riwayat?",
+      title: localizations.deleteAllHistory,
+      content: localizations.confirmDeleteAll,
     );
 
     if (confirm == true) {
@@ -83,8 +87,8 @@ class HistoryScreenState extends State<HistoryScreen> {
       _loadHistory(page: 1);
       _showSuccessSnackBar(
         allDeleted
-            ? "Semua riwayat berhasil dihapus"
-            : "Beberapa item gagal dihapus",
+            ? localizations.allHistoryDeleted
+            : localizations.someItemsFailedToDelete,
       );
     }
   }
@@ -93,6 +97,7 @@ class HistoryScreenState extends State<HistoryScreen> {
     required String title,
     required String content,
   }) {
+    final localizations = AppLocalizations.of(context)!;
     return showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -104,7 +109,7 @@ class HistoryScreenState extends State<HistoryScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("Batal"),
+            child: Text(localizations.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -112,7 +117,7 @@ class HistoryScreenState extends State<HistoryScreen> {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text("Hapus"),
+            child: Text(localizations.delete),
           ),
         ],
       ),
@@ -145,12 +150,12 @@ class HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  String formatTanggal(String? iso) {
+  String formatTanggal(String? iso, String locale) {
     if (iso == null || iso.isEmpty) return '-';
     try {
       final dt = DateTime.parse(iso).toLocal();
-      final hari = DateFormat('EEEE', 'id_ID').format(dt);
-      final tanggal = DateFormat('dd/MM/yyyy HH:mm', 'id_ID').format(dt);
+      final hari = DateFormat('EEEE', locale).format(dt);
+      final tanggal = DateFormat('dd/MM/yyyy HH:mm', locale).format(dt);
       return '$hari, $tanggal';
     } catch (e) {
       return '-';
@@ -163,17 +168,23 @@ class HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
+    // Tentukan locale berdasarkan bahasa yang dipilih
+    final currentLocale = Localizations.localeOf(context);
+    final localeString = currentLocale.languageCode == 'id' ? 'id_ID' : 'en_US';
+    
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Riwayat Pindai',
+        title: localizations.scanHistory,
         actions: [
           if (scanHistory.isNotEmpty)
             TextButton.icon(
               onPressed: _deleteAllItems,
               icon: const Icon(Icons.delete_sweep, color: Colors.white),
-              label: const Text(
-                'Hapus Semua',
-                style: TextStyle(color: Colors.white),
+              label: Text(
+                localizations.deleteAll,
+                style: const TextStyle(color: Colors.white),
               ),
             ),
         ],
@@ -201,11 +212,11 @@ class HistoryScreenState extends State<HistoryScreen> {
                 child: scanHistory.isEmpty
                     ? ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
-                        children: const [
-                          SizedBox(height: 100),
+                        children: [
+                          const SizedBox(height: 100),
                           EmptyStateWidget(
                             icon: Icons.history,
-                            message: "Belum ada riwayat pindai.\nMulai pindai luka untuk melihat riwayat di sini.",
+                            message: localizations.noScanHistory,
                           ),
                         ],
                       )
@@ -232,7 +243,7 @@ class HistoryScreenState extends State<HistoryScreen> {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Text(
-                                    'Total $totalItems riwayat pindai',
+                                    localizations.totalScanHistory(totalItems.toString()),
                                     style: const TextStyle(
                                       color: Color(0xFF000080),
                                       fontWeight: FontWeight.w600,
@@ -253,8 +264,8 @@ class HistoryScreenState extends State<HistoryScreen> {
                                     (currentPage - 1) * perPage + index + 1;
 
                                 return HistoryCard(
-                                  title: item['label'] ?? 'Tidak diketahui',
-                                  subtitle: formatTanggal(item['detected_at']),
+                                  title: item['label'] ?? localizations.unknown,
+                                  subtitle: formatTanggal(item['detected_at'], localeString),
                                   index: globalIndex,
                                   onTap: () {
                                     Navigator.push(
@@ -276,9 +287,9 @@ class HistoryScreenState extends State<HistoryScreen> {
                                         size: 18,
                                         color: Colors.red,
                                       ),
-                                      label: const Text(
-                                        "Hapus",
-                                        style: TextStyle(color: Colors.red),
+                                      label: Text(
+                                        localizations.delete,
+                                        style: const TextStyle(color: Colors.red),
                                       ),
                                     ),
                                     const SizedBox(width: 8),
@@ -298,9 +309,9 @@ class HistoryScreenState extends State<HistoryScreen> {
                                         size: 18,
                                         color: Color(0xFF000080),
                                       ),
-                                      label: const Text(
-                                        "Detail",
-                                        style: TextStyle(
+                                      label: Text(
+                                        localizations.detail,
+                                        style: const TextStyle(
                                           color: Color(0xFF000080),
                                         ),
                                       ),

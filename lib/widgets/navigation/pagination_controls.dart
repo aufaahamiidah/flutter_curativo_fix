@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 
 class PaginationControls extends StatelessWidget {
   final int currentPage;
@@ -20,6 +21,8 @@ class PaginationControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     if (lastPage <= 1) return const SizedBox.shrink();
 
     return Padding(
@@ -33,7 +36,7 @@ class PaginationControls extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           Text(
-            'Halaman $currentPage dari $lastPage',
+            localizations.pageInfo(currentPage, lastPage),
             style: textStyle ?? const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,

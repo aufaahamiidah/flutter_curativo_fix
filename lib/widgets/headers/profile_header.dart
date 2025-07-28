@@ -67,9 +67,9 @@ class ProfileHeader extends StatelessWidget {
                 ),
                 child: CircleAvatar(
                   radius: 50,
-                  backgroundColor: getRandomColor(user?['name']),
+                  backgroundColor: getRandomColor(user?['name']), // Ubah dari 'nama_lengkap' ke 'name'
                   child: Text(
-                    getInitials(user?['name']),
+                    getInitials(user?['name']), // Ubah dari 'nama_lengkap' ke 'name'
                     style: const TextStyle(
                       fontSize: 32,
                       color: Colors.white,
@@ -81,7 +81,7 @@ class ProfileHeader extends StatelessWidget {
               const SizedBox(height: 16),
               // Nama user
               Text(
-                user?['name'] ?? '-',
+                user?['name'] ?? '-', // Ubah dari 'nama_lengkap' ke 'name'
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

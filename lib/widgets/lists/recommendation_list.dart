@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 
 class RecommendationList extends StatelessWidget {
   final List<String> recommendations;
@@ -16,6 +17,8 @@ class RecommendationList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     if (recommendations.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(16),
@@ -36,7 +39,7 @@ class RecommendationList extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Text(
-              'Tidak ada rekomendasi tersedia',
+              localizations.noRecommendationsAvailable,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[600],
@@ -94,6 +97,8 @@ class RecommendationList extends StatelessWidget {
                     color: Color(0xFF333333),
                     height: 1.5,
                   ),
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
                 ),
               ),
             ],

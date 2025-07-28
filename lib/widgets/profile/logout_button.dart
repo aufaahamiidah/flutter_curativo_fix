@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 import 'package:flutter_curativo/screens/first_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,6 +8,8 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
@@ -44,9 +47,9 @@ class LogoutButton extends StatelessWidget {
               (route) => false,
             );
           },
-          child: const Text(
-            'LOGOUT',
-            style: TextStyle(
+          child: Text(
+            localizations.logout,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.bold,

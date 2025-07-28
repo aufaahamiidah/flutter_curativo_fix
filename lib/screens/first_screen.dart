@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 import '/screens/login_screen.dart';
 import '/screens/register_screen.dart';
 import '/widgets/common/generic_button.dart';
-
+import '../widgets/common/language_switcher.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+  final Function(Locale)? onLanguageChanged;
+  
+  const LandingPage({super.key, this.onLanguageChanged});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: Stack(
         children: [
@@ -21,17 +26,26 @@ class LandingPage extends StatelessWidget {
           Positioned.fill(
             child: Container(color: Colors.black.withOpacity(0.4)),
           ),
+          // Tambahkan language switcher jika diperlukan
+          if (onLanguageChanged != null)
+            Positioned(
+              top: 50,
+              right: 20,
+              child: LanguageSwitcher(
+                onLanguageChanged: onLanguageChanged!,
+              ),
+            ),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 mainAxisAlignment:
-                    MainAxisAlignment.end, // Posisikan tombol di bagian bawah
+                    MainAxisAlignment.end,
                 children: [
                   const SizedBox(height: 40),
-                  const Text(
-                    'Selamat Datang di Curativo',
-                    style: TextStyle(
+                  Text(
+                    localizations.welcome,
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -42,7 +56,7 @@ class LandingPage extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: GenericButton(
-                      text: 'MASUK',
+                      text: localizations.login,
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -64,7 +78,7 @@ class LandingPage extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: GenericButton(
-                      text: 'DAFTAR',
+                      text: localizations.register,
                       onPressed: () {
                         Navigator.push(
                           context,

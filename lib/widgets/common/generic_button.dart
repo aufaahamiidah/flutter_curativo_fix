@@ -7,9 +7,9 @@ enum ButtonType {
 }
 
 class GenericButton extends StatelessWidget {
-  final String text; // Teks yang ditampilkan di tombol
-  final VoidCallback onPressed; // Fungsi yang dijalankan saat tombol ditekan
-  final ButtonType type; // Tipe tombol (elevated, outlined, text)
+  final String text;
+  final VoidCallback? onPressed; // ✅ Tambahkan ? untuk nullable
+  final ButtonType type;
   final Color? backgroundColor; // Warna latar belakang tombol (opsional)
   final Color? textColor; // Warna teks tombol (opsional)
   final Color?
@@ -22,7 +22,7 @@ class GenericButton extends StatelessWidget {
   const GenericButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    required this.onPressed, // ✅ Tetap required tapi bisa null
     this.type = ButtonType.elevated, // Default ke ElevatedButton
     this.backgroundColor,
     this.textColor,

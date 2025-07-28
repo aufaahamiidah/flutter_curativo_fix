@@ -4,6 +4,7 @@ import '../services/injury_services.dart';
 import '../widgets/cards/result_card.dart';
 import '../widgets/lists/recommendation_list.dart';
 import '../widgets/common/custom_app_bar.dart';
+import '../l10n/app_localizations.dart';
 
 class ResultScreen extends StatefulWidget {
   final String result;
@@ -49,13 +50,14 @@ class _ResultScreenState extends State<ResultScreen> {
       );
 
       if (mounted) {
+        final localizations = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Row(
+            content: Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 12),
-                Text('Riwayat berhasil disimpan'),
+                const Icon(Icons.check_circle, color: Colors.white),
+                const SizedBox(width: 12),
+                Text(localizations.historySaved),
               ],
             ),
             backgroundColor: Colors.green,
@@ -67,15 +69,16 @@ class _ResultScreenState extends State<ResultScreen> {
         );
       }
     } catch (e) {
-      print('❌ Gagal menyimpan riwayat: $e');
+      final localizations = AppLocalizations.of(context)!;
+      print('❌ ${localizations.failedToSaveHistory}: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Row(
+            content: Row(
               children: [
-                Icon(Icons.error, color: Colors.white),
-                SizedBox(width: 12),
-                Text('Gagal menyimpan riwayat'),
+                const Icon(Icons.error, color: Colors.white),
+                const SizedBox(width: 12),
+                Text(localizations.failedToSaveHistory),
               ],
             ),
             backgroundColor: Colors.red,
@@ -182,10 +185,12 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: const Color(0xFFFAFAFA),
       appBar: CustomAppBar(
-        title: 'Hasil Deteksi',
+        title: localizations.detectionResult,
         leading: IconButton(
           icon: _isSaving
               ? const SizedBox(
@@ -210,79 +215,90 @@ class _ResultScreenState extends State<ResultScreen> {
                 },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            // Gambar dengan bounding box
-            ResultCard(
-              title: 'Gambar Hasil Deteksi',
-              icon: Icons.image,
-              customContent: _buildImageWithBoundingBox(),
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // Hasil deteksi
-            ResultCard(
-              title: 'Jenis Luka Terdeteksi',
-              icon: Icons.healing,
-              customContent: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFFE53E3E), // Merah terang
-                      Color(0xFFD53F8C), // Merah pink
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.local_hospital,
-                        color: Color(0xFFE53E3E),
-                        size: 16,
-                      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              // Gambar dengan bounding box
+              ResultCard(
+                title: localizations.detectionImage,
+                icon: Icons.image,
+                customContent: _buildImageWithBoundingBox(),
+              ),
+              
+              const SizedBox(height: 20),
+              
+              // Hasil deteksi
+              ResultCard(
+                title: localizations.detectedWoundType,
+                icon: Icons.healing,
+                customContent: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFFE53E3E), // Merah terang
+                        Color(0xFFD53F8C), // Merah pink
+                      ],
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        widget.result,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
                           color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.local_hospital,
+                          color: Color(0xFFE53E3E),
+                          size: 16,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          widget.result,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // Rekomendasi
-            ResultCard(
-              title: 'Rekomendasi Perawatan',
-              icon: Icons.medical_information,
-              customContent: RecommendationList(
-                recommendations: widget.rekomendasi,
+              
+              const SizedBox(height: 20),
+              
+              // Rekomendasi
+              ResultCard(
+                title: localizations.treatmentRecommendation,
+                icon: Icons.medical_information,
+                customContent: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.4,
+                  ),
+                  child: SingleChildScrollView(
+                    child: RecommendationList(
+                      recommendations: widget.rekomendasi,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            
-            const SizedBox(height: 32),
-          ],
+              
+              const SizedBox(height: 32),
+            ],
+          ),
         ),
       ),
     );

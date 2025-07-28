@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '/screens/emergency_kit_detail.dart'; // Import halaman tujuan
+import 'package:flutter_curativo/l10n/app_localizations.dart';
+import '/screens/emergency_kit_detail.dart';
 
 class EmergencyKitCard extends StatelessWidget {
   final String title;
@@ -17,6 +18,8 @@ class EmergencyKitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -64,7 +67,7 @@ class EmergencyKitCard extends StatelessWidget {
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Text("Kit", style: TextStyle(fontSize: 12)),
+                child: Text(localizations.kit, style: TextStyle(fontSize: 12)),
               ),
             ),
             // Judul dan deskripsi

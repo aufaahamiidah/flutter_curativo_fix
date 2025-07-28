@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../widgets/emergency/emergency_header.dart';
 import '../widgets/emergency/emergency_contact_card.dart';
@@ -15,13 +16,15 @@ class AidScreen extends StatefulWidget {
 class _AidScreenState extends State<AidScreen> {
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       body: Column(
         children: [
           EmergencyHeader(
-            title: 'Berikan Bantuan',
-            subtitle: 'Panduan pertolongan pertama darurat',
+            title: localizations.giveHelp,
+            subtitle: localizations.emergencyFirstAidGuide,
             trailing: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
@@ -36,16 +39,16 @@ class _AidScreenState extends State<AidScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          const EmergencyContactCard(
-            title: 'Kontak Darurat 112',
-            subtitle: 'Hubungi layanan darurat Indonesia',
+          EmergencyContactCard(
+            title: localizations.emergencyContact112,
+            subtitle: localizations.emergencyContactDesc,
             phoneNumber: '112',
             icon: FeatherIcons.phone,
           ),
           const SizedBox(height: 24),
-          const SectionHeader(
-            title: 'Panduan Darurat',
-            subtitle: 'Langkah-langkah pertolongan pertama',
+          SectionHeader(
+            title: localizations.emergencyGuide,
+            subtitle: localizations.emergencySteps,
           ),
           const SizedBox(height: 8),
           Expanded(
@@ -53,73 +56,73 @@ class _AidScreenState extends State<AidScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               children: [
                 EmergencyActionCard(
-                  title: 'Tersedak (Dewasa, Lansia)',
-                  subtitle: 'Heimlich maneuver untuk dewasa',
+                  title: localizations.chokingAdult,
+                  subtitle: localizations.chokingAdultDesc,
                   icon: Icons.person,
                   onTap: () => _showEmergencyModal(
                     context,
-                    'Tersedak (Dewasa, Lansia)',
-                    'Jika seseorang dewasa atau lansia tersedak dan masih bisa batuk atau bersuara, biarkan mereka batuk untuk mencoba mengeluarkan objek tersebut. Jika tidak bisa bernapas atau bicara, lakukan Heimlich maneuver.',
+                    localizations.chokingAdult,
+                    localizations.chokingAdultInstructions,
                   ),
                 ),
                 EmergencyActionCard(
-                  title: 'Tersedak (Anak Kecil)',
-                  subtitle: 'Teknik khusus untuk anak-anak',
+                  title: localizations.chokingChild,
+                  subtitle: localizations.chokingChildDesc,
                   icon: Icons.child_care,
                   onTap: () => _showEmergencyModal(
                     context,
-                    'Tersedak (Anak Kecil)',
-                    'Untuk anak kecil, posisikan mereka membungkuk ke depan dan tepuk punggung mereka lima kali dengan telapak tangan. Jika tidak berhasil, lakukan dorongan perut.',
+                    localizations.chokingChild,
+                    localizations.chokingChildInstructions,
                   ),
                 ),
                 EmergencyActionCard(
-                  title: 'Tersedak (Bayi)',
-                  subtitle: 'Penanganan khusus untuk bayi',
+                  title: localizations.chokingBaby,
+                  subtitle: localizations.chokingBabyDesc,
                   icon: Icons.baby_changing_station,
                   onTap: () => _showEmergencyModal(
                     context,
-                    'Tersedak (Bayi)',
-                    'Letakkan bayi telungkup di lengan Anda, kepala lebih rendah dari tubuh. Berikan lima tepukan di punggung, lalu lima tekanan dada jika belum berhasil.',
+                    localizations.chokingBaby,
+                    localizations.chokingBabyInstructions,
                   ),
                 ),
                 EmergencyActionCard(
-                  title: 'Pendarahan Parah',
-                  subtitle: 'Cara menghentikan pendarahan',
+                  title: localizations.severeBleeding,
+                  subtitle: localizations.severeBleedingDesc,
                   icon: Icons.bloodtype,
                   onTap: () => _showEmergencyModal(
                     context,
-                    'Pendarahan Parah',
-                    'Tekan langsung pada luka dengan kain bersih atau perban. Jika darah menembus, tambahkan lapisan lain tanpa melepas yang pertama. Angkat bagian yang berdarah lebih tinggi dari jantung jika memungkinkan.',
+                    localizations.severeBleeding,
+                    localizations.severeBleedingInstructions,
                   ),
                 ),
                 EmergencyActionCard(
-                  title: 'Serangan Jantung',
-                  subtitle: 'Tanda dan penanganan darurat',
+                  title: localizations.heartAttack,
+                  subtitle: localizations.heartAttackDesc,
                   icon: Icons.favorite,
                   onTap: () => _showEmergencyModal(
                     context,
-                    'Serangan Jantung',
-                    'Panggil bantuan medis segera. Berikan aspirin jika tersedia dan korban tidak alergi. Posisikan korban duduk dengan nyaman, longgarkan pakaian ketat.',
+                    localizations.heartAttack,
+                    localizations.heartAttackInstructions,
                   ),
                 ),
                 EmergencyActionCard(
-                  title: 'Stroke',
-                  subtitle: 'Deteksi dini dan penanganan',
+                  title: localizations.stroke,
+                  subtitle: localizations.strokeDesc,
                   icon: Icons.psychology,
                   onTap: () => _showEmergencyModal(
                     context,
-                    'Stroke',
-                    'Gunakan tes FAST: Face (wajah), Arms (lengan), Speech (bicara), Time (waktu). Jika ada tanda stroke, segera hubungi layanan darurat.',
+                    localizations.stroke,
+                    localizations.strokeInstructions,
                   ),
                 ),
                 EmergencyActionCard(
-                  title: 'Luka Bakar',
-                  subtitle: 'Penanganan luka bakar ringan hingga berat',
+                  title: localizations.burns,
+                  subtitle: localizations.burnsDesc,
                   icon: Icons.local_fire_department,
                   onTap: () => _showEmergencyModal(
                     context,
-                    'Luka Bakar',
-                    'Dinginkan luka bakar dengan air mengalir selama 10-20 menit. Jangan gunakan es. Tutup dengan kain bersih yang lembab. Untuk luka bakar parah, segera cari bantuan medis.',
+                    localizations.burns,
+                    localizations.burnsInstructions,
                   ),
                 ),
                 const SizedBox(height: 20),

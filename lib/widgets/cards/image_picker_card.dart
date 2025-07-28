@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 import 'dart:io';
 
 class ImagePickerCard extends StatelessWidget {
   final File? imageFile;
   final VoidCallback onTap;
-  final String hintText;
+  final String? hintText;
   final String? subtitle;
   final IconData hintIcon;
   final double height;
@@ -16,7 +17,7 @@ class ImagePickerCard extends StatelessWidget {
     Key? key,
     required this.imageFile,
     required this.onTap,
-    this.hintText = 'Ketuk untuk memilih foto',
+    this.hintText,
     this.subtitle,
     this.hintIcon = Icons.camera_alt_outlined,
     this.height = 250,
@@ -27,6 +28,8 @@ class ImagePickerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -64,7 +67,7 @@ class ImagePickerCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    hintText,
+                    hintText ?? localizations.tapToSelectPhoto,
                     style: const TextStyle(
                       fontSize: 16,
                       color: Color(0xFF666666),

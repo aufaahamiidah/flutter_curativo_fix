@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_curativo/screens/main_tab_view.dart';
-
 import 'package:flutter_curativo/services/auth_service.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 import '/screens/login_screen.dart';
-// import '/screens/home_screen.dart';
 import '/widgets/common/generic_button.dart';
 import '/widgets/common/custom_text_field.dart';
 
@@ -19,11 +18,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   String? _selectedGender;
-  final List<String> _genderOptions = ['Laki-laki', 'Perempuan'];
 
   @override
   void dispose() {
@@ -36,13 +33,14 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final genderOptions = [localizations.male, localizations.female];
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -57,9 +55,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 width: 100,
               ),
               const SizedBox(height: 24),
-              const Text(
-                'Daftar',
-                style: TextStyle(
+              Text(
+                localizations.registerTitle,
+                style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF333333),
@@ -68,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 40),
               CustomTextField(
                 controller: _nameController,
-                hintText: 'Masukkan Nama Lengkap',
+                hintText: localizations.enterFullName,
                 icon: Icons.person_outline,
                 keyboardType: TextInputType.text,
               ),
@@ -82,9 +80,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: DropdownButtonFormField<String>(
                   value: _selectedGender,
-                  hint: const Text(
-                    'Pilih Jenis Kelamin',
-                    style: TextStyle(color: Color(0xFFA0A0A0)),
+                  hint: Text(
+                    localizations.selectGender,
+                    style: const TextStyle(color: Color(0xFFA0A0A0)),
                   ),
                   icon: const Icon(
                     Icons.arrow_drop_down,
@@ -98,13 +96,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     contentPadding: EdgeInsets.symmetric(vertical: 16.0),
                   ),
-                  items:
-                      _genderOptions.map((String gender) {
-                        return DropdownMenuItem<String>(
-                          value: gender,
-                          child: Text(gender),
-                        );
-                      }).toList(),
+                  items: genderOptions.map((String gender) {
+                    return DropdownMenuItem<String>(
+                      value: gender,
+                      child: Text(gender),
+                    );
+                  }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedGender = newValue;
@@ -115,43 +112,42 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _phoneNumberController,
-                hintText: 'Masukkan Nomor Telepon',
+                hintText: localizations.enterPhoneNumber,
                 icon: Icons.phone_outlined,
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _emailController,
-                hintText: 'Masukkan email',
+                hintText: localizations.enterEmail,
                 icon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _passwordController,
-                hintText: 'Masukkan Password',
+                hintText: localizations.enterPassword,
                 icon: Icons.lock_outline,
                 isPassword: true,
               ),
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _confirmPasswordController,
-                hintText: 'Konfirmasi Password',
+                hintText: localizations.confirmPassword,
                 icon: Icons.lock_outline,
-                isPassword: true, // Set isPassword ke true
+                isPassword: true,
               ),
               const SizedBox(height: 32),
               SizedBox(
                 width: double.infinity,
                 child: GenericButton(
-                  text: 'DAFTAR',
+                  text: localizations.register,
                   onPressed: () async {
                     String name = _nameController.text.trim();
                     String email = _emailController.text.trim();
                     String phoneNumber = _phoneNumberController.text.trim();
                     String password = _passwordController.text.trim();
-                    String confirmPassword =
-                        _confirmPasswordController.text.trim();
+                    String confirmPassword = _confirmPasswordController.text.trim();
                     String? gender = _selectedGender;
 
                     if (name.isEmpty ||
@@ -160,14 +156,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         password.isEmpty ||
                         confirmPassword.isEmpty ||
                         gender == null) {
-                      _showSnackBar(
-                        'Semua field harus diisi dan jenis kelamin harus dipilih.',
-                      );
+                      _showSnackBar(localizations.allFieldsRequired);
                       return;
                     }
 
                     if (password != confirmPassword) {
-                      _showSnackBar('Konfirmasi password tidak cocok.');
+                      _showSnackBar(localizations.passwordMismatch);
                       return;
                     }
 
@@ -182,9 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     );
 
                     if (result['success']) {
-                      _showSnackBar(
-                        'Pendaftaran berhasil! Menuju Home Screen.',
-                      );
+                      _showSnackBar(localizations.registrationSuccess);
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder: (context) => const MainTabView(),
@@ -192,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         (route) => false,
                       );
                     } else {
-                      _showSnackBar(result['message'] ?? 'Pendaftaran gagal.');
+                      _showSnackBar(result['message'] ?? localizations.registrationFailed);
                     }
                   },
                   type: ButtonType.elevated,
@@ -208,12 +200,12 @@ class _RegisterPageState extends State<RegisterPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Sudah punya akun?',
-                    style: TextStyle(fontSize: 14, color: Color(0xFF666666)),
+                  Text(
+                    localizations.alreadyHaveAccount,
+                    style: const TextStyle(fontSize: 14, color: Color(0xFF666666)),
                   ),
                   GenericButton(
-                    text: 'Masuk',
+                    text: localizations.login,
                     onPressed: () {
                       Navigator.push(
                         context,

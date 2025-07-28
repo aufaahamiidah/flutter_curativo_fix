@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 import 'package:flutter_curativo/screens/main_tab_view.dart';
 import '/screens/register_screen.dart';
-// import '/screens/home_screen.dart';
-// import '/screens/forgot_password_screen.dart'; // Anda mungkin perlu membuat halaman ini
 import 'package:flutter_curativo/services/auth_service.dart';
 import '/widgets/common/generic_button.dart';
 import '/widgets/common/custom_text_field.dart';
@@ -15,11 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Controller untuk text fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  // State untuk checkbox dan loading indicator
   bool _isLoading = false;
 
   @override
@@ -29,9 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  // Fungsi untuk menampilkan SnackBar dengan lebih aman
   void _showSnackBar(String message) {
-    // Pastikan widget masih terpasang sebelum menampilkan SnackBar
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -42,51 +36,42 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  // Fungsi utama untuk menangani proses login
   Future<void> _login() async {
-    // Validasi input
+    final localizations = AppLocalizations.of(context)!;
     final String email = _emailController.text.trim();
     final String password = _passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      _showSnackBar('Email dan password harus diisi.');
+      _showSnackBar(localizations.emailPasswordRequired);
       return;
     }
 
-    // Mulai loading indicator
     setState(() {
       _isLoading = true;
     });
 
     try {
-      // Panggil service untuk otentikasi
       final authService = AuthService();
       final result = await authService.login(email, password);
 
-      // Pastikan widget masih ada di tree sebelum navigasi atau menampilkan SnackBar
       if (!mounted) return;
 
       if (result['success']) {
-        // Jika berhasil, navigasi ke HomeScreen
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const MainTabView()),
           (Route<dynamic> route) => false,
         );
       } else {
-        // Jika gagal, tampilkan pesan error dari service
         _showSnackBar(
-          result['message'] ??
-              'Login gagal. Periksa kembali email dan password Anda.',
+          result['message'] ?? localizations.loginFailed,
         );
       }
     } catch (e) {
-      // Tangani error yang tidak terduga
       if (mounted) {
-        _showSnackBar('Terjadi kesalahan: ${e.toString()}');
+        _showSnackBar('${localizations.errorOccurred}: ${e.toString()}');
       }
     } finally {
-      // Hentikan loading indicator setelah proses selesai (baik berhasil maupun gagal)
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -97,6 +82,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -111,9 +98,9 @@ class _LoginPageState extends State<LoginPage> {
                 width: 100,
               ),
               const SizedBox(height: 24),
-              const Text(
-                'Masuk',
-                style: TextStyle(
+              Text(
+                localizations.loginTitle,
+                style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF333333),
@@ -122,38 +109,23 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 40),
               CustomTextField(
                 controller: _emailController,
-                hintText: 'Masukkan email',
+                hintText: localizations.enterEmail,
                 icon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _passwordController,
-                hintText: 'Masukkan Password',
+                hintText: localizations.enterPassword,
                 icon: Icons.lock_outline,
-                isPassword: true,
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 24,
-                        height: 24,
-                      ),
-                      const SizedBox(width: 8),
-                    ],
-                  ),
-                ],
+                isPassword: true,  // ✅ Gunakan parameter yang benar
               ),
               const SizedBox(height: 32),
               SizedBox(
                 width: double.infinity,
                 child: GenericButton(
-                  text: _isLoading ? 'Loading...' : 'MASUK',
-                  onPressed: _isLoading ? () {} : _login,
+                  text: _isLoading ? localizations.loading : localizations.login,
+                  onPressed: _isLoading ? () {} : () => _login(), // ✅ Wrap dengan anonymous function
                   type: ButtonType.elevated,
                   backgroundColor: const Color(0xFF000080),
                   textColor: Colors.white,
@@ -167,12 +139,10 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Belum punya akun?',
-                    style: TextStyle(fontSize: 14, color: Color(0xFF666666)),
-                  ),
+                  Text(localizations.dontHaveAccount),
+                  const SizedBox(width: 8),
                   GenericButton(
-                    text: 'Daftar',
+                    text: localizations.registerTitle,
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -183,10 +153,8 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     type: ButtonType.text,
                     textColor: const Color(0xFF000080),
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    padding: EdgeInsets.zero,
-                    borderRadius: BorderRadius.zero,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ],
               ),

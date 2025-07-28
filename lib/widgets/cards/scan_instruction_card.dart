@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 
 class ScanInstructionCard extends StatelessWidget {
   final List<String> instructions;
-  final String title;
+  final String? title;
   final IconData? icon;
   final Color? backgroundColor;
   final Color? iconColor;
@@ -10,7 +11,7 @@ class ScanInstructionCard extends StatelessWidget {
   const ScanInstructionCard({
     Key? key,
     required this.instructions,
-    this.title = 'Tips Pindai Luka',
+    this.title,
     this.icon = Icons.lightbulb_outline,
     this.backgroundColor,
     this.iconColor,
@@ -18,6 +19,8 @@ class ScanInstructionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -40,7 +43,7 @@ class ScanInstructionCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                title,
+                title ?? localizations.scanTips,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

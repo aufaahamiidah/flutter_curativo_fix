@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart';
 import 'package:flutter_curativo/widgets/common/custom_app_bar.dart';
 import 'package:flutter_curativo/widgets/cards/app_info_card.dart';
 import 'package:flutter_curativo/widgets/lists/feature_highlight.dart';
@@ -8,9 +9,11 @@ class AboutAppScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Tentang Aplikasi',
+      appBar: CustomAppBar(
+        title: localizations.aboutApp,
       ),
       backgroundColor: const Color(0xFFFAFAFA),
       body: SingleChildScrollView(
@@ -77,9 +80,9 @@ class AboutAppScreen extends StatelessWidget {
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Text(
-                      'v1.0.0',
-                      style: TextStyle(
+                    child: Text(
+                      localizations.version,
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -87,9 +90,9 @@ class AboutAppScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Aplikasi deteksi luka menggunakan AI untuk memberikan rekomendasi perawatan yang tepat',
-                    style: TextStyle(
+                  Text(
+                    localizations.appDescription,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                       height: 1.4,
@@ -103,9 +106,9 @@ class AboutAppScreen extends StatelessWidget {
             const SizedBox(height: 24),
             
             // Features Section
-            const Text(
-              'Fitur Utama',
-              style: TextStyle(
+            Text(
+              localizations.mainFeatures,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1A1A1A),
@@ -113,43 +116,43 @@ class AboutAppScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             
-            const FeatureHighlight(
+            FeatureHighlight(
               icon: Icons.camera_alt,
-              title: 'Deteksi Luka ',
-              description: 'Scan luka menggunakan kamera untuk identifikasi jenis luka',
-              accentColor: Color(0xFF4CAF50),
+              title: localizations.woundDetection,
+              description: localizations.woundDetectionDesc,
+              accentColor: const Color(0xFF4CAF50),
             ),
             const SizedBox(height: 12),
             
-            const FeatureHighlight(
+            FeatureHighlight(
               icon: Icons.psychology,
-              title: 'AI Analisis',
-              description: 'Teknologi AI canggih untuk analisis ',
-              accentColor: Color(0xFF2196F3),
+              title: localizations.aiAnalysis,
+              description: localizations.aiAnalysisDesc,
+              accentColor: const Color(0xFF2196F3),
             ),
             const SizedBox(height: 12),
             
-            const FeatureHighlight(
+            FeatureHighlight(
               icon: Icons.medical_services,
-              title: 'Rekomendasi Perawatan',
-              description: 'Saran perawatan berdasarkan jenis luka yang terdeteksi',
-              accentColor: Color(0xFFFF9800),
+              title: localizations.treatmentRecommendationFeature,
+              description: localizations.treatmentRecommendationFeatureDesc,
+              accentColor: const Color(0xFFFF9800),
             ),
             const SizedBox(height: 12),
             
-            const FeatureHighlight(
+            FeatureHighlight(
               icon: Icons.history,
-              title: 'Riwayat Pemindaian',
-              description: 'Simpan dan lihat kembali hasil pemindaian sebelumnya',
-              accentColor: Color(0xFF9C27B0),
+              title: localizations.scanHistoryFeature,
+              description: localizations.scanHistoryFeatureDesc,
+              accentColor: const Color(0xFF9C27B0),
             ),
             
             const SizedBox(height: 24),
             
             // Info Cards
-            const Text(
-              'Informasi Aplikasi',
-              style: TextStyle(
+            Text(
+              localizations.appInfo,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1A1A1A),
@@ -159,15 +162,15 @@ class AboutAppScreen extends StatelessWidget {
             
             AppInfoCard(
               icon: Icons.group,
-              title: 'Tim Pengembang',
-              subtitle: 'GreenMonkey Team',
+              title: localizations.developmentTeam,
+              subtitle: localizations.greenMonkeyTeam,
               iconColor: const Color(0xFF4CAF50),
             ),
                         
             AppInfoCard(
               icon: Icons.support,
-              title: 'Dukungan',
-              subtitle: 'Hubungi kami untuk bantuan dan saran',
+              title: localizations.support,
+              subtitle: localizations.supportDesc,
               iconColor: const Color(0xFF9C27B0),
             ),
             
@@ -198,7 +201,7 @@ class AboutAppScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Disclaimer',
+                          localizations.disclaimer,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -207,7 +210,7 @@ class AboutAppScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Aplikasi ini hanya untuk referensi. Selalu konsultasikan dengan tenaga medis profesional untuk diagnosis dan perawatan yang tepat.',
+                          localizations.disclaimerText,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.orange[800],
