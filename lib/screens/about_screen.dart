@@ -4,24 +4,29 @@ import 'package:flutter_curativo/widgets/common/custom_app_bar.dart';
 import 'package:flutter_curativo/widgets/cards/app_info_card.dart';
 import 'package:flutter_curativo/widgets/lists/feature_highlight.dart';
 
+// Widget stateless untuk halaman informasi tentang aplikasi
 class AboutAppScreen extends StatelessWidget {
   const AboutAppScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Mengambil teks lokal dari file lokal (internationalization)
     final localizations = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
-      appBar: CustomAppBar(
-        title: localizations.aboutApp,
-      ),
+      // Menggunakan AppBar kustom yang diberi judul dari lokal
+      appBar: CustomAppBar(title: localizations.aboutApp),
+      // Mengatur warna latar belakang halaman
       backgroundColor: const Color(0xFFFAFAFA),
+      // Membungkus seluruh isi halaman dengan ScrollView agar bisa discroll
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // App Header Card
+            // ==============================
+            // Kartu Header Aplikasi
+            // ==============================
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(24),
@@ -30,14 +35,16 @@ class AboutAppScreen extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFF000080),
-                    Color(0xFF0066CC),
+                    Color(0xFFE53E3E), // Warna gradasi merah
+                    Color(0xFFD53F8C), // Warna gradasi pink
                   ],
                 ),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF000080).withOpacity(0.3),
+                    color: const Color(
+                      0xFF000080,
+                    ).withOpacity(0.3), // Bayangan biru gelap
                     blurRadius: 15,
                     offset: const Offset(0, 8),
                   ),
@@ -45,6 +52,7 @@ class AboutAppScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
+                  // Gambar ikon aplikasi
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -61,7 +69,10 @@ class AboutAppScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 16),
+
+                  // Judul/Nama aplikasi
                   const Text(
                     'Curativo',
                     style: TextStyle(
@@ -70,7 +81,10 @@ class AboutAppScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
+
                   const SizedBox(height: 8),
+
+                  // Label versi aplikasi
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -89,7 +103,10 @@ class AboutAppScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 12),
+
+                  // Deskripsi aplikasi
                   Text(
                     localizations.appDescription,
                     style: const TextStyle(
@@ -102,10 +119,12 @@ class AboutAppScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
-            // Features Section
+
+            // ==============================
+            // Seksi Fitur Utama Aplikasi
+            // ==============================
             Text(
               localizations.mainFeatures,
               style: const TextStyle(
@@ -115,41 +134,47 @@ class AboutAppScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
+            // Fitur 1: Deteksi Luka
             FeatureHighlight(
               icon: Icons.camera_alt,
               title: localizations.woundDetection,
               description: localizations.woundDetectionDesc,
-              accentColor: const Color(0xFF4CAF50),
+              accentColor: const Color(0xFF4CAF50), // Hijau
             ),
             const SizedBox(height: 12),
-            
+
+            // Fitur 2: Analisis AI
             FeatureHighlight(
               icon: Icons.psychology,
               title: localizations.aiAnalysis,
               description: localizations.aiAnalysisDesc,
-              accentColor: const Color(0xFF2196F3),
+              accentColor: const Color(0xFF2196F3), // Biru
             ),
             const SizedBox(height: 12),
-            
+
+            // Fitur 3: Rekomendasi Penanganan
             FeatureHighlight(
               icon: Icons.medical_services,
               title: localizations.treatmentRecommendationFeature,
               description: localizations.treatmentRecommendationFeatureDesc,
-              accentColor: const Color(0xFFFF9800),
+              accentColor: const Color(0xFFFF9800), // Oranye
             ),
             const SizedBox(height: 12),
-            
+
+            // Fitur 4: Riwayat Scan
             FeatureHighlight(
               icon: Icons.history,
               title: localizations.scanHistoryFeature,
               description: localizations.scanHistoryFeatureDesc,
-              accentColor: const Color(0xFF9C27B0),
+              accentColor: const Color(0xFF9C27B0), // Ungu
             ),
-            
+
             const SizedBox(height: 24),
-            
-            // Info Cards
+
+            // ==============================
+            // Seksi Informasi Tambahan
+            // ==============================
             Text(
               localizations.appInfo,
               style: const TextStyle(
@@ -159,24 +184,28 @@ class AboutAppScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
+            // Info: Tim Pengembang
             AppInfoCard(
               icon: Icons.group,
               title: localizations.developmentTeam,
               subtitle: localizations.greenMonkeyTeam,
               iconColor: const Color(0xFF4CAF50),
             ),
-                        
+
+            // Info: Dukungan & Bantuan
             AppInfoCard(
               icon: Icons.support,
               title: localizations.support,
               subtitle: localizations.supportDesc,
               iconColor: const Color(0xFF9C27B0),
             ),
-            
+
             const SizedBox(height: 24),
-            
-            // Disclaimer
+
+            // ==============================
+            // Disclaimer (Penafian)
+            // ==============================
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -200,6 +229,7 @@ class AboutAppScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Judul disclaimer
                         Text(
                           localizations.disclaimer,
                           style: TextStyle(
@@ -209,6 +239,8 @@ class AboutAppScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
+
+                        // Isi penjelasan disclaimer
                         Text(
                           localizations.disclaimerText,
                           style: TextStyle(
@@ -223,7 +255,7 @@ class AboutAppScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 20),
           ],
         ),

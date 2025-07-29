@@ -23,15 +23,16 @@ class ScanScreen extends StatefulWidget {
 }
 
 class _ScanScreenState extends State<ScanScreen> {
-  File? imageFile;
-  final ImagePicker _picker = ImagePicker();
-  late Interpreter _interpreter;
-  final int _inputSize = 640;
-  bool _modelLoaded = false;
-  bool _isProcessing = false;
-  double x = 0, y = 0, w = 0, h = 0;
+  File? imageFile; // Menyimpan file gambar yang dipilih
+  final ImagePicker _picker =
+      ImagePicker(); // Untuk memilih gambar dari kamera/galeri
+  late Interpreter _interpreter; // Model TFLite
+  final int _inputSize = 640; // Ukuran input model
+  bool _modelLoaded = false; // Status apakah model sudah dimuat
+  bool _isProcessing = false; // Status apakah model sedang memproses gambar
+  double x = 0, y = 0, w = 0, h = 0; // Koordinat dan ukuran bounding box
 
-  // Lokalisasi untuk label luka
+  // Lokalisasi label luka
   Map<int, String> _getLabelLuka(AppLocalizations localizations) {
     return {
       0: localizations.bruiseWound,
@@ -41,7 +42,7 @@ class _ScanScreenState extends State<ScanScreen> {
     };
   }
 
-  // Lokalisasi untuk rekomendasi luka
+  // Lokalisasi rekomendasi untuk setiap jenis luka
   Map<int, List<String>> _getRekomendasiLuka(AppLocalizations localizations) {
     return {
       0: [
@@ -74,15 +75,16 @@ class _ScanScreenState extends State<ScanScreen> {
   @override
   void initState() {
     super.initState();
-    _loadModel();
+    _loadModel(); // Memuat model saat inisialisasi
   }
 
   @override
   void dispose() {
-    _interpreter.close();
+    _interpreter.close(); // Menutup interpreter saat widget dihancurkan
     super.dispose();
   }
 
+  // Fungsi untuk memuat model TFLite
   Future<void> _loadModel() async {
     try {
       _interpreter = await Interpreter.fromAsset(
@@ -94,6 +96,7 @@ class _ScanScreenState extends State<ScanScreen> {
     }
   }
 
+  // Pra-pemrosesan gambar sebelum dikirim ke model
   Future<List<List<List<List<double>>>>> _preprocessImage(
     File imageFile,
   ) async {
@@ -125,6 +128,7 @@ class _ScanScreenState extends State<ScanScreen> {
     return input;
   }
 
+  // Fungsi untuk menjalankan inferensi model
   Future<void> _runModel() async {
     if (!_modelLoaded || imageFile == null || _isProcessing) return;
     setState(() => _isProcessing = true);
@@ -139,12 +143,15 @@ class _ScanScreenState extends State<ScanScreen> {
       final originalWidth = originalImage.width;
       final originalHeight = originalImage.height;
 
+      // Output format model YOLO
       final output = List.generate(
         1,
         (_) => List.generate(8, (_) => List.filled(8400, 0.0)),
       );
 
       _interpreter.run(input, output);
+
+      // Transformasi output ke format usable
       final rawOutput = List.generate(
         8400,
         (i) => List.generate(8, (j) => output[0][j][i]),
@@ -154,7 +161,6 @@ class _ScanScreenState extends State<ScanScreen> {
       int bestClassIndex = -1;
       int bestIndex = -1;
 
-      print("🧪 Semua Skor > 0.3:");
       for (int i = 0; i < 8400; i++) {
         final x = rawOutput[i][0];
         final y = rawOutput[i][1];
@@ -167,87 +173,56 @@ class _ScanScreenState extends State<ScanScreen> {
         );
         final score = classScores[classIndex];
 
-        // Menghitung koordinat bounding box
+        // Ambil hasil dengan skor terbaik
         if (score > 0.3 && score > maxScore) {
           maxScore = score;
           bestClassIndex = classIndex;
           bestIndex = i;
-          print("🧩 Index $i Score: $maxScore");
-          print("🧩 Index $i Score: $bestClassIndex");
 
-          // Koordinat bounding box dalam format normalized (0-1)
-          this.x = x - w / 2; // koordinat x (kiri)
-          this.y = y - h / 2; // koordinat y (atas)
-          this.w = w; // lebar
-          this.h = h; // tinggi
-
-          // Clamp nilai agar tetap dalam range 0-1
-          this.x = this.x.clamp(0.0, 1.0);
-          this.y = this.y.clamp(0.0, 1.0);
-          this.w = this.w.clamp(
-            0.0,
-            1.0 - this.x,
-          ); // pastikan tidak melebihi batas kanan
-          this.h = this.h.clamp(
-            0.0,
-            1.0 - this.y,
-          ); // pastikan tidak melebihi batas bawah
-
-          // Debug print untuk koordinat yang sudah di-clamp
-          print(
-            '🔧 Clamped coordinates: x=${this.x.toStringAsFixed(4)}, y=${this.y.toStringAsFixed(4)}, w=${this.w.toStringAsFixed(4)}, h=${this.h.toStringAsFixed(4)}',
-          );
+          this.x = (x - w / 2).clamp(0.0, 1.0);
+          this.y = (y - h / 2).clamp(0.0, 1.0);
+          this.w = w.clamp(0.0, 1.0 - this.x);
+          this.h = h.clamp(0.0, 1.0 - this.y);
         }
-      }
-
-      if (bestIndex != -1) {
-        // Hapus deklarasi variabel lokal ini:
-        // final bestBox = rawOutput[bestIndex];
-        // final x = bestBox[0];
-        // final y = bestBox[1];
-        // final w = bestBox[2];
-        // final h = bestBox[3];
-
-        print('🚫 Deteksi berhasil dengan koordinat yang sudah di-clamp.');
-      } else {
-        print('🚫 Tidak ada deteksi dengan skor di atas threshold.');
       }
 
       final String hasilDeteksi =
           bestClassIndex != -1
               ? labelLuka[bestClassIndex] ?? localizations.unknownWound
               : localizations.woundNotDetected;
-
       final List<String> hasilRekomendasi =
           bestClassIndex != -1 ? rekomendasiLuka[bestClassIndex] ?? [] : [];
 
-      final double hasilScore = (bestClassIndex != -1 && maxScore >= 3) ? maxScore : -1.0;
-
       await Future.delayed(const Duration(milliseconds: 800));
 
+      // Pindah ke halaman hasil deteksi
       if (mounted) {
         final result = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ResultScreen(
-              result: hasilDeteksi,
-              rekomendasi: hasilRekomendasi,
-              score: maxScore,
-              imageFile: imageFile!,
-              boxRect: Rect.fromLTWH(this.x, this.y, this.w, this.h),
-              originalWidth: originalWidth,
-              originalHeight: originalHeight,
-            ),
+            builder:
+                (_) => ResultScreen(
+                  result: hasilDeteksi,
+                  rekomendasi: hasilRekomendasi,
+                  score: maxScore,
+                  imageFile: imageFile!,
+                  boxRect: Rect.fromLTWH(this.x, this.y, this.w, this.h),
+                  originalWidth: originalWidth,
+                  originalHeight: originalHeight,
+                ),
           ),
         );
 
+        // Hapus gambar setelah kembali dari result screen
         if (result == true || widget.onScanCompleted != null) {
+          setState(() {
+            imageFile = null; // Hapus gambar
+          });
           widget.onScanCompleted?.call();
         }
       }
     } catch (e) {
       final localizations = AppLocalizations.of(context)!;
-      print("❌ Error saat inferensi: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${localizations.errorOccurred}: $e')),
       );
@@ -256,6 +231,38 @@ class _ScanScreenState extends State<ScanScreen> {
     }
   }
 
+  // Menampilkan opsi pilih gambar (kamera/galeri)
+  void _showPickOptionsDialog(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (context) => SafeArea(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: Text(localizations.camera),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _pickImage(ImageSource.camera);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: Text(localizations.gallery),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _pickImage(ImageSource.gallery);
+                  },
+                ),
+              ],
+            ),
+          ),
+    );
+  }
+
+  // Fungsi untuk memilih gambar dari kamera/galeri
   Future<void> _pickImage(ImageSource source) async {
     try {
       final XFile? pickedFile = await _picker.pickImage(
@@ -275,45 +282,13 @@ class _ScanScreenState extends State<ScanScreen> {
     }
   }
 
-  void _showPickOptionsDialog(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-    
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => SafeArea(
-        child: Wrap(
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo_camera),
-              title: Text(localizations.camera),
-              onTap: () {
-                Navigator.of(context).pop();
-                _pickImage(ImageSource.camera);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.photo_library),
-              title: Text(localizations.gallery),
-              onTap: () {
-                Navigator.of(context).pop();
-                _pickImage(ImageSource.gallery);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       backgroundColor: const Color(0xFFFAFAFA),
-      appBar: CustomAppBar(
-        title: localizations.scanWound,
-      ),
+      appBar: CustomAppBar(title: localizations.scanWound),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
@@ -329,16 +304,18 @@ class _ScanScreenState extends State<ScanScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
+              // Kartu untuk memilih gambar
               ImagePickerCard(
                 imageFile: imageFile,
                 onTap: () => _showPickOptionsDialog(context),
                 hintText: localizations.tapToSelectPhoto,
                 height: 280,
               ),
-              
+
               const SizedBox(height: 24),
-              
+
+              // Kartu instruksi pemindaian luka
               ScanInstructionCard(
                 instructions: [
                   localizations.scanInstruction1,
@@ -347,24 +324,33 @@ class _ScanScreenState extends State<ScanScreen> {
                   localizations.scanInstruction4,
                 ],
               ),
-              
+
               const SizedBox(height: 32),
-              
+
+              // Tombol untuk memulai proses pemindaian
               Center(
                 child: GenericButton(
-                  text: _isProcessing ? localizations.processing : localizations.scanWound.toUpperCase(),
-                  onPressed: (imageFile == null || !_modelLoaded || _isProcessing)
-                      ? () {}
-                      : _runModel,
+                  text:
+                      _isProcessing
+                          ? localizations.processing
+                          : localizations.scanWound.toUpperCase(),
+                  onPressed:
+                      (imageFile == null || !_modelLoaded || _isProcessing)
+                          ? () {}
+                          : _runModel,
                   type: ButtonType.elevated,
-                  backgroundColor: (imageFile == null || !_modelLoaded || _isProcessing)
-                      ? Colors.grey[400]
-                      : const Color(0xFFE53E3E),
-                  padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                  backgroundColor:
+                      (imageFile == null || !_modelLoaded || _isProcessing)
+                          ? Colors.grey[400]
+                          : const Color(0xFFE53E3E),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 18,
+                    horizontal: 40,
+                  ),
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              
+
               const SizedBox(height: 20),
             ],
           ),

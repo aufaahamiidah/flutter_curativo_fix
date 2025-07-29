@@ -78,8 +78,8 @@ class HistoryCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
                             colors: [
-                              Color(0xFF000080),
-                              Color(0xFF0066CC),
+                              Color(0xFFE53E3E),
+                              Color(0xFFD53F8C),
                             ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,

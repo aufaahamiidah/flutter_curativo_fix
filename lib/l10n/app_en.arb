@@ -67,6 +67,7 @@
   
   "historySaved": "History saved successfully",
   "failedToSaveHistory": "Failed to save history",
+  "saveToHistory": "Save to History",
   "scanHistory": "Scan History",
   "deleteAll": "Delete All",
   "cancel": "Cancel",
@@ -90,6 +91,8 @@
   "detectedWoundType": "Detected Wound Type",
   "treatmentRecommendation": "Treatment Recommendation",
   "confidenceLevel": "Confidence Level",
+  "accuracyLevel": "Accuracy Level",
+  "detectionAccuracy": "Detection Accuracy",
   "detectionTime": "Detection Time",
   "detailDetectionResult": "Detail Detection Result",
   "failedToLoadImage": "Failed to load image",
@@ -209,7 +212,6 @@
   "confidenceHigh": "High",
   "confidenceMedium": "Medium",
   "confidenceLow": "Low",
-  "tapToSelectPhoto": "Tap to select photo",
   "kit": "Kit",
   "logout": "LOGOUT"
 }

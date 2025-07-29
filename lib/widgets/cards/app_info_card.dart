@@ -49,12 +49,12 @@ class AppInfoCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: (iconColor ?? const Color(0xFF000080)).withOpacity(0.1),
+                    color: (iconColor ?? const Color(0xFFE53E3E)).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
                     icon,
-                    color: iconColor ?? const Color(0xFF000080),
+                    color: iconColor ?? const Color(0xFFE53E3E),
                     size: 24,
                   ),
                 ),

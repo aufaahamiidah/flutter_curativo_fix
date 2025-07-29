@@ -3,17 +3,21 @@ import 'package:flutter/material.dart';
 import '../services/injury_services.dart';
 import '../widgets/cards/result_card.dart';
 import '../widgets/lists/recommendation_list.dart';
+// import '../widgets/lists/confidence_indicator.dart'; // Tambahkan import ini
 import '../widgets/common/custom_app_bar.dart';
 import '../l10n/app_localizations.dart';
 
+/// Halaman hasil deteksi luka, menampilkan gambar dengan bounding box,
+/// label luka, nilai confidence, dan rekomendasi penanganan.
 class ResultScreen extends StatefulWidget {
-  final String result;
-  final List<String> rekomendasi;
-  final double score;
-  final File imageFile;
-  final Rect? boxRect;
-  final int originalWidth;
-  final int originalHeight;
+  final String result; // Label hasil deteksi (misalnya: "Luka Bakar")
+  final List<String> rekomendasi; // Daftar rekomendasi penanganan luka
+  final double score; // Skor keyakinan model terhadap deteksi luka
+  final File imageFile; // Gambar yang diproses/didapat dari deteksi
+  final Rect?
+  boxRect; // Bounding box dari objek luka (dalam format normalisasi 0-1)
+  final int originalWidth; // Lebar asli gambar sebelum ditampilkan
+  final int originalHeight; // Tinggi asli gambar sebelum ditampilkan
 
   const ResultScreen({
     super.key,
@@ -31,8 +35,9 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  bool _isSaving = false;
+  bool _isSaving = false; // Status apakah sedang menyimpan ke riwayat
 
+  /// Fungsi untuk menyimpan riwayat hasil deteksi ke penyimpanan lokal/database
   Future<void> _saveHistory() async {
     if (_isSaving) return;
 
@@ -41,6 +46,7 @@ class _ResultScreenState extends State<ResultScreen> {
     });
 
     try {
+      // Simpan data deteksi menggunakan service
       await InjuryHistoryService().addInjuryHistoryWithImage(
         label: widget.result,
         imageFile: widget.imageFile,
@@ -49,6 +55,7 @@ class _ResultScreenState extends State<ResultScreen> {
         scores: widget.score,
       );
 
+      // Tampilkan snackbar jika berhasil
       if (mounted) {
         final localizations = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -71,6 +78,8 @@ class _ResultScreenState extends State<ResultScreen> {
     } catch (e) {
       final localizations = AppLocalizations.of(context)!;
       print('❌ ${localizations.failedToSaveHistory}: $e');
+
+      // Tampilkan snackbar error jika gagal
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -98,6 +107,7 @@ class _ResultScreenState extends State<ResultScreen> {
     }
   }
 
+  /// Widget yang menampilkan gambar hasil deteksi disertai bounding box
   Widget _buildImageWithBoundingBox() {
     return Container(
       decoration: BoxDecoration(
@@ -117,24 +127,30 @@ class _ResultScreenState extends State<ResultScreen> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               final viewSize = constraints.biggest;
-              final scaledRect = widget.boxRect != null
-                  ? Rect.fromLTWH(
-                      widget.boxRect!.left * viewSize.width,
-                      widget.boxRect!.top * viewSize.height,
-                      widget.boxRect!.width * viewSize.width,
-                      widget.boxRect!.height * viewSize.height,
-                    )
-                  : null;
-              
+
+              // Hitung ulang posisi bounding box berdasarkan ukuran tampilan
+              final scaledRect =
+                  widget.boxRect != null
+                      ? Rect.fromLTWH(
+                        widget.boxRect!.left * viewSize.width,
+                        widget.boxRect!.top * viewSize.height,
+                        widget.boxRect!.width * viewSize.width,
+                        widget.boxRect!.height * viewSize.height,
+                      )
+                      : null;
+
+              // Cek apakah bounding box harus ditampilkan
+              final shouldShowBoundingBox = scaledRect != null &&
+                  widget.score >= 0.3;
+
               return Stack(
                 children: [
+                  // Tampilkan gambar utama
                   Positioned.fill(
-                    child: Image.file(
-                      widget.imageFile,
-                      fit: BoxFit.cover,
-                    ),
+                    child: Image.file(widget.imageFile, fit: BoxFit.cover),
                   ),
-                  if (scaledRect != null)
+                  // Tampilkan bounding box jika kondisi terpenuhi
+                  if (shouldShowBoundingBox)
                     Positioned(
                       left: scaledRect.left,
                       top: scaledRect.top,
@@ -143,10 +159,7 @@ class _ResultScreenState extends State<ResultScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.green.withOpacity(0.2),
-                          border: Border.all(
-                            color: Colors.green,
-                            width: 3,
-                          ),
+                          border: Border.all(color: Colors.green, width: 3),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Align(
@@ -186,33 +199,17 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       backgroundColor: const Color(0xFFFAFAFA),
       appBar: CustomAppBar(
         title: localizations.detectionResult,
+        // Tombol close saja - tidak ada penyimpanan
         leading: IconButton(
-          icon: _isSaving
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.white,
-                    ),
-                  ),
-                )
-              : const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                ),
-          onPressed: _isSaving
-              ? null
-              : () async {
-                  await _saveHistory();
-                  Navigator.pop(context, true);
-                },
+          icon: const Icon(Icons.close, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context, true); // Kembali ke halaman sebelumnya
+          },
         ),
       ),
       body: SafeArea(
@@ -220,16 +217,16 @@ class _ResultScreenState extends State<ResultScreen> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              // Gambar dengan bounding box
+              // Kartu hasil gambar deteksi
               ResultCard(
                 title: localizations.detectionImage,
                 icon: Icons.image,
                 customContent: _buildImageWithBoundingBox(),
               ),
-              
+
               const SizedBox(height: 20),
-              
-              // Hasil deteksi
+
+              // Kartu jenis luka yang terdeteksi
               ResultCard(
                 title: localizations.detectedWoundType,
                 icon: Icons.healing,
@@ -277,10 +274,85 @@ class _ResultScreenState extends State<ResultScreen> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 20),
-              
-              // Rekomendasi
+
+              // Kartu tingkat akurasi/confidence - hanya tampil jika score >= 0.3
+              if (widget.score >= 0.3) ...[
+                ResultCard(
+                  title: localizations.detectionAccuracy,
+                  icon: Icons.analytics,
+                  customContent: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF4299E1), // Biru terang
+                          Color(0xFF3182CE), // Biru gelap
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.analytics,
+                            color: Color(0xFF4299E1),
+                            size: 16,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                localizations.confidenceLevel,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${(widget.score * 100).toStringAsFixed(1)}%',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Progress indicator
+                        SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: CircularProgressIndicator(
+                            value: widget.score,
+                            backgroundColor: Colors.white.withOpacity(0.3),
+                            valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                            strokeWidth: 6,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+
+              // Kartu rekomendasi penanganan luka
               ResultCard(
                 title: localizations.treatmentRecommendation,
                 icon: Icons.medical_information,
@@ -295,8 +367,67 @@ class _ResultScreenState extends State<ResultScreen> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 32),
+
+              // Tombol Simpan ke Riwayat
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: _isSaving ? null : _saveHistory,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF4299E1),
+                    foregroundColor: Colors.white,
+                    elevation: 3,
+                    shadowColor: const Color(0xFF4299E1).withOpacity(0.3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: _isSaving
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              localizations.loading,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.save,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              localizations.saveToHistory,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
             ],
           ),
         ),

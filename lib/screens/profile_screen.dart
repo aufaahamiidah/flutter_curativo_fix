@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import '/services/profile_service.dart';
-import 'package:flutter_curativo/widgets/headers/profile_header.dart';
-import 'package:flutter_curativo/widgets/cards/personal_info_card.dart';
-import 'package:flutter_curativo/widgets/cards/profile_menu_card.dart';
-import 'package:flutter_curativo/widgets/profile/logout_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '/services/profile_service.dart'; // Service untuk mengambil data profil dari backend
+import 'package:flutter_curativo/widgets/headers/profile_header.dart'; // Header tampilan profil
+import 'package:flutter_curativo/widgets/cards/personal_info_card.dart'; // Kartu info pribadi
+import 'package:flutter_curativo/widgets/cards/profile_menu_card.dart'; // Menu pilihan di profil
+import 'package:flutter_curativo/widgets/profile/logout_button.dart'; // Tombol logout
+import 'package:shared_preferences/shared_preferences.dart'; // Untuk menyimpan preferensi (seperti bahasa)
 
+// Halaman Profil pengguna
 class ProfileScreen extends StatefulWidget {
-  final Function(Locale)? onLanguageChanged;
-  
+  final Function(Locale)? onLanguageChanged; // Callback untuk mengganti bahasa
+
   const ProfileScreen({super.key, this.onLanguageChanged});
 
   @override
@@ -16,32 +17,36 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Map<String, dynamic>? user;
-  bool isLoading = true;
-  String _currentLanguage = 'id';
+  Map<String, dynamic>? user; // Data user yang diambil dari API
+  bool isLoading = true; // Status loading saat data belum diambil
+  String _currentLanguage = 'id'; // Bahasa default
 
   @override
   void initState() {
     super.initState();
-    fetchProfile();
-    _loadLanguage();
+    fetchProfile(); // Panggil API profil saat pertama load
+    _loadLanguage(); // Ambil preferensi bahasa dari penyimpanan lokal
   }
 
+  // Fungsi untuk mengambil preferensi bahasa yang tersimpan
   _loadLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _currentLanguage = prefs.getString('language') ?? 'id';
     });
   }
-  
+
+  // Fungsi untuk menyimpan pilihan bahasa
   _saveLanguage(String language) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', language);
   }
 
+  // Fungsi untuk mengambil data profil dari server
   Future<void> fetchProfile() async {
     final result = await ProfileService().getProfile();
-    
+
+    // Pastikan widget masih hidup sebelum mengubah state
     if (mounted) {
       setState(() {
         user = result['user'];
@@ -50,6 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  // Fungsi pembantu untuk menghasilkan warna acak berdasarkan nama pengguna
   Color getRandomColor(String? input) {
     if (input == null) return Colors.grey;
     final hash = input.codeUnits.fold(0, (prev, elem) => prev + elem);
@@ -68,6 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return colors[hash % colors.length];
   }
 
+  // Fungsi untuk mendapatkan inisial dari nama user (contoh: "Budi Santoso" -> "BS")
   String getInitials(String? name) {
     if (name == null || name.isEmpty) return "?";
     List<String> parts = name.trim().split(" ");
@@ -75,6 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return (parts[0][0] + parts[1][0]).toUpperCase();
   }
 
+  // Widget toggle bahasa di pojok kanan atas
   Widget _buildLanguageToggle() {
     return Positioned(
       top: 50,
@@ -91,104 +99,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ],
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildLanguageOption('id', '🇮🇩'),
-            _buildLanguageOption('en', '🇺🇸'),
-          ],
-        ),
       ),
     );
   }
-  
-  Widget _buildLanguageOption(String languageCode, String flag) {
-    final isSelected = _currentLanguage == languageCode;
-    
-    return GestureDetector(
-      onTap: () {
-        if (languageCode != _currentLanguage) {
-          setState(() {
-            _currentLanguage = languageCode;
-          });
-          _saveLanguage(languageCode);
-          if (widget.onLanguageChanged != null) {
-            widget.onLanguageChanged!(Locale(languageCode));
-          }
-        }
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF000080) : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              flag,
-              style: const TextStyle(fontSize: 16),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              languageCode.toUpperCase(),
-              style: TextStyle(
-                color: isSelected ? Colors.white : const Color(0xFF666666),
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
+  // Widget tombol bahasa individual (id/en)
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Stack(
-              children: [
-                RefreshIndicator(
-                  onRefresh: fetchProfile,
-                  color: const Color(0xFF000080),
-                  backgroundColor: Colors.white,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        ProfileHeader(
-                          user: user,
-                          getRandomColor: getRandomColor,
-                          getInitials: getInitials,
-                        ),
-                        
-                        const SizedBox(height: 30),
-                        PersonalInfoCard(user: user),
-                        
-                        const SizedBox(height: 20),
-                        ProfileMenuCard(onLanguageChanged: null),
-                        
-                        const SizedBox(height: 30),
-                        const LogoutButton(),
-                        
-                        const SizedBox(height: 30),
-                      ],
+      backgroundColor: const Color(0xFFFAFAFA), // Warna latar belakang
+      body:
+          isLoading
+              ? const Center(
+                child: CircularProgressIndicator(),
+              ) // Tampilkan loading saat data belum ada
+              : Stack(
+                children: [
+                  RefreshIndicator(
+                    onRefresh:
+                        fetchProfile, // Tarik ke bawah untuk memuat ulang
+                    color: const Color(0xFF000080),
+                    backgroundColor: Colors.white,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        children: [
+                          // Header profil (nama, inisial, avatar)
+                          ProfileHeader(
+                            user: user,
+                            getRandomColor: getRandomColor,
+                            getInitials: getInitials,
+                          ),
+                          const SizedBox(height: 30),
+
+                          // Informasi pribadi user
+                          PersonalInfoCard(user: user),
+                          const SizedBox(height: 20),
+
+                          // Menu pengaturan profil lainnya
+                          ProfileMenuCard(onLanguageChanged: null),
+                          const SizedBox(height: 30),
+
+                          // Tombol logout dari aplikasi
+                          const LogoutButton(),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                _buildLanguageToggle(),
-              ],
-            ),
+
+                  // Tombol toggle bahasa
+                  _buildLanguageToggle(),
+                ],
+              ),
     );
   }
 }
 
+// Komponen kecil untuk menampilkan info seperti email, nomor telepon, dsb
 class InfoTile extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -209,19 +178,18 @@ class InfoTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
+          // Icon dengan latar berwarna
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: iconColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(
-              icon,
-              color: iconColor,
-              size: 16,
-            ),
+            child: Icon(icon, color: iconColor, size: 16),
           ),
           const SizedBox(width: 12),
+
+          // Teks title dan value
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,6 +220,7 @@ class InfoTile extends StatelessWidget {
   }
 }
 
+// Tombol menu dalam bentuk list (misalnya untuk logout, ubah password, dll)
 class OptionButton extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -271,11 +240,7 @@ class OptionButton extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       child: ListTile(
-        leading: Icon(
-          icon,
-          color: const Color(0xFFE53E3E),
-          size: 24,
-        ),
+        leading: Icon(icon, color: const Color(0xFFE53E3E), size: 24),
         title: Text(
           text,
           style: const TextStyle(
@@ -288,7 +253,7 @@ class OptionButton extends StatelessWidget {
           size: 16,
           color: Color(0xFF999999),
         ),
-        onTap: onTap,
+        onTap: onTap, // Eksekusi fungsi saat ditekan
       ),
     );
   }

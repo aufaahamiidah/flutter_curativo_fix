@@ -67,6 +67,7 @@
   
   "historySaved": "Riwayat berhasil disimpan",
   "failedToSaveHistory": "Gagal menyimpan riwayat",
+  "saveToHistory": "Simpan ke Riwayat",
   "scanHistory": "Riwayat Pindai",
   "deleteAll": "Hapus Semua",
   "cancel": "Batal",
@@ -90,6 +91,8 @@
   "detectedWoundType": "Jenis Luka Terdeteksi",
   "treatmentRecommendation": "Rekomendasi Perawatan",
   "confidenceLevel": "Tingkat Keyakinan",
+  "accuracyLevel": "Tingkat Akurasi",
+  "detectionAccuracy": "Akurasi Deteksi",
   "detectionTime": "Waktu Deteksi",
   "detailDetectionResult": "Detail Hasil Deteksi",
   "failedToLoadImage": "Gagal memuat gambar",

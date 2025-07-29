@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_curativo/l10n/app_localizations.dart';
-import '../widgets/headers/gradient_header.dart';
-import '../widgets/cards/action_banner_card.dart';
-import '../widgets/lists/kit_slider_section.dart';
-// Hapus import language_switcher
+import 'package:flutter_curativo/l10n/app_localizations.dart'; // Import untuk mendukung multi-bahasa
+import '../widgets/headers/gradient_header.dart'; // Widget header dengan efek gradien
+import '../widgets/cards/action_banner_card.dart'; // Widget banner aksi dengan gambar dan teks
+import '../widgets/lists/kit_slider_section.dart'; // Widget slider untuk daftar kit pertolongan pertama
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key}); // Hapus onLanguageChanged parameter
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Fungsi untuk menghasilkan daftar item kit pertolongan pertama
+  // Menggunakan `localizations` agar teks dapat berubah sesuai bahasa pengguna
   List<Map<String, dynamic>> _getKitItems(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    
+
     return [
       {
+        // Item 1: Pertolongan pertama dasar
         'title': localizations.firstAidTitle,
         'description': localizations.firstAidDescription,
         'imageAsset': 'assets/images/first-aid.png',
@@ -33,13 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       },
       {
-        'title': localizations.minorWoundCare, // Gunakan localization
-        'description': localizations.minorWoundDesc, // Gunakan localization
+        // Item 2: Perawatan luka ringan
+        'title': localizations.minorWoundCare,
+        'description': localizations.minorWoundDesc,
         'imageAsset': 'assets/images/p3k.png',
         'steps': [
           {
-            'title': localizations.firstAidEquipment, // Perlu ditambahkan ke ARB
-            'description': localizations.firstAidEquipmentDesc, // Perlu ditambahkan ke ARB
+            'title': localizations.firstAidEquipment, // Perlu ada di file ARB
+            'description': localizations.firstAidEquipmentDesc,
           },
           {
             'title': localizations.callHelp,
@@ -48,8 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       },
       {
-        'title': localizations.emergencyCPR, // Gunakan localization
-        'description': localizations.emergencyCPRDesc, // Gunakan localization
+        // Item 3: CPR darurat
+        'title': localizations.emergencyCPR,
+        'description': localizations.emergencyCPRDesc,
         'imageAsset': 'assets/images/cpr.png',
         'steps': [
           {
@@ -67,43 +71,61 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-    final kitItems = _getKitItems(context);
+    final localizations =
+        AppLocalizations.of(context)!; // Ambil instance localization aktif
+    final kitItems = _getKitItems(
+      context,
+    ); // Generate item kit pertolongan pertama
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
+      backgroundColor: const Color(0xFFFAFAFA), // Warna latar belakang layar
       body: SafeArea(
+        // Mencegah overlap dengan area sistem (notch, status bar)
         child: SingleChildScrollView(
+          // Memungkinkan layar di-scroll jika kontennya panjang
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 20), // Spasi atas
+              // Header dengan judul dan subjudul bergradasi
               GradientHeader(
-                title: localizations.appTitle,
-                subtitle: localizations.homeSubtitle,
+                title:
+                    localizations
+                        .appTitle, // Judul aplikasi (misal: "Curativo")
+                subtitle:
+                    localizations
+                        .homeSubtitle, // Subjudul (misal: "Panduan Pertolongan Pertama")
                 padding: EdgeInsets.symmetric(horizontal: 20),
               ),
-              const SizedBox(height: 24), // Dikurangi dari 24 menjadi 12
-              // Banner card dengan tema yang konsisten
+
+              const SizedBox(height: 24), // Spasi antara header dan banner
+              // Banner aksi utama dengan gambar dan efek gradasi warna
               ActionBannerCard(
-                title: localizations.checkWoundCondition,
-                subtitle: localizations.checkWoundSubtitle,
+                title: localizations.checkWoundCondition, // Teks ajakan
+                subtitle:
+                    localizations.checkWoundSubtitle, // Penjelasan singkat
                 imageAsset: 'assets/images/band-aid.png',
-                gradientColors: const [Color(0xFFA80000), Color(0xFFF8D7DA)],
+                gradientColors: const [
+                  Color(0xFFA80000),
+                  Color(0xFFF8D7DA),
+                ], // Gradasi merah muda
                 onTap: () {
-                  // Navigate to scan screen
+                  // Aksi ketika banner ditekan, bisa diarahkan ke halaman scan
                   // Navigator.pushNamed(context, '/scan');
                 },
               ),
-              const SizedBox(height: 28),
-              // Section kit dengan styling yang dipercantik
+
+              const SizedBox(height: 28), // Spasi sebelum slider kit
+              // Slider berisi daftar kit pertolongan pertama dengan animasi horizontal
               KitSliderSection(
-                title: localizations.emergencyKit,
-                subtitle: localizations.emergencyKitSubtitle,
-                kitItems: kitItems, // Changed from _kitItems to kitItems
-                height: 240,
+                title: localizations.emergencyKit, // Judul section
+                subtitle:
+                    localizations.emergencyKitSubtitle, // Subjudul section
+                kitItems: kitItems, // Data yang ditampilkan dalam slider
+                height: 240, // Tinggi slider
               ),
-              const SizedBox(height: 20),
+
+              const SizedBox(height: 20), // Spasi bawah
             ],
           ),
         ),

@@ -198,6 +198,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get failedToSaveHistory => 'Gagal menyimpan riwayat';
 
   @override
+  String get saveToHistory => 'Simpan ke Riwayat';
+
+  @override
   String get scanHistory => 'Riwayat Pindai';
 
   @override
@@ -265,6 +268,12 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get confidenceLevel => 'Tingkat Keyakinan';
+
+  @override
+  String get accuracyLevel => 'Tingkat Akurasi';
+
+  @override
+  String get detectionAccuracy => 'Akurasi Deteksi';
 
   @override
   String get detectionTime => 'Waktu Deteksi';

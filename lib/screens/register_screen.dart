@@ -14,14 +14,18 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  // Controller untuk menangani input pengguna pada masing-masing field
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
+  // Variabel untuk menyimpan jenis kelamin yang dipilih
   String? _selectedGender;
 
+  // Membersihkan controller saat widget dihapus dari tree
   @override
   void dispose() {
     _nameController.dispose();
@@ -32,13 +36,19 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  // Fungsi untuk menampilkan snackbar pesan kesalahan atau informasi
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
+    // Mengambil instance lokal dari AppLocalizations untuk mendukung multi-bahasa
     final localizations = AppLocalizations.of(context)!;
+
+    // Opsi gender ditampilkan dalam dropdown
     final genderOptions = [localizations.male, localizations.female];
 
     return Scaffold(
@@ -49,12 +59,15 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Logo aplikasi
               Image.asset(
                 'assets/images/Curativo.png',
                 height: 100,
                 width: 100,
               ),
               const SizedBox(height: 24),
+
+              // Judul halaman registrasi
               Text(
                 localizations.registerTitle,
                 style: const TextStyle(
@@ -64,6 +77,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               const SizedBox(height: 40),
+
+              // Field input nama lengkap
               CustomTextField(
                 controller: _nameController,
                 hintText: localizations.enterFullName,
@@ -71,6 +86,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 keyboardType: TextInputType.text,
               ),
               const SizedBox(height: 16),
+
+              // Dropdown untuk memilih jenis kelamin
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFFF0F0F0),
@@ -96,12 +113,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     contentPadding: EdgeInsets.symmetric(vertical: 16.0),
                   ),
-                  items: genderOptions.map((String gender) {
-                    return DropdownMenuItem<String>(
-                      value: gender,
-                      child: Text(gender),
-                    );
-                  }).toList(),
+                  items:
+                      genderOptions.map((String gender) {
+                        return DropdownMenuItem<String>(
+                          value: gender,
+                          child: Text(gender),
+                        );
+                      }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedGender = newValue;
@@ -110,6 +128,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               const SizedBox(height: 16),
+
+              // Field input nomor telepon
               CustomTextField(
                 controller: _phoneNumberController,
                 hintText: localizations.enterPhoneNumber,
@@ -117,6 +137,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 16),
+
+              // Field input email
               CustomTextField(
                 controller: _emailController,
                 hintText: localizations.enterEmail,
@@ -124,6 +146,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
+
+              // Field input password
               CustomTextField(
                 controller: _passwordController,
                 hintText: localizations.enterPassword,
@@ -131,6 +155,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 isPassword: true,
               ),
               const SizedBox(height: 16),
+
+              // Field konfirmasi password
               CustomTextField(
                 controller: _confirmPasswordController,
                 hintText: localizations.confirmPassword,
@@ -138,18 +164,23 @@ class _RegisterPageState extends State<RegisterPage> {
                 isPassword: true,
               ),
               const SizedBox(height: 32),
+
+              // Tombol daftar/register
               SizedBox(
                 width: double.infinity,
                 child: GenericButton(
                   text: localizations.register,
                   onPressed: () async {
+                    // Ambil nilai dari form
                     String name = _nameController.text.trim();
                     String email = _emailController.text.trim();
                     String phoneNumber = _phoneNumberController.text.trim();
                     String password = _passwordController.text.trim();
-                    String confirmPassword = _confirmPasswordController.text.trim();
+                    String confirmPassword =
+                        _confirmPasswordController.text.trim();
                     String? gender = _selectedGender;
 
+                    // Validasi input wajib
                     if (name.isEmpty ||
                         email.isEmpty ||
                         phoneNumber.isEmpty ||
@@ -160,11 +191,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       return;
                     }
 
+                    // Validasi password cocok
                     if (password != confirmPassword) {
                       _showSnackBar(localizations.passwordMismatch);
                       return;
                     }
 
+                    // Kirim data ke backend menggunakan AuthService
                     final auth = AuthService();
                     final result = await auth.registerWithDetails(
                       name: name,
@@ -175,6 +208,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       gender: gender,
                     );
 
+                    // Jika berhasil, navigasi ke halaman utama
                     if (result['success']) {
                       _showSnackBar(localizations.registrationSuccess);
                       Navigator.of(context).pushAndRemoveUntil(
@@ -184,7 +218,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         (route) => false,
                       );
                     } else {
-                      _showSnackBar(result['message'] ?? localizations.registrationFailed);
+                      // Jika gagal, tampilkan pesan error
+                      _showSnackBar(
+                        result['message'] ?? localizations.registrationFailed,
+                      );
                     }
                   },
                   type: ButtonType.elevated,
@@ -197,12 +234,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               const SizedBox(height: 24),
+
+              // Link ke halaman login
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     localizations.alreadyHaveAccount,
-                    style: const TextStyle(fontSize: 14, color: Color(0xFF666666)),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF666666),
+                    ),
                   ),
                   GenericButton(
                     text: localizations.login,

@@ -199,6 +199,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failedToSaveHistory => 'Failed to save history';
 
   @override
+  String get saveToHistory => 'Save to History';
+
+  @override
   String get scanHistory => 'Scan History';
 
   @override
@@ -266,6 +269,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confidenceLevel => 'Confidence Level';
+
+  @override
+  String get accuracyLevel => 'Accuracy Level';
+
+  @override
+  String get detectionAccuracy => 'Detection Accuracy';
 
   @override
   String get detectionTime => 'Detection Time';

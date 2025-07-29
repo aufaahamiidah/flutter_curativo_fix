@@ -470,6 +470,12 @@ abstract class AppLocalizations {
   /// **'Failed to save history'**
   String get failedToSaveHistory;
 
+  /// No description provided for @saveToHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to History'**
+  String get saveToHistory;
+
   /// No description provided for @scanHistory.
   ///
   /// In en, this message translates to:
@@ -601,6 +607,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confidence Level'**
   String get confidenceLevel;
+
+  /// No description provided for @accuracyLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy Level'**
+  String get accuracyLevel;
+
+  /// No description provided for @detectionAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Detection Accuracy'**
+  String get detectionAccuracy;
 
   /// No description provided for @detectionTime.
   ///
