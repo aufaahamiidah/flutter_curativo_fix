@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:feather_icons/feather_icons.dart';
-// import '/widgets/custom_bottom_navbar.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart'; // Paket lokal untuk mendukung multibahasa
+import 'package:feather_icons/feather_icons.dart'; // Paket ikon Feather
+import '../widgets/emergency/emergency_header.dart'; // Widget header darurat
+import '../widgets/emergency/emergency_contact_card.dart'; // Kartu kontak darurat
+import '../widgets/emergency/emergency_action_card.dart'; // Kartu tindakan darurat
+import '../widgets/headers/section_header.dart'; // Header seksi umum
 
+// Widget Stateful untuk halaman pertolongan pertama
 class AidScreen extends StatefulWidget {
   const AidScreen({super.key});
 
@@ -12,103 +17,150 @@ class AidScreen extends StatefulWidget {
 class _AidScreenState extends State<AidScreen> {
   @override
   Widget build(BuildContext context) {
+    // Ambil teks berdasarkan lokal/bahasa yang sedang aktif
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 32),
-            Padding(
+      backgroundColor: const Color(0xFFF8F9FA), // Warna latar belakang
+      body: Column(
+        children: [
+          // Header darurat dengan judul dan ikon
+          EmergencyHeader(
+            title: localizations.giveHelp,
+            subtitle: localizations.emergencyFirstAidGuide,
+            trailing: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Image.asset(
+                'assets/images/home_plus.png',
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          // Kartu kontak untuk nomor darurat 112
+          EmergencyContactCard(
+            title: localizations.emergencyContact112,
+            subtitle: localizations.emergencyContactDesc,
+            phoneNumber: '112',
+            icon: FeatherIcons.phone,
+          ),
+
+          const SizedBox(height: 24),
+
+          // Header seksi untuk panduan tindakan darurat
+          SectionHeader(
+            title: localizations.emergencyGuide,
+            subtitle: localizations.emergencySteps,
+          ),
+
+          const SizedBox(height: 8),
+
+          // Daftar kartu tindakan darurat
+          Expanded(
+            child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Berikan Bantuan',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/images/home_plus.png',
-                    width: 70,
-                    height: 70,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 32),
-            const _BannerCard(),
-            const SizedBox(height: 32),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Konten Darurat',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+              children: [
+                // Kartu tindakan: Tersedak orang dewasa
+                EmergencyActionCard(
+                  title: localizations.chokingAdult,
+                  subtitle: localizations.chokingAdultDesc,
+                  icon: Icons.person,
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.chokingAdult,
+                        localizations.chokingAdultInstructions,
+                      ),
                 ),
-              ),
+                // Kartu tindakan: Tersedak anak
+                EmergencyActionCard(
+                  title: localizations.chokingChild,
+                  subtitle: localizations.chokingChildDesc,
+                  icon: Icons.child_care,
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.chokingChild,
+                        localizations.chokingChildInstructions,
+                      ),
+                ),
+                // Kartu tindakan: Tersedak bayi
+                EmergencyActionCard(
+                  title: localizations.chokingBaby,
+                  subtitle: localizations.chokingBabyDesc,
+                  icon: Icons.baby_changing_station,
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.chokingBaby,
+                        localizations.chokingBabyInstructions,
+                      ),
+                ),
+                // Kartu tindakan: Pendarahan parah
+                EmergencyActionCard(
+                  title: localizations.severeBleeding,
+                  subtitle: localizations.severeBleedingDesc,
+                  icon: Icons.bloodtype,
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.severeBleeding,
+                        localizations.severeBleedingInstructions,
+                      ),
+                ),
+                // Kartu tindakan: Serangan jantung
+                EmergencyActionCard(
+                  title: localizations.heartAttack,
+                  subtitle: localizations.heartAttackDesc,
+                  icon: Icons.favorite,
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.heartAttack,
+                        localizations.heartAttackInstructions,
+                      ),
+                ),
+                // Kartu tindakan: Stroke
+                EmergencyActionCard(
+                  title: localizations.stroke,
+                  subtitle: localizations.strokeDesc,
+                  icon: Icons.psychology,
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.stroke,
+                        localizations.strokeInstructions,
+                      ),
+                ),
+                // Kartu tindakan: Luka bakar
+                EmergencyActionCard(
+                  title: localizations.burns,
+                  subtitle: localizations.burnsDesc,
+                  icon: Icons.local_fire_department,
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.burns,
+                        localizations.burnsInstructions,
+                      ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-            const SizedBox(height: 22),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                children: [
-                  _EmergencyTile(
-                    title: 'Tersedak (Dewasa, Lansia)',
-                    onTap:
-                        () => _showEmergencyModal(
-                          context,
-                          'Tersedak (Dewasa, Lansia)',
-                          'Jika seseorang dewasa atau lansia tersedak dan masih bisa batuk atau bersuara, biarkan mereka batuk untuk mencoba mengeluarkan objek tersebut. Jika tidak bisa bernapas atau bicara, lakukan Heimlich maneuver.',
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  _EmergencyTile(
-                    title: 'Tersedak (Anak Kecil)',
-                    onTap:
-                        () => _showEmergencyModal(
-                          context,
-                          'Tersedak (Anak Kecil)',
-                          'Untuk anak kecil, posisikan mereka membungkuk ke depan dan tepuk punggung mereka lima kali dengan telapak tangan. Jika tidak berhasil, lakukan dorongan perut.',
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  _EmergencyTile(
-                    title: 'Tersedak (Bayi)',
-                    onTap:
-                        () => _showEmergencyModal(
-                          context,
-                          'Tersedak (Bayi)',
-                          'Letakkan bayi telungkup di lengan Anda, kepala lebih rendah dari tubuh. Berikan lima tepukan di punggung, lalu lima tekanan dada jika belum berhasil.',
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  _EmergencyTile(
-                    title: 'Pendarahan Parah',
-                    onTap:
-                        () => _showEmergencyModal(
-                          context,
-                          'Pendarahan Parah',
-                          'Tekan langsung area yang berdarah dengan kain bersih. Jangan lepaskan tekanan sampai bantuan medis tiba. Jika memungkinkan, angkat bagian tubuh yang berdarah.',
-                        ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-      // bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
     );
   }
 
+  // Fungsi untuk menampilkan modal bottom sheet saat salah satu tindakan darurat ditekan
   void _showEmergencyModal(BuildContext context, String title, String content) {
     showModalBottomSheet(
       context: context,
@@ -116,7 +168,7 @@ class _AidScreenState extends State<AidScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return DraggableScrollableSheet(
-          initialChildSize: 0.9,
+          initialChildSize: 0.9, // Ukuran awal modal
           minChildSize: 0.6,
           maxChildSize: 0.95,
           builder:
@@ -125,33 +177,57 @@ class _AidScreenState extends State<AidScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                 ),
-                padding: const EdgeInsets.all(20),
-                child: Stack(
+                child: Column(
                   children: [
-                    ListView(
-                      controller: controller,
-                      children: [
-                        const SizedBox(height: 40),
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                    // Header modal dengan judul dan tombol tutup
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFFE53E3E), Color(0xFFD53F8C)],
+                        ),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(24),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          content,
-                          style: const TextStyle(fontSize: 16, height: 1.5),
-                        ),
-                      ],
+                          IconButton(
+                            icon: const Icon(Icons.close, color: Colors.white),
+                            onPressed:
+                                () =>
+                                    Navigator.of(context).pop(), // Tutup modal
+                          ),
+                        ],
+                      ),
                     ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.of(context).pop(),
+                    // Isi konten petunjuk
+                    Expanded(
+                      child: ListView(
+                        controller: controller,
+                        padding: const EdgeInsets.all(20),
+                        children: [
+                          Text(
+                            content,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              height: 1.6,
+                              color: Color(0xFF333333),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -159,97 +235,6 @@ class _AidScreenState extends State<AidScreen> {
               ),
         );
       },
-    );
-  }
-}
-
-class _BannerCard extends StatelessWidget {
-  const _BannerCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 330 / 130,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        decoration: const BoxDecoration(
-          color: Color(0xFFA80000),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Icon(FeatherIcons.phone, color: Colors.white, size: 36),
-            const SizedBox(width: 20),
-            const Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Kontak Darurat\n112',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      height: 1.5,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Indonesia',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      height: 1.5,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _EmergencyTile extends StatelessWidget {
-  final String title;
-  final VoidCallback onTap;
-
-  const _EmergencyTile({required this.title, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const Icon(Icons.chevron_right, color: Colors.red),
-          ],
-        ),
-      ),
     );
   }
 }

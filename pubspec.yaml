@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.8
   feather_icons: ^1.2.0
   image_picker: ^1.0.2 
@@ -38,15 +40,22 @@ dependencies:
   collection: ^1.17.2
   http: ^0.13.5
   shared_preferences: ^2.2.1
-  intl: ^0.19.0
+  intl: ^0.20.2
   # Tambahkan dependensi Supabase
   supabase_flutter: ^2.0.0
   path: ^1.8.3
   flutter_image_compress: ^2.1.0
+  url_launcher: ^6.2.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/Curativo.png"  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -60,6 +69,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// Halaman detail untuk menampilkan langkah-langkah penggunaan emergency kit
 class EmergencyKitDetailPage extends StatefulWidget {
-  final String title;
-  final String description;
-  final String imageAsset;
-  final List<Map<String, String>> steps;
+  final String title; // Judul utama
+  final String description; // Deskripsi umum
+  final String
+  imageAsset; // Gambar utama (opsional, tidak digunakan dalam build)
+  final List<Map<String, String>> steps; // Daftar langkah-langkah
 
   const EmergencyKitDetailPage({
     super.key,
@@ -19,9 +21,13 @@ class EmergencyKitDetailPage extends StatefulWidget {
 }
 
 class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
+  // Controller untuk mengontrol PageView
   final PageController _pageController = PageController();
+
+  // Index halaman saat ini
   int _currentPage = 0;
 
+  // Daftar item kartu (langkah-langkah)
   late final List<Map<String, String>> cardItems;
 
   @override
@@ -29,6 +35,7 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
     super.initState();
     cardItems = widget.steps;
 
+    // Menambahkan listener untuk mendeteksi perubahan halaman
     _pageController.addListener(() {
       final next = _pageController.page?.round() ?? 0;
       if (_currentPage != next) {
@@ -39,16 +46,17 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _pageController.dispose(); // Bersihkan controller saat widget dihancurkan
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF000054),
+      backgroundColor: const Color(0xFF000054), // Latar belakang biru tua
       body: Stack(
         children: [
+          // PageView untuk swipe antar langkah
           PageView.builder(
             controller: _pageController,
             itemCount: cardItems.length,
@@ -68,7 +76,7 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // Gambar full atas
+                        // Bagian gambar di atas kartu (jika tersedia)
                         if (item['imageAsset'] != null &&
                             item['imageAsset']!.isNotEmpty)
                           ClipRRect(
@@ -84,7 +92,7 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
                             ),
                           ),
 
-                        // Konten teks
+                        // Bagian konten teks dari kartu
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(20),
@@ -92,6 +100,7 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                // Judul langkah
                                 Text(
                                   item['title'] ?? '',
                                   textAlign: TextAlign.start,
@@ -101,6 +110,7 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
                                   ),
                                 ),
                                 const SizedBox(height: 16),
+                                // Deskripsi langkah
                                 Text(
                                   item['description'] ?? '',
                                   textAlign: TextAlign.start,
@@ -121,12 +131,13 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
             },
           ),
 
-          // Tombol tutup
+          // Tombol untuk menutup halaman
           Positioned(
             top: 40,
             right: 16,
             child: GestureDetector(
-              onTap: () => Navigator.pop(context),
+              onTap:
+                  () => Navigator.pop(context), // Kembali ke halaman sebelumnya
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -142,7 +153,7 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
             ),
           ),
 
-          // Indikator titik
+          // Indikator bulatan di bawah (sebagai tanda halaman aktif)
           Positioned(
             bottom: 40,
             left: 0,
