@@ -119,20 +119,20 @@ abstract class AppLocalizations {
   /// No description provided for @firstAidDescription.
   ///
   /// In en, this message translates to:
-  /// **'🚑 Emergency medical assistance.'**
+  /// **'🧰 Preparing a Wound Alert Kit at Home.'**
   String get firstAidDescription;
 
-  /// No description provided for @checkConsciousness.
+  /// No description provided for @preparednessKit.
   ///
   /// In en, this message translates to:
-  /// **'Check Consciousness'**
-  String get checkConsciousness;
+  /// **'🧠 Tips for Preparing a Wound Alert Kit at Home'**
+  String get preparednessKit;
 
-  /// No description provided for @checkConsciousnessDesc.
+  /// No description provided for @preparednessKitDesc.
   ///
   /// In en, this message translates to:
-  /// **'Make sure the victim is conscious.'**
-  String get checkConsciousnessDesc;
+  /// **'• Place the first aid kit and wound treatment tools in a location that is easily accessible to all family members.\n• Check the expiration date of medicines and the condition of the tools every 3 months.\n• Store medical tools in different containers so that they are not mixed with medicines.\n• Choose a waterproof storage box and clearly label each part.\n• Insert a short leaflet or QR Code into the tutorial video so that the family knows the steps for handling minor injuries.\n• Add additional tools outside the first aid kit.'**
+  String get preparednessKitDesc;
 
   /// No description provided for @callHelp.
   ///
@@ -158,29 +158,89 @@ abstract class AppLocalizations {
   /// **'🩹 Small wound treatment.'**
   String get minorWoundDesc;
 
-  /// No description provided for @emergencyCPR.
+  /// No description provided for @emergencyBagTitle.
   ///
   /// In en, this message translates to:
-  /// **'Emergency CPR'**
-  String get emergencyCPR;
+  /// **'Emergency Bag'**
+  String get emergencyBagTitle;
 
-  /// No description provided for @emergencyCPRDesc.
+  /// No description provided for @emergencyBagDescription.
   ///
   /// In en, this message translates to:
-  /// **'❤️ Basic life support.'**
-  String get emergencyCPRDesc;
+  /// **'🧳 Emergency Bag Checklist.'**
+  String get emergencyBagDescription;
 
-  /// No description provided for @firstAidEquipment.
+  /// No description provided for @emergencyBag.
   ///
   /// In en, this message translates to:
-  /// **'First Aid Equipment'**
-  String get firstAidEquipment;
+  /// **'📌 Must-Have Items in Your Emergency Bag'**
+  String get emergencyBag;
 
-  /// No description provided for @firstAidEquipmentDesc.
+  /// No description provided for @emergencyBagDesc.
   ///
   /// In en, this message translates to:
-  /// **'First aid equipment can help us during emergencies.'**
-  String get firstAidEquipmentDesc;
+  /// **'• 📄 Important documents (ID card, family card, health insurance – keep in a waterproof plastic pouch)\n• 💊 Personal medication & mini first aid kit (regular medicine, antiseptic, plasters, face masks)\n• 🔦 Flashlight + spare batteries\n• 🧴 Hygiene supplies (wet wipes, hand sanitizer, sanitary pads)\n• 🧥 Spare clothes & light blanket\n• 🍞 Long-lasting food (biscuits, canned food)\n• 💧 At least 1 liter of drinking water\n• 📱 Power bank & charging cable\n• 💵 Some cash\n• 🧸 Comfort items (children’s toys, small blanket)'**
+  String get emergencyBagDesc;
+
+  /// No description provided for @firstAidEquipment1.
+  ///
+  /// In en, this message translates to:
+  /// **'🩹 Wound Covering Supplies'**
+  String get firstAidEquipment1;
+
+  /// No description provided for @firstAidEquipmentDesc1.
+  ///
+  /// In en, this message translates to:
+  /// **'• Adhesive bandages (various sizes)\n• Sterile gauze pads\n• Gauze rolls\n• Medical tape\n• Triangular bandage (for sling or wrapping)'**
+  String get firstAidEquipmentDesc1;
+
+  /// No description provided for @firstAidEquipment2.
+  ///
+  /// In en, this message translates to:
+  /// **'🧼 Antiseptics & Wound Cleansers'**
+  String get firstAidEquipment2;
+
+  /// No description provided for @firstAidEquipmentDesc2.
+  ///
+  /// In en, this message translates to:
+  /// **'• Antiseptic solution (e.g., povidone-iodine or chlorhexidine)\n• 70% alcohol\n• Antiseptic wipes\n• Antibacterial soap'**
+  String get firstAidEquipmentDesc2;
+
+  /// No description provided for @firstAidEquipment3.
+  ///
+  /// In en, this message translates to:
+  /// **'✂️ Medical Tools'**
+  String get firstAidEquipment3;
+
+  /// No description provided for @firstAidEquipmentDesc3.
+  ///
+  /// In en, this message translates to:
+  /// **'• Scissors (for cutting bandages or clothing)\n• Tweezers (for removing splinters)\n• Thermometer\n• Medical gloves (latex or non-latex)\n• Face masks'**
+  String get firstAidEquipmentDesc3;
+
+  /// No description provided for @firstAidEquipment4.
+  ///
+  /// In en, this message translates to:
+  /// **'💊 Basic Medications'**
+  String get firstAidEquipment4;
+
+  /// No description provided for @firstAidEquipmentDesc4.
+  ///
+  /// In en, this message translates to:
+  /// **'• Paracetamol / ibuprofen (for pain and fever)\n• Diarrhea medication (oral rehydration salts, loperamide)\n• Antihistamines (for allergies)\n• Antibiotic ointment (for open wounds)\n• Anti-itch cream (e.g., for insect bites)'**
+  String get firstAidEquipmentDesc4;
+
+  /// No description provided for @firstAidEquipment5.
+  ///
+  /// In en, this message translates to:
+  /// **'🔗 Additional Items'**
+  String get firstAidEquipment5;
+
+  /// No description provided for @firstAidEquipmentDesc5.
+  ///
+  /// In en, this message translates to:
+  /// **'• First aid manual or instruction booklet\n• CPR face shield or breathing mask\n• Instant cold pack\n• Cotton swabs\n• Clean plastic bags'**
+  String get firstAidEquipmentDesc5;
 
   /// No description provided for @welcome.
   ///

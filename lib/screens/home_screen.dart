@@ -19,14 +19,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return [
       {
-        // Item 1: Pertolongan pertama dasar
+        // Item 1: Tips Kit Siaga Luka
         'title': localizations.firstAidTitle,
         'description': localizations.firstAidDescription,
         'imageAsset': 'assets/images/first-aid.png',
         'steps': [
           {
-            'title': localizations.checkConsciousness,
-            'description': localizations.checkConsciousnessDesc,
+            'title': localizations.preparednessKit,
+            'description': localizations.preparednessKitDesc,
           },
           {
             'title': localizations.callHelp,
@@ -41,8 +41,24 @@ class _HomeScreenState extends State<HomeScreen> {
         'imageAsset': 'assets/images/p3k.png',
         'steps': [
           {
-            'title': localizations.firstAidEquipment, // Perlu ada di file ARB
-            'description': localizations.firstAidEquipmentDesc,
+            'title': localizations.firstAidEquipment1, // Perlu ada di file ARB
+            'description': localizations.firstAidEquipmentDesc1,
+          },
+          {
+            'title': localizations.firstAidEquipment2, 
+            'description': localizations.firstAidEquipmentDesc2,
+          },
+          {
+            'title': localizations.firstAidEquipment3, 
+            'description': localizations.firstAidEquipmentDesc3,
+          },
+          {
+            'title': localizations.firstAidEquipment4, 
+            'description': localizations.firstAidEquipmentDesc4,
+          },
+          {
+            'title': localizations.firstAidEquipment5, 
+            'description': localizations.firstAidEquipmentDesc5,
           },
           {
             'title': localizations.callHelp,
@@ -51,14 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       },
       {
-        // Item 3: CPR darurat
-        'title': localizations.emergencyCPR,
-        'description': localizations.emergencyCPRDesc,
+        // Item 3: tas darurat
+        'title': localizations.emergencyBagTitle,
+        'description': localizations.emergencyBagDescription,
         'imageAsset': 'assets/images/cpr.png',
         'steps': [
           {
-            'title': localizations.checkConsciousness,
-            'description': localizations.checkConsciousnessDesc,
+            'title': localizations.emergencyBag,
+            'description': localizations.emergencyBagDesc,
           },
           {
             'title': localizations.callHelp,

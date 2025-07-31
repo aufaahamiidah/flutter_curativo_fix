@@ -18,13 +18,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get firstAidTitle => 'First Aid';
 
   @override
-  String get firstAidDescription => '🚑 Emergency medical assistance.';
+  String get firstAidDescription => '🧰 Preparing a Wound Alert Kit at Home.';
 
   @override
-  String get checkConsciousness => 'Check Consciousness';
+  String get preparednessKit =>
+      '🧠 Tips for Preparing a Wound Alert Kit at Home';
 
   @override
-  String get checkConsciousnessDesc => 'Make sure the victim is conscious.';
+  String get preparednessKitDesc =>
+      '• Place the first aid kit and wound treatment tools in a location that is easily accessible to all family members.\n• Check the expiration date of medicines and the condition of the tools every 3 months.\n• Store medical tools in different containers so that they are not mixed with medicines.\n• Choose a waterproof storage box and clearly label each part.\n• Insert a short leaflet or QR Code into the tutorial video so that the family knows the steps for handling minor injuries.\n• Add additional tools outside the first aid kit.';
 
   @override
   String get callHelp => 'Call for Help';
@@ -39,17 +41,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get minorWoundDesc => '🩹 Small wound treatment.';
 
   @override
-  String get emergencyCPR => 'Emergency CPR';
+  String get emergencyBagTitle => 'Emergency Bag';
 
   @override
-  String get emergencyCPRDesc => '❤️ Basic life support.';
+  String get emergencyBagDescription => '🧳 Emergency Bag Checklist.';
 
   @override
-  String get firstAidEquipment => 'First Aid Equipment';
+  String get emergencyBag => '📌 Must-Have Items in Your Emergency Bag';
 
   @override
-  String get firstAidEquipmentDesc =>
-      'First aid equipment can help us during emergencies.';
+  String get emergencyBagDesc =>
+      '• 📄 Important documents (ID card, family card, health insurance – keep in a waterproof plastic pouch)\n• 💊 Personal medication & mini first aid kit (regular medicine, antiseptic, plasters, face masks)\n• 🔦 Flashlight + spare batteries\n• 🧴 Hygiene supplies (wet wipes, hand sanitizer, sanitary pads)\n• 🧥 Spare clothes & light blanket\n• 🍞 Long-lasting food (biscuits, canned food)\n• 💧 At least 1 liter of drinking water\n• 📱 Power bank & charging cable\n• 💵 Some cash\n• 🧸 Comfort items (children’s toys, small blanket)';
+
+  @override
+  String get firstAidEquipment1 => '🩹 Wound Covering Supplies';
+
+  @override
+  String get firstAidEquipmentDesc1 =>
+      '• Adhesive bandages (various sizes)\n• Sterile gauze pads\n• Gauze rolls\n• Medical tape\n• Triangular bandage (for sling or wrapping)';
+
+  @override
+  String get firstAidEquipment2 => '🧼 Antiseptics & Wound Cleansers';
+
+  @override
+  String get firstAidEquipmentDesc2 =>
+      '• Antiseptic solution (e.g., povidone-iodine or chlorhexidine)\n• 70% alcohol\n• Antiseptic wipes\n• Antibacterial soap';
+
+  @override
+  String get firstAidEquipment3 => '✂️ Medical Tools';
+
+  @override
+  String get firstAidEquipmentDesc3 =>
+      '• Scissors (for cutting bandages or clothing)\n• Tweezers (for removing splinters)\n• Thermometer\n• Medical gloves (latex or non-latex)\n• Face masks';
+
+  @override
+  String get firstAidEquipment4 => '💊 Basic Medications';
+
+  @override
+  String get firstAidEquipmentDesc4 =>
+      '• Paracetamol / ibuprofen (for pain and fever)\n• Diarrhea medication (oral rehydration salts, loperamide)\n• Antihistamines (for allergies)\n• Antibiotic ointment (for open wounds)\n• Anti-itch cream (e.g., for insect bites)';
+
+  @override
+  String get firstAidEquipment5 => '🔗 Additional Items';
+
+  @override
+  String get firstAidEquipmentDesc5 =>
+      '• First aid manual or instruction booklet\n• CPR face shield or breathing mask\n• Instant cold pack\n• Cotton swabs\n• Clean plastic bags';
 
   @override
   String get welcome => 'Welcome to Curativo';

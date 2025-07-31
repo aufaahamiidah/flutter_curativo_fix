@@ -18,13 +18,14 @@ class AppLocalizationsId extends AppLocalizations {
   String get firstAidTitle => 'Pertolongan Pertama';
 
   @override
-  String get firstAidDescription => '🚑 Bantuan medis darurat.';
+  String get firstAidDescription => '🧰 Menyiapkan Kit Siaga Luka di Rumah.';
 
   @override
-  String get checkConsciousness => 'Cek Kesadaran';
+  String get preparednessKit => '🧠 Tips Menyiapkan Kit Siaga Luka di Rumah';
 
   @override
-  String get checkConsciousnessDesc => 'Pastikan korban sadar.';
+  String get preparednessKitDesc =>
+      '• Letakkan kotak P3K & alat penanganan luka di lokasi yang mudah dijangkau semua anggota keluarga.\n• Cek tanggal kedaluwarsa obat & kondisi alat setiap 3 bulan sekali.\n• Simpan alat medis di wadah berbeda agar tidak tercampur dengan obat-obatan.\n• Pilih kotak penyimpanan yang tahan air dan beri label jelas untuk tiap bagian.\n• Masukkan leaflet singkat atau QR Code ke video tutorial agar keluarga tahu langkah penanganan luka ringan.\n• Tambahkan Alat Tambahan di Luar P3K';
 
   @override
   String get callHelp => 'Hubungi Bantuan';
@@ -39,17 +40,52 @@ class AppLocalizationsId extends AppLocalizations {
   String get minorWoundDesc => '🩹 Perawatan luka kecil.';
 
   @override
-  String get emergencyCPR => 'CPR Darurat';
+  String get emergencyBagTitle => 'Tas Darurat';
 
   @override
-  String get emergencyCPRDesc => '❤️ Bantuan hidup dasar.';
+  String get emergencyBagDescription => '🧳 Checklist Tas Darurat.';
 
   @override
-  String get firstAidEquipment => 'Perlengkapan P3K';
+  String get emergencyBag => '📌 Isi Wajib Tas Darurat';
 
   @override
-  String get firstAidEquipmentDesc =>
-      'Perlengkapan pertolongan pertama dapat membantu kita ketika terjadi keadaan darurat.';
+  String get emergencyBagDesc =>
+      '• 📄 Dokumen penting (KTP, KK, BPJS – simpan dalam plastik kedap air)\n• 💊 Obat pribadi & P3K mini (obat rutin, antiseptik, plester, masker)\n• 🔦 Senter + baterai cadangan\n• 🧴 Higienitas (tisu basah, hand sanitizer, pembalut)\n• 🧥 Pakaian cadangan & selimut ringan\n• 🍞 Makanan tahan lama (biskuit, makanan kaleng)\n• 💧 Air minum minimal 1 liter\n• 📱 Powerbank & kabel charger\n• 💵 Uang tunai secukupnya\n• 🧸 Barang kenyamanan (mainan anak, selimut kecil)';
+
+  @override
+  String get firstAidEquipment1 => '🩹 Alat Penutup Luka';
+
+  @override
+  String get firstAidEquipmentDesc1 =>
+      '• Plester luka berbagai ukuran (band-aid)\n• Kasa steril\n• Perban gulung\n• Plester gulung (tape medis)\n• Kain segitiga (untuk membalut atau penopang lengan)';
+
+  @override
+  String get firstAidEquipment2 => '🧼 Antiseptik & Pembersih Luka';
+
+  @override
+  String get firstAidEquipmentDesc2 =>
+      '• Antiseptik cair (misalnya povidone iodine atau chlorhexidine)\n• Alkohol 70%\n• Tisu antiseptik\n• Sabun antiseptik';
+
+  @override
+  String get firstAidEquipment3 => '✂️ Alat Medis';
+
+  @override
+  String get firstAidEquipmentDesc3 =>
+      '• Gunting (untuk memotong perban atau pakaian)\n• Pinset (untuk mengambil serpihan)\n• Termometer Sarung tangan medis (latex/non-latex)\n• Masker';
+
+  @override
+  String get firstAidEquipment4 => '💊 Obat-Obatan Umum';
+
+  @override
+  String get firstAidEquipmentDesc4 =>
+      '• Paracetamol / ibuprofen (penurun demam & nyeri)\n• Obat diare (oralit, loperamide)\n• Obat alergi (antihistamin)\n• Salep antibiotik (untuk luka terbuka)\n• Krim anti gatal (misalnya untuk gigitan serangga)';
+
+  @override
+  String get firstAidEquipment5 => '🔗 Perlengkapan Tambahan';
+
+  @override
+  String get firstAidEquipmentDesc5 =>
+      '• Buku panduan P3K singkat\n• Alat bantu napas (CPR mask)\n• Ice pack instan\n• Korek kuping / cotton bud\n• Kantong plastik bersih';
 
   @override
   String get welcome => 'Selamat Datang di Curativo';
