@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // Item 3: tas darurat
         'title': localizations.emergencyBagTitle,
         'description': localizations.emergencyBagDescription,
-        'imageAsset': 'assets/images/cpr.png',
+        'imageAsset': 'assets/images/emergency_bag.jpg',
         'steps': [
           {
             'title': localizations.emergencyBag,
