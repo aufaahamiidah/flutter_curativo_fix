@@ -36,10 +36,11 @@ class ResultScreen extends StatefulWidget {
 
 class _ResultScreenState extends State<ResultScreen> {
   bool _isSaving = false; // Status apakah sedang menyimpan ke riwayat
+  bool _isSaved = false; // Status apakah sudah pernah disimpan
 
   /// Fungsi untuk menyimpan riwayat hasil deteksi ke penyimpanan lokal/database
   Future<void> _saveHistory() async {
-    if (_isSaving) return;
+    if (_isSaving || _isSaved) return; // Cegah jika sedang menyimpan atau sudah disimpan
 
     setState(() {
       _isSaving = true;
@@ -74,6 +75,11 @@ class _ResultScreenState extends State<ResultScreen> {
             ),
           ),
         );
+        
+        // Set status sudah disimpan
+        setState(() {
+          _isSaved = true;
+        });
       }
     } catch (e) {
       final localizations = AppLocalizations.of(context)!;
@@ -375,12 +381,16 @@ class _ResultScreenState extends State<ResultScreen> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: _isSaving ? null : _saveHistory,
+                  onPressed: (_isSaving || _isSaved) ? null : _saveHistory,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4299E1),
+                    backgroundColor: _isSaved 
+                        ? Colors.green 
+                        : const Color(0xFF4299E1),
                     foregroundColor: Colors.white,
                     elevation: 3,
-                    shadowColor: const Color(0xFF4299E1).withOpacity(0.3),
+                    shadowColor: (_isSaved 
+                        ? Colors.green 
+                        : const Color(0xFF4299E1)).withOpacity(0.3),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -407,23 +417,41 @@ class _ResultScreenState extends State<ResultScreen> {
                             ),
                           ],
                         )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.save,
-                              size: 20,
+                      : _isSaved
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.check_circle,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  localizations.historySaved,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.save,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  localizations.saveToHistory,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 8),
-                            Text(
-                              localizations.saveToHistory,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
                 ),
               ),
 
