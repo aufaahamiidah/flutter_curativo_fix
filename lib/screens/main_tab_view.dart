@@ -38,9 +38,9 @@ class _MainTabViewState extends State<MainTabView> {
         onScanCompleted: () {
           _historyKey.currentState
               ?.refreshHistory(); // Panggil fungsi refresh di riwayat
-          setState(() {
-            _selectedIndex = 3; // Pindah ke tab riwayat (indeks ke-3)
-          });
+          // setState(() {
+          //   _selectedIndex = 3; // Pindah ke tab riwayat (indeks ke-3)
+          // });
         },
       ),
       HistoryScreen(key: _historyKey), // Riwayat dengan GlobalKey
