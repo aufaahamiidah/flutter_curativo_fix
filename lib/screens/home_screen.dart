@@ -27,10 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
           {
             'title': localizations.preparednessKit,
             'description': localizations.preparednessKitDesc,
+            'imageAsset': 'assets/images/kit_siaga.webp', // Gambar untuk step 1
           },
           {
             'title': localizations.callHelp,
             'description': localizations.callHelpDesc,
+            'imageAsset':
+                'assets/images/call_help_step.webp', // Gambar untuk step 2
           },
         ],
       },
@@ -41,28 +44,40 @@ class _HomeScreenState extends State<HomeScreen> {
         'imageAsset': 'assets/images/p3k.png',
         'steps': [
           {
-            'title': localizations.firstAidEquipment1, // Perlu ada di file ARB
+            'title': localizations.firstAidEquipment1,
             'description': localizations.firstAidEquipmentDesc1,
+            'imageAsset':
+                'assets/images/alat_penutup_luka.webp', // Gambar untuk step 1
           },
           {
-            'title': localizations.firstAidEquipment2, 
+            'title': localizations.firstAidEquipment2,
             'description': localizations.firstAidEquipmentDesc2,
+            'imageAsset':
+                'assets/images/antiseptik.webp', // Gambar untuk step 2
           },
           {
-            'title': localizations.firstAidEquipment3, 
+            'title': localizations.firstAidEquipment3,
             'description': localizations.firstAidEquipmentDesc3,
+            'imageAsset':
+                'assets/images/alat_medis.webp', // Gambar untuk step 3
           },
           {
-            'title': localizations.firstAidEquipment4, 
+            'title': localizations.firstAidEquipment4,
             'description': localizations.firstAidEquipmentDesc4,
+            'imageAsset':
+                'assets/images/obat-obatan.webp', // Gambar untuk step 4
           },
           {
-            'title': localizations.firstAidEquipment5, 
+            'title': localizations.firstAidEquipment5,
             'description': localizations.firstAidEquipmentDesc5,
+            'imageAsset':
+                'assets/images/perlengkapan_tambahan.webp', // Gambar untuk step 5
           },
           {
             'title': localizations.callHelp,
             'description': localizations.callHelpDesc,
+            'imageAsset':
+                'assets/images/call_help_step.webp', // Gambar untuk step 6
           },
         ],
       },
@@ -75,10 +90,12 @@ class _HomeScreenState extends State<HomeScreen> {
           {
             'title': localizations.emergencyBag,
             'description': localizations.emergencyBagDesc,
+            'imageAsset': 'assets/images/kit_siaga.webp', // Gambar untuk step 1
           },
           {
             'title': localizations.callHelp,
             'description': localizations.callHelpDesc,
+            'imageAsset': 'assets/images/call_help_step.webp', // Ubah ekstensi
           },
         ],
       },

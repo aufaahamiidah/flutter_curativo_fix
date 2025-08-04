@@ -43,24 +43,17 @@ class HistoryScreenState extends State<HistoryScreen> {
   /// Fungsi untuk mengambil data history dari server, dengan opsi memilih halaman
   Future<void> _loadHistory({int page = 1}) async {
     setState(() => isLoading = true);
-    try {
-      // Memanggil API dari service untuk mengambil data riwayat cedera
-      final data = await injuryService.fetchInjuryHistory(page: page);
-      setState(() {
-        // Memperbarui data history dari response API
-        scanHistory = data['items'];
-        // Update status pagination berdasarkan response
-        currentPage = data['pagination']['current_page'];
-        lastPage = data['pagination']['last_page'];
-        totalItems = data['pagination']['total'];
-        isLoading = false;
-      });
-    } catch (e) {
-      // Tangani jika terjadi error saat pengambilan data
-      setState(() => isLoading = false);
-      final localizations = AppLocalizations.of(context)!;
-      _showErrorSnackBar(localizations.failedToLoadHistory);
-    }
+    // Memanggil API dari service untuk mengambil data riwayat cedera
+    final data = await injuryService.fetchInjuryHistory(page: page);
+    setState(() {
+      // Memperbarui data history dari response API
+      scanHistory = data['items'];
+      // Update status pagination berdasarkan response
+      currentPage = data['pagination']['current_page'];
+      lastPage = data['pagination']['last_page'];
+      totalItems = data['pagination']['total'];
+      isLoading = false;
+    });
   }
 
   /// Fungsi untuk menghapus satu item history berdasarkan id

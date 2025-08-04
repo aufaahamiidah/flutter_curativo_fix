@@ -1,12 +1,19 @@
+// Import library Flutter bawaan
 import 'package:flutter/material.dart';
-import 'package:flutter_curativo/l10n/app_localizations.dart'; // Paket lokal untuk mendukung multibahasa
-import 'package:feather_icons/feather_icons.dart'; // Paket ikon Feather
-import '../widgets/emergency/emergency_header.dart'; // Widget header darurat
-import '../widgets/emergency/emergency_contact_card.dart'; // Kartu kontak darurat
-import '../widgets/emergency/emergency_action_card.dart'; // Kartu tindakan darurat
-import '../widgets/headers/section_header.dart'; // Header seksi umum
 
-// Widget Stateful untuk halaman pertolongan pertama
+// Import localization untuk mendukung fitur multibahasa
+import 'package:flutter_curativo/l10n/app_localizations.dart';
+
+// Import ikon Feather
+import 'package:feather_icons/feather_icons.dart';
+
+// Import custom widget untuk halaman darurat
+import '../widgets/emergency/emergency_header.dart';
+import '../widgets/emergency/emergency_contact_card.dart';
+import '../widgets/emergency/emergency_action_card.dart';
+import '../widgets/headers/section_header.dart';
+
+/// Widget Stateful yang digunakan untuk halaman 'Pertolongan Pertama'
 class AidScreen extends StatefulWidget {
   const AidScreen({super.key});
 
@@ -17,14 +24,14 @@ class AidScreen extends StatefulWidget {
 class _AidScreenState extends State<AidScreen> {
   @override
   Widget build(BuildContext context) {
-    // Ambil teks berdasarkan lokal/bahasa yang sedang aktif
+    // Ambil instance AppLocalizations untuk menerjemahkan teks sesuai bahasa
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA), // Warna latar belakang
+      backgroundColor: const Color(0xFFF8F9FA), // Warna latar belakang keseluruhan layar
       body: Column(
         children: [
-          // Header darurat dengan judul dan ikon
+          /// Header darurat dengan judul dan ikon ilustrasi
           EmergencyHeader(
             title: localizations.giveHelp,
             subtitle: localizations.emergencyFirstAidGuide,
@@ -44,7 +51,7 @@ class _AidScreenState extends State<AidScreen> {
 
           const SizedBox(height: 20),
 
-          // Kartu kontak untuk nomor darurat 112
+          /// Kartu informasi untuk nomor darurat 112
           EmergencyContactCard(
             title: localizations.emergencyContact112,
             subtitle: localizations.emergencyContactDesc,
@@ -54,7 +61,7 @@ class _AidScreenState extends State<AidScreen> {
 
           const SizedBox(height: 24),
 
-          // Header seksi untuk panduan tindakan darurat
+          /// Header seksi untuk daftar tindakan darurat
           SectionHeader(
             title: localizations.emergencyGuide,
             subtitle: localizations.emergencySteps,
@@ -62,96 +69,83 @@ class _AidScreenState extends State<AidScreen> {
 
           const SizedBox(height: 8),
 
-          // Daftar kartu tindakan darurat
+          /// Daftar tindakan darurat dalam bentuk kartu
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               children: [
-                // Kartu tindakan: Tersedak orang dewasa
+                /// Setiap EmergencyActionCard menampilkan jenis tindakan, deskripsi, ikon, dan fungsi saat ditekan
                 EmergencyActionCard(
                   title: localizations.chokingAdult,
                   subtitle: localizations.chokingAdultDesc,
                   icon: Icons.person,
-                  onTap:
-                      () => _showEmergencyModal(
-                        context,
-                        localizations.chokingAdult,
-                        localizations.chokingAdultInstructions,
-                      ),
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    localizations.chokingAdult,
+                    localizations.chokingAdultInstructions,
+                  ),
                 ),
-                // Kartu tindakan: Tersedak anak
                 EmergencyActionCard(
                   title: localizations.chokingChild,
                   subtitle: localizations.chokingChildDesc,
                   icon: Icons.child_care,
-                  onTap:
-                      () => _showEmergencyModal(
-                        context,
-                        localizations.chokingChild,
-                        localizations.chokingChildInstructions,
-                      ),
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    localizations.chokingChild,
+                    localizations.chokingChildInstructions,
+                  ),
                 ),
-                // Kartu tindakan: Tersedak bayi
                 EmergencyActionCard(
                   title: localizations.chokingBaby,
                   subtitle: localizations.chokingBabyDesc,
                   icon: Icons.baby_changing_station,
-                  onTap:
-                      () => _showEmergencyModal(
-                        context,
-                        localizations.chokingBaby,
-                        localizations.chokingBabyInstructions,
-                      ),
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    localizations.chokingBaby,
+                    localizations.chokingBabyInstructions,
+                  ),
                 ),
-                // Kartu tindakan: Pendarahan parah
                 EmergencyActionCard(
                   title: localizations.severeBleeding,
                   subtitle: localizations.severeBleedingDesc,
                   icon: Icons.bloodtype,
-                  onTap:
-                      () => _showEmergencyModal(
-                        context,
-                        localizations.severeBleeding,
-                        localizations.severeBleedingInstructions,
-                      ),
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    localizations.severeBleeding,
+                    localizations.severeBleedingInstructions,
+                  ),
                 ),
-                // Kartu tindakan: Serangan jantung
                 EmergencyActionCard(
                   title: localizations.heartAttack,
                   subtitle: localizations.heartAttackDesc,
                   icon: Icons.favorite,
-                  onTap:
-                      () => _showEmergencyModal(
-                        context,
-                        localizations.heartAttack,
-                        localizations.heartAttackInstructions,
-                      ),
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    localizations.heartAttack,
+                    localizations.heartAttackInstructions,
+                  ),
                 ),
-                // Kartu tindakan: Stroke
                 EmergencyActionCard(
                   title: localizations.stroke,
                   subtitle: localizations.strokeDesc,
                   icon: Icons.psychology,
-                  onTap:
-                      () => _showEmergencyModal(
-                        context,
-                        localizations.stroke,
-                        localizations.strokeInstructions,
-                      ),
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    localizations.stroke,
+                    localizations.strokeInstructions,
+                  ),
                 ),
-                // Kartu tindakan: Luka bakar
                 EmergencyActionCard(
                   title: localizations.burns,
                   subtitle: localizations.burnsDesc,
                   icon: Icons.local_fire_department,
-                  onTap:
-                      () => _showEmergencyModal(
-                        context,
-                        localizations.burns,
-                        localizations.burnsInstructions,
-                      ),
+                  onTap: () => _showEmergencyModal(
+                    context,
+                    localizations.burns,
+                    localizations.burnsInstructions,
+                  ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 20), // Spasi akhir list
               ],
             ),
           ),
@@ -160,81 +154,208 @@ class _AidScreenState extends State<AidScreen> {
     );
   }
 
-  // Fungsi untuk menampilkan modal bottom sheet saat salah satu tindakan darurat ditekan
+  /// Fungsi untuk menampilkan modal bottom sheet berisi detail petunjuk pertolongan
   void _showEmergencyModal(BuildContext context, String title, String content) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true,
+      isScrollControlled: true, // agar modal bisa di-drag
       backgroundColor: Colors.transparent,
       builder: (context) {
         return DraggableScrollableSheet(
-          initialChildSize: 0.9, // Ukuran awal modal
+          initialChildSize: 0.9, // Ukuran awal modal saat muncul
           minChildSize: 0.6,
           maxChildSize: 0.95,
-          builder:
-              (_, controller) => Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                ),
-                child: Column(
-                  children: [
-                    // Header modal dengan judul dan tombol tutup
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [Color(0xFFE53E3E), Color(0xFFD53F8C)],
-                        ),
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(24),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              title,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.close, color: Colors.white),
-                            onPressed:
-                                () =>
-                                    Navigator.of(context).pop(), // Tutup modal
-                          ),
-                        ],
-                      ),
+          builder: (_, controller) => Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            child: Column(
+              children: [
+                /// Header modal berisi judul dan tombol tutup
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xFFE53E3E), Color(0xFFD53F8C)],
                     ),
-                    // Isi konten petunjuk
-                    Expanded(
-                      child: ListView(
-                        controller: controller,
-                        padding: const EdgeInsets.all(20),
-                        children: [
-                          Text(
-                            content,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              height: 1.6,
-                              color: Color(0xFF333333),
-                            ),
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+
+                /// Isi konten dengan scroll
+                Expanded(
+                  child: ListView(
+                    controller: controller,
+                    padding: const EdgeInsets.all(20),
+                    children: _buildFormattedContent(content),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
+  }
+
+  /// Fungsi untuk membentuk isi konten menjadi bagian info dan langkah-langkah terstruktur
+  List<Widget> _buildFormattedContent(String content) {
+    List<Widget> widgets = [];
+
+    // Pisahkan antara bagian penjelasan dan langkah-langkah
+    List<String> parts = content.split(RegExp(r'(Langkah:|Steps:)'));
+
+    if (parts.length > 1) {
+      // Tambahkan bagian penjelasan sebelum langkah-langkah jika ada
+      if (parts[0].trim().isNotEmpty) {
+        widgets.add(
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF0F9FF),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFFE0F2FE)),
+            ),
+            child: Text(
+              parts[0].trim(),
+              style: const TextStyle(
+                fontSize: 16,
+                height: 1.5,
+                color: Color(0xFF0F172A),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        );
+      }
+
+      // Ambil konten langkah-langkah dan pisahkan tiap langkah berdasarkan huruf (a. b. c.)
+      String stepsContent = parts[1];
+      List<String> steps = stepsContent.split(RegExp(r'\n[a-f]\.\s*'))
+          .where((step) => step.trim().isNotEmpty)
+          .toList();
+
+      if (steps.isNotEmpty) {
+        widgets.add(
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: const Text(
+              'Langkah-langkah:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+          ),
+        );
+
+        // Tampilkan setiap langkah dalam bentuk kartu bernomor
+        for (int i = 0; i < steps.length; i++) {
+          String step = steps[i].trim();
+          step = step.replaceFirst(RegExp(r'^[a-f]\.\s*'), ''); // Hapus awalan huruf jika ada
+
+          widgets.add(
+            Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFFE2E8F0)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Nomor langkah
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDC2626),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${i + 1}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+
+                  /// Isi teks langkah
+                  Expanded(
+                    child: Text(
+                      step,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        height: 1.5,
+                        color: Color(0xFF334155),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      }
+    } else {
+      // Jika konten tidak memiliki langkah-langkah, tampilkan sebagai satu blok teks
+      widgets.add(
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF8FAFC),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFE2E8F0)),
+          ),
+          child: Text(
+            content,
+            style: const TextStyle(
+              fontSize: 16,
+              height: 1.6,
+              color: Color(0xFF334155),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return widgets;
   }
 }

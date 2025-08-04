@@ -43,6 +43,25 @@ class _RegisterPageState extends State<RegisterPage> {
     ).showSnackBar(SnackBar(content: Text(message)));
   }
 
+  // Tambahkan fungsi konversi gender
+  String _convertGenderForAPI(String? selectedGender, AppLocalizations localizations) {
+    if (selectedGender == null) return '';
+    
+    // Jika sudah dalam bahasa Indonesia, return as is
+    if (selectedGender == 'Laki-laki' || selectedGender == 'Perempuan') {
+      return selectedGender;
+    }
+    
+    // Konversi dari bahasa Inggris ke Indonesia
+    if (selectedGender == localizations.male || selectedGender.toLowerCase() == 'male') {
+      return 'Laki-laki';
+    } else if (selectedGender == localizations.female || selectedGender.toLowerCase() == 'female') {
+      return 'Perempuan';
+    }
+    
+    return selectedGender; // fallback
+  }
+
   @override
   Widget build(BuildContext context) {
     // Mengambil instance lokal dari AppLocalizations untuk mendukung multi-bahasa
@@ -197,6 +216,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       return;
                     }
 
+                    // Konversi gender ke format yang diharapkan API
+                    String apiGender = _convertGenderForAPI(gender, localizations);
+
                     // Kirim data ke backend menggunakan AuthService
                     final auth = AuthService();
                     final result = await auth.registerWithDetails(
@@ -205,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       password: password,
                       confirmPassword: confirmPassword,
                       phone: phoneNumber,
-                      gender: gender,
+                      gender: apiGender, // Gunakan gender yang sudah dikonversi
                     );
 
                     // Jika berhasil, navigasi ke halaman utama

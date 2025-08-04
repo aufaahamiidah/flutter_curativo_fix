@@ -323,7 +323,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failedToLoadImage => 'Failed to load image';
 
   @override
-  String get noImage => 'No image';
+  String get noImage => 'Image not found';
 
   @override
   String get treatmentRecommendationTitle => 'Treatment Recommendation';
@@ -415,7 +415,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chokingAdultInstructions =>
-      'If an adult or elderly person is choking and can still cough or make sounds, let them cough to try to dislodge the object. If they can\'t breathe or speak, perform the Heimlich maneuver.';
+      'Steps:\na. Stay calm and assess the situation: if the victim can still cough or make sounds, let them cough to try to dislodge the object.\nb. If they can\'t breathe or speak, stand behind the victim and wrap your arms around their waist.\nc. Make a fist and place it above the navel, grasp with your other hand.\nd. Give quick upward and inward thrusts until the object comes out or the victim becomes unconscious.\ne. If the victim faints, start CPR and call emergency medical services (112).\nf. Stay with the victim until medical help arrives.';
 
   @override
   String get chokingChild => 'Choking (Child)';
@@ -425,7 +425,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chokingChildInstructions =>
-      'For small children, position them leaning forward and pat their back five times with the palm of your hand. If unsuccessful, perform abdominal thrusts.';
+      'Steps:\na. Stay calm and position the child leaning forward with head lower than chest.\nb. Give 5 firm back blows between the shoulder blades with the heel of your hand.\nc. If unsuccessful, turn the child to face you and give 5 abdominal thrusts with 2 fingers below the breastbone.\nd. Repeat back blows and abdominal thrusts until the object comes out.\ne. If the child faints, start CPR and call 112 immediately.\nf. Monitor breathing and stay with the child until help arrives.';
 
   @override
   String get chokingBaby => 'Choking (Baby)';
@@ -435,7 +435,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chokingBabyInstructions =>
-      'Place the baby face down on your arm, head lower than body. Give five back blows, then five chest compressions if unsuccessful.';
+      'Steps:\na. Place the baby face down on your forearm with head lower than body, support head and neck.\nb. Give 5 gentle but firm back blows between the shoulder blades with the heel of your hand.\nc. If unsuccessful, turn baby face up on your arm and give 5 chest compressions with 2 fingers in the center of chest.\nd. Repeat back blows and chest compressions until object comes out or baby becomes unresponsive.\ne. If baby becomes unresponsive, start infant CPR and call 112 immediately.\nf. Never put your finger in the baby\'s mouth unless you can clearly see the object.';
 
   @override
   String get severeBleeding => 'Severe Bleeding';
@@ -445,7 +445,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get severeBleedingInstructions =>
-      'Apply direct pressure to the wound with a clean cloth or bandage. If blood soaks through, add another layer without removing the first. Elevate the bleeding part above the heart if possible.';
+      'Steps:\na. Wear protective gloves if available, or use another barrier to protect yourself.\nb. Apply direct pressure to the wound with a clean cloth, bandage, or clothing to stop bleeding.\nc. If blood soaks through, add another layer on top without removing the first layer.\nd. Elevate the bleeding body part above the heart if possible and there\'s no broken bone.\ne. If bleeding doesn\'t stop after 10 minutes of direct pressure, call 112 immediately.\nf. Monitor for signs of shock (pale, cold, weak) and keep victim warm until help arrives.';
 
   @override
   String get heartAttack => 'Heart Attack';
@@ -455,7 +455,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get heartAttackInstructions =>
-      'Call for medical help immediately. Give aspirin if available and the victim is not allergic. Position the victim sitting comfortably, loosen tight clothing.';
+      'Steps:\na. Call 112 immediately or ask someone else to do it.\nb. Help the victim sit in a comfortable position, usually with knees bent and leaning back.\nc. Loosen tight clothing around neck and chest to ease breathing.\nd. If victim is conscious and not allergic, give 1 aspirin tablet to chew (not swallow whole).\ne. Monitor breathing and pulse; if they stop, start CPR immediately.\nf. Stay calm and stay with the victim, note the time symptoms started to report to medical personnel.';
 
   @override
   String get stroke => 'Stroke';
@@ -465,7 +465,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get strokeInstructions =>
-      'Use the FAST test: Face, Arms, Speech, Time. If there are signs of stroke, immediately contact emergency services.';
+      'Steps:\na. Use the FAST test to recognize stroke: Face (ask to smile, is face drooping?), Arms (raise both arms, does one drift down?), Speech (ask to speak, is speech slurred/unclear?), Time (note time symptoms started).\nb. If there are signs of stroke, call 112 immediately - time is critical in stroke treatment.\nc. Help victim lie down with head and shoulders slightly elevated, turn head to side if vomiting.\nd. Don\'t give food or drinks as swallowing ability may be impaired.\ne. Loosen tight clothing and monitor breathing and consciousness.\nf. Note the time symptoms started and provide this information to medical personnel.';
+
+  @override
+  String get fainting => 'Fainting';
+
+  @override
+  String get faintingDesc => 'Handling unconscious person';
+
+  @override
+  String get faintingInstructions =>
+      'Steps:\na. Ensure the area is safe and move victim away from danger (roads, sharp objects).\nb. Check victim\'s response by tapping shoulders and calling their name loudly.\nc. If unresponsive but breathing normally, position in recovery position (on their side).\nd. Loosen tight clothing around neck and chest, ensure airway is open.\ne. If victim is not breathing or breathing abnormally, start CPR and call 112 immediately.\nf. Monitor vital signs and stay with victim until they regain consciousness or medical help arrives.';
 
   @override
   String get burns => 'Burns';
@@ -624,4 +634,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logout => 'LOGOUT';
+
+  @override
+  String get processScan => 'Analyzing the wound';
 }
