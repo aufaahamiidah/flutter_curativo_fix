@@ -321,7 +321,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get failedToLoadImage => 'Gagal memuat gambar';
 
   @override
-  String get noImage => 'Tidak ada gambar';
+  String get noImage => 'Gambar Tidak Ditemukan';
 
   @override
   String get treatmentRecommendationTitle => 'Rekomendasi Penanganan';
@@ -414,7 +414,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get chokingAdultInstructions =>
-      'Jika seseorang dewasa atau lansia tersedak dan masih bisa batuk atau bersuara, biarkan mereka batuk untuk mencoba mengeluarkan objek tersebut. Jika tidak bisa bernapas atau bicara, lakukan Heimlich maneuver.';
+      'Langkah:\na. Tetap tenang dan nilai situasi: jika korban masih bisa batuk atau bersuara, biarkan mereka batuk untuk mengeluarkan objek.\nb. Jika korban tidak bisa bernapas atau bicara, berdiri di belakang korban dan lingkarkan lengan di sekitar pinggang.\nc. Buat kepalan tangan dan letakkan di atas pusar, genggam dengan tangan lainnya.\nd. Berikan dorongan cepat ke atas dan ke dalam hingga objek keluar atau korban tidak sadarkan diri.\ne. Jika korban pingsan, mulai CPR dan panggil bantuan medis darurat (112).\nf. Tetap bersama korban hingga bantuan medis tiba.';
 
   @override
   String get chokingChild => 'Tersedak (Anak Kecil)';
@@ -424,7 +424,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get chokingChildInstructions =>
-      'Untuk anak kecil, posisikan mereka membungkuk ke depan dan tepuk punggung mereka lima kali dengan telapak tangan. Jika tidak berhasil, lakukan dorongan perut.';
+      'Langkah:\na. Tetap tenang dan posisikan anak membungkuk ke depan dengan kepala lebih rendah dari dada.\nb. Berikan 5 tepukan kuat di antara tulang belikat dengan tumit telapak tangan.\nc. Jika belum berhasil, putar anak menghadap Anda dan berikan 5 dorongan perut dengan 2 jari di bawah tulang dada.\nd. Ulangi tepukan punggung dan dorongan perut hingga objek keluar.\ne. Jika anak pingsan, mulai CPR dan panggil 112 segera.\nf. Pantau pernapasan dan tetap bersama anak hingga bantuan tiba.';
 
   @override
   String get chokingBaby => 'Tersedak (Bayi)';
@@ -434,7 +434,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get chokingBabyInstructions =>
-      'Letakkan bayi telungkup di lengan Anda, kepala lebih rendah dari tubuh. Berikan lima tepukan di punggung, lalu lima tekanan dada jika belum berhasil.';
+      'Langkah:\na. Letakkan bayi telungkup di lengan bawah Anda dengan kepala lebih rendah dari tubuh, topang kepala dan leher.\nb. Berikan 5 tepukan lembut tapi tegas di antara tulang belikat dengan tumit telapak tangan.\nc. Jika belum berhasil, balik bayi telentang di lengan Anda dan berikan 5 tekanan dada dengan 2 jari di tengah dada.\nd. Ulangi tepukan punggung dan tekanan dada hingga objek keluar atau bayi tidak responsif.\ne. Jika bayi tidak responsif, mulai CPR bayi dan panggil 112 segera.\nf. Jangan pernah memasukkan jari ke mulut bayi kecuali Anda bisa melihat objek dengan jelas.';
 
   @override
   String get severeBleeding => 'Pendarahan Parah';
@@ -444,7 +444,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get severeBleedingInstructions =>
-      'Tekan langsung pada luka dengan kain bersih atau perban. Jika darah menembus, tambahkan lapisan lain tanpa melepas yang pertama. Angkat bagian yang berdarah lebih tinggi dari jantung jika memungkinkan.';
+      'Langkah:\na. Kenakan sarung tangan pelindung jika tersedia, atau gunakan penghalang lain untuk melindungi diri.\nb. Tekan langsung pada luka dengan kain bersih, perban, atau pakaian untuk menghentikan pendarahan.\nc. Jika darah menembus, tambahkan lapisan kain lain di atasnya tanpa melepas lapisan pertama.\nd. Angkat bagian tubuh yang berdarah lebih tinggi dari jantung jika memungkinkan dan tidak ada patah tulang.\ne. Jika pendarahan tidak berhenti setelah 10 menit tekanan langsung, panggil 112 segera.\nf. Pantau tanda-tanda syok (pucat, dingin, lemah) dan jaga korban tetap hangat hingga bantuan tiba.';
 
   @override
   String get heartAttack => 'Serangan Jantung';
@@ -454,7 +454,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get heartAttackInstructions =>
-      'Panggil bantuan medis segera. Berikan aspirin jika tersedia dan korban tidak alergi. Posisikan korban duduk dengan nyaman, longgarkan pakaian ketat.';
+      'Langkah:\na. Panggil 112 segera atau minta orang lain melakukannya.\nb. Bantu korban duduk dalam posisi nyaman, biasanya dengan lutut ditekuk dan bersandar.\nc. Longgarkan pakaian ketat di sekitar leher dan dada untuk memudahkan pernapasan.\nd. Jika korban sadar dan tidak alergi, berikan 1 tablet aspirin untuk dikunyah (bukan ditelan utuh).\ne. Pantau pernapasan dan denyut nadi; jika berhenti, mulai CPR segera.\nf. Tetap tenang dan dampingi korban, catat waktu gejala dimulai untuk dilaporkan ke petugas medis.';
 
   @override
   String get stroke => 'Stroke';
@@ -464,7 +464,17 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get strokeInstructions =>
-      'Gunakan tes FAST: Face (wajah), Arms (lengan), Speech (bicara), Time (waktu). Jika ada tanda stroke, segera hubungi layanan darurat.';
+      'Langkah:\na. Gunakan tes FAST untuk mengenali stroke: Face (minta tersenyum, apakah wajah turun sebelah?), Arms (angkat kedua lengan, apakah salah satu turun?), Speech (minta bicara, apakah pelo/tidak jelas?), Time (catat waktu gejala dimulai).\nb. Jika ada tanda stroke, panggil 112 segera - waktu sangat penting dalam penanganan stroke.\nc. Bantu korban berbaring dengan kepala dan bahu sedikit terangkat, miringkan kepala jika muntah.\nd. Jangan berikan makanan atau minuman karena kemampuan menelan mungkin terganggu.\ne. Longgarkan pakaian ketat dan pantau pernapasan serta kesadaran.\nf. Catat waktu dimulainya gejala dan sampaikan informasi ini kepada petugas medis.';
+
+  @override
+  String get fainting => 'Pingsan';
+
+  @override
+  String get faintingDesc => 'Penanganan orang yang pingsan';
+
+  @override
+  String get faintingInstructions =>
+      'Langkah:\na. Pastikan area aman dan jauhkan korban dari bahaya (jalan raya, benda tajam).\nb. Periksa respons korban dengan menepuk bahu dan memanggil nama mereka dengan keras.\nc. Jika tidak responsif tapi bernapas normal, posisikan dalam recovery position (miring ke samping).\nd. Longgarkan pakaian ketat di sekitar leher dan dada, pastikan jalan napas terbuka.\ne. Jika korban tidak bernapas atau napas tidak normal, mulai CPR dan panggil 112 segera.\nf. Pantau tanda vital dan tetap bersama korban hingga mereka sadar atau bantuan medis tiba.';
 
   @override
   String get burns => 'Luka Bakar';
@@ -623,4 +633,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get logout => 'LOGOUT';
+
+  @override
+  String get processScan => 'Menganalisis luka';
 }

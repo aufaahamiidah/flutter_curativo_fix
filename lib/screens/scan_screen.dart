@@ -273,6 +273,10 @@ class _ScanScreenState extends State<ScanScreen> {
       );
       if (pickedFile != null) {
         setState(() => imageFile = File(pickedFile.path));
+        // Langsung jalankan scan setelah gambar dipilih
+        if (_modelLoaded) {
+          _runModel();
+        }
       }
     } catch (e) {
       final localizations = AppLocalizations.of(context)!;
@@ -305,12 +309,50 @@ class _ScanScreenState extends State<ScanScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Kartu untuk memilih gambar
-              ImagePickerCard(
-                imageFile: imageFile,
-                onTap: () => _showPickOptionsDialog(context),
-                hintText: localizations.tapToSelectPhoto,
-                height: 280,
+              // Kartu untuk memilih gambar dengan overlay loading
+              Stack(
+                children: [
+                  ImagePickerCard(
+                    imageFile: imageFile,
+                    onTap: _isProcessing ? () {} : () => _showPickOptionsDialog(context),
+                    hintText: localizations.tapToSelectPhoto,
+                    height: 280,
+                  ),
+                  // Overlay loading animation
+                  if (_isProcessing)
+                    Container(
+                      height: 280,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 4,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Color(0xFFE53E3E),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              localizations.processScan,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
               ),
 
               const SizedBox(height: 24),
@@ -323,32 +365,6 @@ class _ScanScreenState extends State<ScanScreen> {
                   localizations.scanInstruction3,
                   localizations.scanInstruction4,
                 ],
-              ),
-
-              const SizedBox(height: 32),
-
-              // Tombol untuk memulai proses pemindaian
-              Center(
-                child: GenericButton(
-                  text:
-                      _isProcessing
-                          ? localizations.processing
-                          : localizations.scanWound.toUpperCase(),
-                  onPressed:
-                      (imageFile == null || !_modelLoaded || _isProcessing)
-                          ? () {}
-                          : _runModel,
-                  type: ButtonType.elevated,
-                  backgroundColor:
-                      (imageFile == null || !_modelLoaded || _isProcessing)
-                          ? Colors.grey[400]
-                          : const Color(0xFFE53E3E),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 18,
-                    horizontal: 40,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
 
               const SizedBox(height: 20),

@@ -52,7 +52,7 @@ class EmergencyKitCard extends StatelessWidget {
                 top: Radius.circular(10),
               ),
               child: Image.asset(
-                imageAsset,
+                imageAsset, // Path gambar dari data kit
                 height: 100,
                 width: double.infinity,
                 fit: BoxFit.cover,

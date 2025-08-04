@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_curativo/l10n/app_localizations.dart'; // Tambahkan import ini
 
 /// Halaman detail untuk menampilkan langkah-langkah penggunaan emergency kit
 class EmergencyKitDetailPage extends StatefulWidget {
@@ -52,6 +53,8 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!; // Tambahkan ini
+    
     return Scaffold(
       backgroundColor: const Color(0xFF000054), // Latar belakang biru tua
       body: Stack(
@@ -77,8 +80,7 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // Bagian gambar di atas kartu (jika tersedia)
-                        if (item['imageAsset'] != null &&
-                            item['imageAsset']!.isNotEmpty)
+                        if (item['imageAsset'] != null && item['imageAsset']!.isNotEmpty)
                           ClipRRect(
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(16),
@@ -86,9 +88,30 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
                             ),
                             child: Image.asset(
                               item['imageAsset']!,
-                              height: 300,
+                              height: 200,
                               width: double.infinity,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill, // Gambar akan mengisi seluruh area (mungkin terdistorsi)
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  height: 200, // Samakan dengan tinggi gambar
+                                  color: Colors.grey[300],
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.image_not_supported,
+                                        size: 50,
+                                        color: Colors.grey,
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        localizations.noImage,// Ganti 'Gambar tidak tersedia' dengan ini
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
 
@@ -110,13 +133,17 @@ class _EmergencyKitDetailPageState extends State<EmergencyKitDetailPage> {
                                   ),
                                 ),
                                 const SizedBox(height: 16),
-                                // Deskripsi langkah
-                                Text(
-                                  item['description'] ?? '',
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    height: 1.5,
+                                // Deskripsi langkah yang bisa di-scroll
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      item['description'] ?? '',
+                                      textAlign: TextAlign.start,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        height: 1.5,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
