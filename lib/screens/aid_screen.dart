@@ -28,7 +28,9 @@ class _AidScreenState extends State<AidScreen> {
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA), // Warna latar belakang keseluruhan layar
+      backgroundColor: const Color(
+        0xFFF8F9FA,
+      ), // Warna latar belakang keseluruhan layar
       body: Column(
         children: [
           /// Header darurat dengan judul dan ikon ilustrasi
@@ -79,71 +81,67 @@ class _AidScreenState extends State<AidScreen> {
                   title: localizations.chokingAdult,
                   subtitle: localizations.chokingAdultDesc,
                   icon: Icons.person,
-                  onTap: () => _showEmergencyModal(
-                    context,
-                    localizations.chokingAdult,
-                    localizations.chokingAdultInstructions,
-                  ),
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.chokingAdult,
+                        localizations.chokingAdultInstructions,
+                      ),
                 ),
                 EmergencyActionCard(
                   title: localizations.chokingChild,
                   subtitle: localizations.chokingChildDesc,
                   icon: Icons.child_care,
-                  onTap: () => _showEmergencyModal(
-                    context,
-                    localizations.chokingChild,
-                    localizations.chokingChildInstructions,
-                  ),
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.chokingChild,
+                        localizations.chokingChildInstructions,
+                      ),
                 ),
                 EmergencyActionCard(
                   title: localizations.chokingBaby,
                   subtitle: localizations.chokingBabyDesc,
                   icon: Icons.baby_changing_station,
-                  onTap: () => _showEmergencyModal(
-                    context,
-                    localizations.chokingBaby,
-                    localizations.chokingBabyInstructions,
-                  ),
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.chokingBaby,
+                        localizations.chokingBabyInstructions,
+                      ),
                 ),
                 EmergencyActionCard(
                   title: localizations.severeBleeding,
                   subtitle: localizations.severeBleedingDesc,
                   icon: Icons.bloodtype,
-                  onTap: () => _showEmergencyModal(
-                    context,
-                    localizations.severeBleeding,
-                    localizations.severeBleedingInstructions,
-                  ),
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.severeBleeding,
+                        localizations.severeBleedingInstructions,
+                      ),
                 ),
                 EmergencyActionCard(
                   title: localizations.heartAttack,
                   subtitle: localizations.heartAttackDesc,
                   icon: Icons.favorite,
-                  onTap: () => _showEmergencyModal(
-                    context,
-                    localizations.heartAttack,
-                    localizations.heartAttackInstructions,
-                  ),
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.heartAttack,
+                        localizations.heartAttackInstructions,
+                      ),
                 ),
                 EmergencyActionCard(
                   title: localizations.stroke,
                   subtitle: localizations.strokeDesc,
                   icon: Icons.psychology,
-                  onTap: () => _showEmergencyModal(
-                    context,
-                    localizations.stroke,
-                    localizations.strokeInstructions,
-                  ),
-                ),
-                EmergencyActionCard(
-                  title: localizations.burns,
-                  subtitle: localizations.burnsDesc,
-                  icon: Icons.local_fire_department,
-                  onTap: () => _showEmergencyModal(
-                    context,
-                    localizations.burns,
-                    localizations.burnsInstructions,
-                  ),
+                  onTap:
+                      () => _showEmergencyModal(
+                        context,
+                        localizations.stroke,
+                        localizations.strokeInstructions,
+                      ),
                 ),
                 const SizedBox(height: 20), // Spasi akhir list
               ],
@@ -165,55 +163,58 @@ class _AidScreenState extends State<AidScreen> {
           initialChildSize: 0.9, // Ukuran awal modal saat muncul
           minChildSize: 0.6,
           maxChildSize: 0.95,
-          builder: (_, controller) => Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-            ),
-            child: Column(
-              children: [
-                /// Header modal berisi judul dan tombol tutup
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFFE53E3E), Color(0xFFD53F8C)],
-                    ),
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+          builder:
+              (_, controller) => Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                ),
+                child: Column(
+                  children: [
+                    /// Header modal berisi judul dan tombol tutup
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFFE53E3E), Color(0xFFD53F8C)],
+                        ),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(24),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.close, color: Colors.white),
-                        onPressed: () => Navigator.of(context).pop(),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close, color: Colors.white),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
 
-                /// Isi konten dengan scroll
-                Expanded(
-                  child: ListView(
-                    controller: controller,
-                    padding: const EdgeInsets.all(20),
-                    children: _buildFormattedContent(content),
-                  ),
+                    /// Isi konten dengan scroll
+                    Expanded(
+                      child: ListView(
+                        controller: controller,
+                        padding: const EdgeInsets.all(20),
+                        children: _buildFormattedContent(content),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
         );
       },
     );
@@ -253,9 +254,11 @@ class _AidScreenState extends State<AidScreen> {
 
       // Ambil konten langkah-langkah dan pisahkan tiap langkah berdasarkan huruf (a. b. c.)
       String stepsContent = parts[1];
-      List<String> steps = stepsContent.split(RegExp(r'\n[a-f]\.\s*'))
-          .where((step) => step.trim().isNotEmpty)
-          .toList();
+      List<String> steps =
+          stepsContent
+              .split(RegExp(r'\n[a-f]\.\s*'))
+              .where((step) => step.trim().isNotEmpty)
+              .toList();
 
       if (steps.isNotEmpty) {
         widgets.add(
@@ -275,7 +278,10 @@ class _AidScreenState extends State<AidScreen> {
         // Tampilkan setiap langkah dalam bentuk kartu bernomor
         for (int i = 0; i < steps.length; i++) {
           String step = steps[i].trim();
-          step = step.replaceFirst(RegExp(r'^[a-f]\.\s*'), ''); // Hapus awalan huruf jika ada
+          step = step.replaceFirst(
+            RegExp(r'^[a-f]\.\s*'),
+            '',
+          ); // Hapus awalan huruf jika ada
 
           widgets.add(
             Container(
