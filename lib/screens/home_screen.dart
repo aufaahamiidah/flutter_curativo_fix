@@ -29,12 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
             'description': localizations.preparednessKitDesc,
             'imageAsset': 'assets/images/kit_siaga.webp', // Gambar untuk step 1
           },
-          {
-            'title': localizations.callHelp,
-            'description': localizations.callHelpDesc,
-            'imageAsset':
-                'assets/images/call_help_step.webp', // Gambar untuk step 2
-          },
         ],
       },
       {
@@ -73,12 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
             'imageAsset':
                 'assets/images/perlengkapan_tambahan.webp', // Gambar untuk step 5
           },
-          {
-            'title': localizations.callHelp,
-            'description': localizations.callHelpDesc,
-            'imageAsset':
-                'assets/images/call_help_step.webp', // Gambar untuk step 6
-          },
         ],
       },
       {
@@ -91,11 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
             'title': localizations.emergencyBag,
             'description': localizations.emergencyBagDesc,
             'imageAsset': 'assets/images/kit_siaga.webp', // Gambar untuk step 1
-          },
-          {
-            'title': localizations.callHelp,
-            'description': localizations.callHelpDesc,
-            'imageAsset': 'assets/images/call_help_step.webp', // Ubah ekstensi
           },
         ],
       },
