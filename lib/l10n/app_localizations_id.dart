@@ -535,54 +535,144 @@ class AppLocalizationsId extends AppLocalizations {
   String get scanInstruction4 => 'Ambil foto dari jarak yang tepat';
 
   @override
-  String get bruiseRecommendation1 => 'Kompres dengan es selama 15-20 menit';
+  String get bruiseRecommendation1 =>
+      'Kompres area cedera dengan air dingin atau kompres es yang dibungkus kain selama 10–15 menit segera setelah cedera untuk mengurangi pembengkakan dan perdarahan bawah kulit.';
 
   @override
-  String get bruiseRecommendation2 => 'Istirahatkan area yang terluka';
+  String get bruiseRecommendation2 =>
+      'Hindari kontak langsung es ke kulit agar tidak menyebabkan radang dingin atau kerusakan jaringan.';
 
   @override
   String get bruiseRecommendation3 =>
-      'Tinggikan bagian yang memar jika memungkinkan';
+      'Ulangi kompres dingin setiap 2–3 jam selama 24 jam pertama setelah cedera.';
 
   @override
-  String get bruiseRecommendation4 => 'Konsultasi dokter jika nyeri berlanjut';
+  String get bruiseRecommendation4 =>
+      'Setelah 24 jam, ganti dengan kompres hangat selama 10–15 menit beberapa kali sehari untuk membantu memperlancar aliran darah dan mempercepat penyembuhan.';
 
   @override
-  String get scratchRecommendation1 => 'Bersihkan luka dengan air bersih';
+  String get bruiseRecommendation5 =>
+      'Posisikan bagian yang cedera lebih tinggi dari jantung untuk mengurangi pembengkakan.';
 
   @override
-  String get scratchRecommendation2 => 'Oleskan antiseptik ringan';
+  String get bruiseRecommendation6 =>
+      'Istirahatkan area yang cedera dan hindari aktivitas yang memperparah nyeri.';
 
   @override
-  String get scratchRecommendation3 => 'Tutup dengan perban steril';
+  String get bruiseRecommendation7 =>
+      'Oleskan salep yang mengandung heparin (contoh: Trombophob) secara tipis pada area lebam untuk membantu memecah bekuan darah di bawah kulit.';
 
   @override
-  String get scratchRecommendation4 => 'Ganti perban secara teratur';
+  String get bruiseRecommendation8 =>
+      'Konsumsi obat pereda nyeri seperti paracetamol jika nyeri terasa mengganggu.';
 
   @override
-  String get cutRecommendation1 => 'Hentikan pendarahan dengan menekan luka';
+  String get cutRecommendation1 =>
+      'Cuci tangan dengan sabun dan air mengalir sebelum menyentuh atau menangani luka.';
 
   @override
-  String get cutRecommendation2 => 'Bersihkan luka dengan hati-hati';
+  String get cutRecommendation2 =>
+      'Tekan perlahan area luka menggunakan kain kasa steril atau tisu bersih hingga perdarahan berhenti.';
 
   @override
-  String get cutRecommendation3 => 'Oleskan salep antibiotik';
+  String get cutRecommendation3 =>
+      'Bersihkan luka dengan air mengalir untuk menghilangkan kotoran dan mencegah infeksi.';
 
   @override
-  String get cutRecommendation4 => 'Tutup dengan perban dan pantau infeksi';
+  String get cutRecommendation4 =>
+      'Oleskan antiseptik seperti povidone-iodine (Betadine) tipis-tipis di area luka.';
 
   @override
-  String get burnRecommendation1 => 'Dinginkan dengan air mengalir 10-20 menit';
+  String get cutRecommendation5 =>
+      'Tutup luka dengan plester atau kasa steril untuk melindungi dari kotoran dan bakteri.';
 
   @override
-  String get burnRecommendation2 => 'Jangan pecahkan lepuhan yang terbentuk';
+  String get cutRecommendation6 =>
+      'Ganti perban setiap hari atau segera jika perban menjadi kotor atau basah.';
+
+  @override
+  String get cutRecommendation7 =>
+      'Perhatikan tanda-tanda infeksi seperti kemerahan berlebihan, bengkak, nanah, atau demam.';
+
+  @override
+  String get cutRecommendation8 =>
+      'Jika luka sayat terlalu lebar, dalam, atau panjang lebih dari ±2 cm, segera ke fasilitas kesehatan terdekat untuk evaluasi dan kemungkinan penjahitan.';
+
+  @override
+  String get scratchRecommendation1 =>
+      'Bersihkan luka dengan air mengalir untuk menghilangkan kotoran dan bakteri.';
+
+  @override
+  String get scratchRecommendation2 =>
+      'Gunakan pinset steril untuk mengangkat pasir, debu, atau benda asing yang menempel pada kulit.';
+
+  @override
+  String get scratchRecommendation3 =>
+      'Oleskan antiseptik seperti povidone-iodine (Betadine) atau larutan antiseptik lainnya pada area luka.';
+
+  @override
+  String get scratchRecommendation4 =>
+      'Tutup luka dengan plester atau kasa steril untuk mencegah kontaminasi.';
+
+  @override
+  String get scratchRecommendation5 =>
+      'Jangan mengelupas koreng yang terbentuk karena dapat memperlambat penyembuhan dan meninggalkan bekas luka.';
+
+  @override
+  String get scratchRecommendation6 =>
+      'Jika ada pembengkakan, lakukan kompres dingin pada tahap awal cedera.';
+
+  @override
+  String get scratchRecommendation7 =>
+      'Waspadai tanda infeksi seperti kemerahan, bengkak, nanah, atau nyeri yang semakin parah.';
+
+  @override
+  String get burnRecommendation1 =>
+      'Hentikan proses luka bakar dengan menjauhkan sumber panas atau bahan penyebab cedera.';
+
+  @override
+  String get burnRecommendation2 =>
+      'Alirkan air bersih yang dingin (bukan es) pada bagian yang terkena selama 30 menit untuk menurunkan suhu jaringan dan mengurangi nyeri.';
 
   @override
   String get burnRecommendation3 =>
-      'Oleskan gel lidah buaya atau krim luka bakar';
+      'Lepaskan pakaian dan perhiasan di sekitar area luka, dan jika pakaian menempel pada kulit, gunting di sekitarnya tanpa menarik bagian yang menempel.';
 
   @override
-  String get burnRecommendation4 => 'Segera ke dokter jika luka bakar parah';
+  String get burnRecommendation4 =>
+      'Tentukan derajat luka bakar, luas permukaan tubuh yang terkena, lokasi luka bakar, dan adanya faktor komplikasi seperti gangguan pernapasan atau luka bakar kimia.';
+
+  @override
+  String get burnRecommendation5 =>
+      'Tutup luka bakar dengan penutup steril seperti kasa non-adherent untuk mencegah infeksi dan iritasi.';
+
+  @override
+  String get burnRecommendation6 =>
+      'Jangan pecahkan gelembung, jangan mengoleskan mentega, minyak, pasta gigi, salep yang tidak direkomendasikan, cairan antiseptik keras, atau es langsung pada luka bakar.';
+
+  @override
+  String get burnRecommendation7 =>
+      'Jika luka bakar mengenai mata, pastikan kedua mata ditutup dengan kain bersih atau penutup mata steril untuk mencegah kerusakan lebih lanjut.';
+
+  @override
+  String get burnRecommendation8 =>
+      'Jaga suhu tubuh penderita tetap stabil dengan selimut tipis atau kain bersih untuk mencegah hipotermia.';
+
+  @override
+  String get burnRecommendation9 =>
+      'Pada luka bakar derajat 1 yang hanya mengenai lapisan luar kulit, oleskan gel lidah buaya atau salep seperti Bioplacenton tipis-tipis setelah pendinginan, lalu tutup dengan kasa steril bila perlu, dan berikan obat pereda nyeri seperti paracetamol atau ibuprofen jika nyeri.';
+
+  @override
+  String get burnRecommendation10 =>
+      'Pada luka bakar derajat 2 yang ditandai dengan lepuh, nyeri, dan kemerahan, setelah pendinginan dan pembersihan lembut, tutup dengan kasa steril non-lengket, gunakan salep antibiotik topikal seperti silver sulfadiazine atau Bioplacenton untuk mencegah infeksi, dan berikan analgesik oral sesuai kebutuhan.';
+
+  @override
+  String get burnRecommendation11 =>
+      'Pada luka bakar derajat 3 yang mencakup kerusakan seluruh lapisan kulit hingga jaringan di bawahnya, segera tutup luka dengan kain atau kasa steril, jangan memberikan salep atau obat apapun di lokasi, jaga jalan napas dan sirkulasi, cegah hipotermia, dan segera rujuk ke fasilitas kesehatan untuk penanganan lanjutan.';
+
+  @override
+  String get burnRecommendation12 =>
+      'Segera rujuk ke fasilitas kesehatan terdekat jika luka bakar luas, mengenai wajah, tangan, kaki, genitalia, saluran napas, atau disertai gejala sistemik seperti sesak napas, pusing, atau penurunan kesadaran.';
 
   @override
   String get indonesiaLanguage => '🇮🇩 Indonesia';
@@ -636,4 +726,24 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get processScan => 'Menganalisis luka';
+
+  @override
+  String get addNote => 'Tambah Catatan';
+
+  @override
+  String get addNoteDescription =>
+      'Tambahkan catatan untuk riwayat ini (opsional):';
+
+  @override
+  String get addNotePlaceholder =>
+      'Contoh: Luka terjadi saat memasak, sudah dibersihkan dengan air...';
+
+  @override
+  String get notes => 'Catatan';
+
+  @override
+  String get noNotes => 'Tidak ada catatan';
+
+  @override
+  String get save => 'Simpan';
 }

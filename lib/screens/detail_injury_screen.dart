@@ -355,6 +355,7 @@ class DetailScreen extends StatelessWidget {
     final detectedAt = data['detected_at'] ?? '';
     final label = data['label'] ?? '-';
     final recommendation = data['recommendation'] ?? '-';
+    final notes = data['notes']; // Tambahkan ini
     final imageUrl = data['image'];
 
     // Ambil locale saat ini untuk format tanggal
@@ -401,6 +402,16 @@ class DetailScreen extends StatelessWidget {
               title: localizations.detectionTime,
               content: formatTanggal(detectedAt, localeString),
               icon: Icons.access_time_outlined,
+            ),
+
+            // Menampilkan catatan - SELALU TAMPIL
+            _buildInfoCard(
+              title: localizations.notes,
+              content: (notes != null && notes.toString().isNotEmpty) 
+                  ? notes.toString() 
+                  : localizations.noNotes,
+              icon: Icons.note_outlined,
+              backgroundColor: const Color(0xFFF0F8FF),
             ),
 
             // Menampilkan rekomendasi penanganan luka
