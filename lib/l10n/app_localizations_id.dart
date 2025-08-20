@@ -536,34 +536,30 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get bruiseRecommendation1 =>
-      'Kompres area cedera dengan air dingin atau kompres es yang dibungkus kain selama 10–15 menit segera setelah cedera untuk mengurangi pembengkakan dan perdarahan bawah kulit.';
+      'Kompres area cedera dengan air dingin atau kompres es yang dibungkus kain selama 10–15 menit segera setelah cedera untuk mengurangi pembengkakan ,nyeri ,dan perdarahan bawah kulit.';
 
   @override
   String get bruiseRecommendation2 =>
-      'Hindari kontak langsung es ke kulit agar tidak menyebabkan radang dingin atau kerusakan jaringan.';
-
-  @override
-  String get bruiseRecommendation3 =>
       'Ulangi kompres dingin setiap 2–3 jam selama 24 jam pertama setelah cedera.';
 
   @override
-  String get bruiseRecommendation4 =>
+  String get bruiseRecommendation3 =>
       'Setelah 24 jam, ganti dengan kompres hangat selama 10–15 menit beberapa kali sehari untuk membantu memperlancar aliran darah dan mempercepat penyembuhan.';
 
   @override
-  String get bruiseRecommendation5 =>
+  String get bruiseRecommendation4 =>
       'Posisikan bagian yang cedera lebih tinggi dari jantung untuk mengurangi pembengkakan.';
 
   @override
-  String get bruiseRecommendation6 =>
-      'Istirahatkan area yang cedera dan hindari aktivitas yang memperparah nyeri.';
+  String get bruiseRecommendation5 =>
+      'Istirahatkan area yang cedera dan hindari aktivitas yang memperparah nyeri dan bengkak.';
 
   @override
-  String get bruiseRecommendation7 =>
+  String get bruiseRecommendation6 =>
       'Oleskan salep yang mengandung heparin (contoh: Trombophob) secara tipis pada area lebam untuk membantu memecah bekuan darah di bawah kulit.';
 
   @override
-  String get bruiseRecommendation8 =>
+  String get bruiseRecommendation7 =>
       'Konsumsi obat pereda nyeri seperti paracetamol jika nyeri terasa mengganggu.';
 
   @override
@@ -572,23 +568,23 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cutRecommendation2 =>
-      'Tekan perlahan area luka menggunakan kain kasa steril atau tisu bersih hingga perdarahan berhenti.';
+      'Bersihkan luka dengan air mengalir untuk menghilangkan kotoran.';
 
   @override
   String get cutRecommendation3 =>
-      'Bersihkan luka dengan air mengalir untuk menghilangkan kotoran dan mencegah infeksi.';
+      'Tekan perlahan area luka menggunakan kain kasa steril atau tisu bersih hingga perdarahan berhenti.';
 
   @override
   String get cutRecommendation4 =>
-      'Oleskan antiseptik seperti povidone-iodine (Betadine) tipis-tipis di area luka.';
+      'Berikan antiseptik seperti povidone-iodine (Betadine) di area luka.';
 
   @override
   String get cutRecommendation5 =>
-      'Tutup luka dengan plester atau kasa steril untuk melindungi dari kotoran dan bakteri.';
+      'Tutup luka dengan plester atau kasa steril untuk mencegah kontaminasi';
 
   @override
   String get cutRecommendation6 =>
-      'Ganti perban setiap hari atau segera jika perban menjadi kotor atau basah.';
+      'Ganti perban rutin atau segera jika perban menjadi kotor atau basah.';
 
   @override
   String get cutRecommendation7 =>
@@ -596,11 +592,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cutRecommendation8 =>
-      'Jika luka sayat terlalu lebar, dalam, atau panjang lebih dari ±2 cm, segera ke fasilitas kesehatan terdekat untuk evaluasi dan kemungkinan penjahitan.';
+      'Jika luka sayat terlalu lebar, dalam, panjang lebih dari ±2 cm ,atau perdarahan yang sulit berhenti, segera ke fasilitas kesehatan terdekat untuk evaluasi dan kemungkinan penjahitan.';
 
   @override
   String get scratchRecommendation1 =>
-      'Bersihkan luka dengan air mengalir untuk menghilangkan kotoran dan bakteri.';
+      'Bersihkan luka dengan air mengalir untuk menghilangkan kotoran.';
 
   @override
   String get scratchRecommendation2 =>
@@ -608,7 +604,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get scratchRecommendation3 =>
-      'Oleskan antiseptik seperti povidone-iodine (Betadine) atau larutan antiseptik lainnya pada area luka.';
+      'Berikan antiseptik seperti povidone-iodine (Betadine) atau larutan antiseptik lainnya pada area luka.';
 
   @override
   String get scratchRecommendation4 =>
@@ -616,15 +612,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get scratchRecommendation5 =>
-      'Jangan mengelupas koreng yang terbentuk karena dapat memperlambat penyembuhan dan meninggalkan bekas luka.';
-
-  @override
-  String get scratchRecommendation6 =>
       'Jika ada pembengkakan, lakukan kompres dingin pada tahap awal cedera.';
 
   @override
-  String get scratchRecommendation7 =>
-      'Waspadai tanda infeksi seperti kemerahan, bengkak, nanah, atau nyeri yang semakin parah.';
+  String get scratchRecommendation6 =>
+      'Waspadai tanda infeksi seperti kemerahan, bengkak, nanah, atau nyeri yang semakin parah,apabila semakin parah segera konsultasikan ke dokter';
 
   @override
   String get burnRecommendation1 =>
@@ -632,46 +624,30 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get burnRecommendation2 =>
-      'Alirkan air bersih yang dingin (bukan es) pada bagian yang terkena selama 30 menit untuk menurunkan suhu jaringan dan mengurangi nyeri.';
-
-  @override
-  String get burnRecommendation3 =>
       'Lepaskan pakaian dan perhiasan di sekitar area luka, dan jika pakaian menempel pada kulit, gunting di sekitarnya tanpa menarik bagian yang menempel.';
 
   @override
+  String get burnRecommendation3 =>
+      'Alirkan dengan air mengalir pada bagian yang terkena selama 30 menit.';
+
+  @override
   String get burnRecommendation4 =>
-      'Tentukan derajat luka bakar, luas permukaan tubuh yang terkena, lokasi luka bakar, dan adanya faktor komplikasi seperti gangguan pernapasan atau luka bakar kimia.';
+      'Tentukan derajat luka bakar, lokasi luka bakar, dan adanya faktor komplikasi seperti gangguan pernapasan atau luka bakar kimia.';
 
   @override
   String get burnRecommendation5 =>
-      'Tutup luka bakar dengan penutup steril seperti kasa non-adherent untuk mencegah infeksi dan iritasi.';
+      'Pada luka bakar derajat 1 yang hanya mengenai lapisan luar kulit, oleskan gel lidah buaya atau salep seperti Bioplacenton tipis-tipis setelah pendinginan, lalu tutup dengan kasa steril basah bila perlu, dan berikan obat pereda nyeri seperti paracetamol atau ibuprofen jika perlu.';
 
   @override
   String get burnRecommendation6 =>
-      'Jangan pecahkan gelembung, jangan mengoleskan mentega, minyak, pasta gigi, salep yang tidak direkomendasikan, cairan antiseptik keras, atau es langsung pada luka bakar.';
-
-  @override
-  String get burnRecommendation7 =>
-      'Jika luka bakar mengenai mata, pastikan kedua mata ditutup dengan kain bersih atau penutup mata steril untuk mencegah kerusakan lebih lanjut.';
-
-  @override
-  String get burnRecommendation8 =>
-      'Jaga suhu tubuh penderita tetap stabil dengan selimut tipis atau kain bersih untuk mencegah hipotermia.';
-
-  @override
-  String get burnRecommendation9 =>
-      'Pada luka bakar derajat 1 yang hanya mengenai lapisan luar kulit, oleskan gel lidah buaya atau salep seperti Bioplacenton tipis-tipis setelah pendinginan, lalu tutup dengan kasa steril bila perlu, dan berikan obat pereda nyeri seperti paracetamol atau ibuprofen jika nyeri.';
-
-  @override
-  String get burnRecommendation10 =>
       'Pada luka bakar derajat 2 yang ditandai dengan lepuh, nyeri, dan kemerahan, setelah pendinginan dan pembersihan lembut, tutup dengan kasa steril non-lengket, gunakan salep antibiotik topikal seperti silver sulfadiazine atau Bioplacenton untuk mencegah infeksi, dan berikan analgesik oral sesuai kebutuhan.';
 
   @override
-  String get burnRecommendation11 =>
-      'Pada luka bakar derajat 3 yang mencakup kerusakan seluruh lapisan kulit hingga jaringan di bawahnya, segera tutup luka dengan kain atau kasa steril, jangan memberikan salep atau obat apapun di lokasi, jaga jalan napas dan sirkulasi, cegah hipotermia, dan segera rujuk ke fasilitas kesehatan untuk penanganan lanjutan.';
+  String get burnRecommendation7 =>
+      'Pada luka bakar derajat 3 yang mencakup kerusakan seluruh lapisan kulit hingga jaringan di bawahnya, segera tutup luka dengan kain atau kasa steril basah, jangan memberikan salep atau obat apapun di lokasi, jaga jalan napas ,dan cegah hipotermia, dan segera rujuk ke fasilitas kesehatan untuk penanganan lanjutan.';
 
   @override
-  String get burnRecommendation12 =>
+  String get burnRecommendation8 =>
       'Segera rujuk ke fasilitas kesehatan terdekat jika luka bakar luas, mengenai wajah, tangan, kaki, genitalia, saluran napas, atau disertai gejala sistemik seperti sesak napas, pusing, atau penurunan kesadaran.';
 
   @override

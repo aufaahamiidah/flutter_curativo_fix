@@ -1109,44 +1109,38 @@ abstract class AppLocalizations {
   /// No description provided for @bruiseRecommendation2.
   ///
   /// In en, this message translates to:
-  /// **'Avoid direct contact of ice with the skin to prevent frostbite or tissue damage.'**
+  /// **'Repeat cold compress every 2–3 hours during the first 24 hours after the injury.'**
   String get bruiseRecommendation2;
 
   /// No description provided for @bruiseRecommendation3.
   ///
   /// In en, this message translates to:
-  /// **'Repeat cold compress every 2–3 hours during the first 24 hours after the injury.'**
+  /// **'After 24 hours, switch to a warm compress for 10–15 minutes several times a day to improve blood flow and speed up healing.'**
   String get bruiseRecommendation3;
 
   /// No description provided for @bruiseRecommendation4.
   ///
   /// In en, this message translates to:
-  /// **'After 24 hours, switch to a warm compress for 10–15 minutes several times a day to improve blood flow and speed up healing.'**
+  /// **'Elevate the injured area above heart level to reduce swelling.'**
   String get bruiseRecommendation4;
 
   /// No description provided for @bruiseRecommendation5.
   ///
   /// In en, this message translates to:
-  /// **'Elevate the injured area above heart level to reduce swelling.'**
+  /// **'Rest the injured area and avoid activities that worsen the pain and swollen.'**
   String get bruiseRecommendation5;
 
   /// No description provided for @bruiseRecommendation6.
   ///
   /// In en, this message translates to:
-  /// **'Rest the injured area and avoid activities that worsen the pain.'**
+  /// **'Apply a thin layer of ointment containing heparin (e.g., Trombophob) to the bruise to help break down blood clots under the skin.'**
   String get bruiseRecommendation6;
 
   /// No description provided for @bruiseRecommendation7.
   ///
   /// In en, this message translates to:
-  /// **'Apply a thin layer of ointment containing heparin (e.g., Trombophob) to the bruise to help break down blood clots under the skin.'**
-  String get bruiseRecommendation7;
-
-  /// No description provided for @bruiseRecommendation8.
-  ///
-  /// In en, this message translates to:
   /// **'Take pain relievers such as paracetamol if the pain becomes bothersome.'**
-  String get bruiseRecommendation8;
+  String get bruiseRecommendation7;
 
   /// No description provided for @cutRecommendation1.
   ///
@@ -1157,31 +1151,31 @@ abstract class AppLocalizations {
   /// No description provided for @cutRecommendation2.
   ///
   /// In en, this message translates to:
-  /// **'Gently press the wound area with sterile gauze or a clean tissue until the bleeding stops.'**
+  /// **'Clean the wound with running water to remove dirt.'**
   String get cutRecommendation2;
 
   /// No description provided for @cutRecommendation3.
   ///
   /// In en, this message translates to:
-  /// **'Clean the wound with running water to remove dirt and prevent infection.'**
+  /// **'Gently press the wound area with sterile gauze or a clean tissue until the bleeding stops.'**
   String get cutRecommendation3;
 
   /// No description provided for @cutRecommendation4.
   ///
   /// In en, this message translates to:
-  /// **'Apply antiseptic such as povidone-iodine (Betadine) thinly on the wound area.'**
+  /// **'Apply antiseptic such as povidone-iodine (Betadine) on the wound area.'**
   String get cutRecommendation4;
 
   /// No description provided for @cutRecommendation5.
   ///
   /// In en, this message translates to:
-  /// **'Cover the wound with a plaster or sterile gauze to protect it from dirt and bacteria.'**
+  /// **'Cover the wound with a plaster or sterile gauze to prevent contamination.'**
   String get cutRecommendation5;
 
   /// No description provided for @cutRecommendation6.
   ///
   /// In en, this message translates to:
-  /// **'Change the dressing daily or immediately if it becomes dirty or wet.'**
+  /// **'Change the dressing routine or immediately if it becomes dirty or wet.'**
   String get cutRecommendation6;
 
   /// No description provided for @cutRecommendation7.
@@ -1199,7 +1193,7 @@ abstract class AppLocalizations {
   /// No description provided for @scratchRecommendation1.
   ///
   /// In en, this message translates to:
-  /// **'Clean the wound with running water to remove dirt and bacteria.'**
+  /// **'Clean the wound with running water to remove dirt'**
   String get scratchRecommendation1;
 
   /// No description provided for @scratchRecommendation2.
@@ -1211,7 +1205,7 @@ abstract class AppLocalizations {
   /// No description provided for @scratchRecommendation3.
   ///
   /// In en, this message translates to:
-  /// **'Apply antiseptic such as povidone-iodine (Betadine) or other antiseptic solutions to the wound area.'**
+  /// **'Apply an antiseptic such as povidone-iodine (Betadine) or other antiseptic solutions to the wound area.'**
   String get scratchRecommendation3;
 
   /// No description provided for @scratchRecommendation4.
@@ -1223,20 +1217,14 @@ abstract class AppLocalizations {
   /// No description provided for @scratchRecommendation5.
   ///
   /// In en, this message translates to:
-  /// **'Do not peel off the scab that forms, as it can slow healing and leave scars.'**
+  /// **'If swelling occurs, apply a cold compress in the early stages of the injury.'**
   String get scratchRecommendation5;
 
   /// No description provided for @scratchRecommendation6.
   ///
   /// In en, this message translates to:
-  /// **'If swelling occurs, apply a cold compress in the early stages of the injury.'**
+  /// **'If the cut is too wide, deep, longer than ±2 cm, or bleeding that is difficult to stop, immediately go to the nearest health facility for evaluation and possible stitches.'**
   String get scratchRecommendation6;
-
-  /// No description provided for @scratchRecommendation7.
-  ///
-  /// In en, this message translates to:
-  /// **'Be alert for signs of infection such as redness, swelling, pus, or worsening pain.'**
-  String get scratchRecommendation7;
 
   /// No description provided for @burnRecommendation1.
   ///
@@ -1247,68 +1235,44 @@ abstract class AppLocalizations {
   /// No description provided for @burnRecommendation2.
   ///
   /// In en, this message translates to:
-  /// **'Run cool clean water (not ice) over the affected area for 30 minutes to lower tissue temperature and relieve pain.'**
+  /// **'Remove clothing and jewelry around the burn area; if clothing sticks to the skin, cut around it without pulling the stuck part.'**
   String get burnRecommendation2;
 
   /// No description provided for @burnRecommendation3.
   ///
   /// In en, this message translates to:
-  /// **'Remove clothing and jewelry around the burn area; if clothing sticks to the skin, cut around it without pulling the stuck part.'**
+  /// **'Rinse the affected area with running water for 30 minutes.'**
   String get burnRecommendation3;
 
   /// No description provided for @burnRecommendation4.
   ///
   /// In en, this message translates to:
-  /// **'Assess the burn\'s degree, body surface area affected, location, and possible complications such as breathing problems or chemical burns.'**
+  /// **'Determine degree of the burn, the location of the burn, and the presence of complicating factors such as respiratory distress or chemical burns.'**
   String get burnRecommendation4;
 
   /// No description provided for @burnRecommendation5.
   ///
   /// In en, this message translates to:
-  /// **'Cover the burn with a sterile non-adherent dressing to prevent infection and irritation.'**
+  /// **'For first-degree burns affecting only the outer layer of skin, apply aloe vera gel or an ointment such as Bioplacenton thinly after cooling, then cover with wet sterile gauze if necessary, and give pain relievers like paracetamol or ibuprofen if necessary.'**
   String get burnRecommendation5;
 
   /// No description provided for @burnRecommendation6.
   ///
   /// In en, this message translates to:
-  /// **'Do not pop blisters, apply butter, oil, toothpaste, non-recommended ointments, harsh antiseptic liquids, or ice directly to the burn.'**
+  /// **'For second-degree burns characterized by blisters, pain, and redness, after cooling and gentle cleaning, cover with a non-stick wet sterile gauze, use a topical antibiotic ointment such as silver sulfadiazine or Bioplacenton to prevent infection, and paracetamol or ibuprofen if necessary.'**
   String get burnRecommendation6;
 
   /// No description provided for @burnRecommendation7.
   ///
   /// In en, this message translates to:
-  /// **'If the burn affects the eyes, ensure both eyes are covered with a clean cloth or sterile eye dressing to prevent further damage.'**
+  /// **'For third-degree burns involving damage to all layers of the skin down to underlying tissues, immediately cover with a clean cloth or wet sterile gauze, do not apply any ointments or medications, maintain airway ,dan prevent hypothermia, and promptly refer to a healthcare facility for advanced care.'**
   String get burnRecommendation7;
 
   /// No description provided for @burnRecommendation8.
   ///
   /// In en, this message translates to:
-  /// **'Keep the patient\'s body temperature stable with a thin blanket or clean cloth to prevent hypothermia.'**
-  String get burnRecommendation8;
-
-  /// No description provided for @burnRecommendation9.
-  ///
-  /// In en, this message translates to:
-  /// **'For first-degree burns affecting only the outer layer of skin, apply aloe vera gel or an ointment such as Bioplacenton thinly after cooling, then cover with sterile gauze if necessary, and give pain relievers like paracetamol or ibuprofen if needed.'**
-  String get burnRecommendation9;
-
-  /// No description provided for @burnRecommendation10.
-  ///
-  /// In en, this message translates to:
-  /// **'For second-degree burns characterized by blisters, pain, and redness, after cooling and gentle cleaning, cover with a non-stick sterile gauze, use a topical antibiotic ointment such as silver sulfadiazine or Bioplacenton to prevent infection, and provide oral analgesics as needed.'**
-  String get burnRecommendation10;
-
-  /// No description provided for @burnRecommendation11.
-  ///
-  /// In en, this message translates to:
-  /// **'For third-degree burns involving damage to all layers of the skin down to underlying tissues, immediately cover with a clean cloth or sterile gauze, do not apply any ointments or medications, maintain airway and circulation, prevent hypothermia, and promptly refer to a healthcare facility for advanced care.'**
-  String get burnRecommendation11;
-
-  /// No description provided for @burnRecommendation12.
-  ///
-  /// In en, this message translates to:
   /// **'Immediately seek medical attention if the burn is extensive, affects the face, hands, feet, genitals, airways, or is accompanied by systemic symptoms such as shortness of breath, dizziness, or loss of consciousness.'**
-  String get burnRecommendation12;
+  String get burnRecommendation8;
 
   /// No description provided for @indonesiaLanguage.
   ///

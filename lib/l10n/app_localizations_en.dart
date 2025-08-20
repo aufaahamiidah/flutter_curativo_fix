@@ -542,30 +542,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bruiseRecommendation2 =>
-      'Avoid direct contact of ice with the skin to prevent frostbite or tissue damage.';
-
-  @override
-  String get bruiseRecommendation3 =>
       'Repeat cold compress every 2–3 hours during the first 24 hours after the injury.';
 
   @override
-  String get bruiseRecommendation4 =>
+  String get bruiseRecommendation3 =>
       'After 24 hours, switch to a warm compress for 10–15 minutes several times a day to improve blood flow and speed up healing.';
 
   @override
-  String get bruiseRecommendation5 =>
+  String get bruiseRecommendation4 =>
       'Elevate the injured area above heart level to reduce swelling.';
 
   @override
-  String get bruiseRecommendation6 =>
-      'Rest the injured area and avoid activities that worsen the pain.';
+  String get bruiseRecommendation5 =>
+      'Rest the injured area and avoid activities that worsen the pain and swollen.';
 
   @override
-  String get bruiseRecommendation7 =>
+  String get bruiseRecommendation6 =>
       'Apply a thin layer of ointment containing heparin (e.g., Trombophob) to the bruise to help break down blood clots under the skin.';
 
   @override
-  String get bruiseRecommendation8 =>
+  String get bruiseRecommendation7 =>
       'Take pain relievers such as paracetamol if the pain becomes bothersome.';
 
   @override
@@ -574,23 +570,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cutRecommendation2 =>
-      'Gently press the wound area with sterile gauze or a clean tissue until the bleeding stops.';
+      'Clean the wound with running water to remove dirt.';
 
   @override
   String get cutRecommendation3 =>
-      'Clean the wound with running water to remove dirt and prevent infection.';
+      'Gently press the wound area with sterile gauze or a clean tissue until the bleeding stops.';
 
   @override
   String get cutRecommendation4 =>
-      'Apply antiseptic such as povidone-iodine (Betadine) thinly on the wound area.';
+      'Apply antiseptic such as povidone-iodine (Betadine) on the wound area.';
 
   @override
   String get cutRecommendation5 =>
-      'Cover the wound with a plaster or sterile gauze to protect it from dirt and bacteria.';
+      'Cover the wound with a plaster or sterile gauze to prevent contamination.';
 
   @override
   String get cutRecommendation6 =>
-      'Change the dressing daily or immediately if it becomes dirty or wet.';
+      'Change the dressing routine or immediately if it becomes dirty or wet.';
 
   @override
   String get cutRecommendation7 =>
@@ -602,7 +598,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scratchRecommendation1 =>
-      'Clean the wound with running water to remove dirt and bacteria.';
+      'Clean the wound with running water to remove dirt';
 
   @override
   String get scratchRecommendation2 =>
@@ -610,7 +606,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scratchRecommendation3 =>
-      'Apply antiseptic such as povidone-iodine (Betadine) or other antiseptic solutions to the wound area.';
+      'Apply an antiseptic such as povidone-iodine (Betadine) or other antiseptic solutions to the wound area.';
 
   @override
   String get scratchRecommendation4 =>
@@ -618,15 +614,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scratchRecommendation5 =>
-      'Do not peel off the scab that forms, as it can slow healing and leave scars.';
-
-  @override
-  String get scratchRecommendation6 =>
       'If swelling occurs, apply a cold compress in the early stages of the injury.';
 
   @override
-  String get scratchRecommendation7 =>
-      'Be alert for signs of infection such as redness, swelling, pus, or worsening pain.';
+  String get scratchRecommendation6 =>
+      'If the cut is too wide, deep, longer than ±2 cm, or bleeding that is difficult to stop, immediately go to the nearest health facility for evaluation and possible stitches.';
 
   @override
   String get burnRecommendation1 =>
@@ -634,46 +626,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get burnRecommendation2 =>
-      'Run cool clean water (not ice) over the affected area for 30 minutes to lower tissue temperature and relieve pain.';
-
-  @override
-  String get burnRecommendation3 =>
       'Remove clothing and jewelry around the burn area; if clothing sticks to the skin, cut around it without pulling the stuck part.';
 
   @override
+  String get burnRecommendation3 =>
+      'Rinse the affected area with running water for 30 minutes.';
+
+  @override
   String get burnRecommendation4 =>
-      'Assess the burn\'s degree, body surface area affected, location, and possible complications such as breathing problems or chemical burns.';
+      'Determine degree of the burn, the location of the burn, and the presence of complicating factors such as respiratory distress or chemical burns.';
 
   @override
   String get burnRecommendation5 =>
-      'Cover the burn with a sterile non-adherent dressing to prevent infection and irritation.';
+      'For first-degree burns affecting only the outer layer of skin, apply aloe vera gel or an ointment such as Bioplacenton thinly after cooling, then cover with wet sterile gauze if necessary, and give pain relievers like paracetamol or ibuprofen if necessary.';
 
   @override
   String get burnRecommendation6 =>
-      'Do not pop blisters, apply butter, oil, toothpaste, non-recommended ointments, harsh antiseptic liquids, or ice directly to the burn.';
+      'For second-degree burns characterized by blisters, pain, and redness, after cooling and gentle cleaning, cover with a non-stick wet sterile gauze, use a topical antibiotic ointment such as silver sulfadiazine or Bioplacenton to prevent infection, and paracetamol or ibuprofen if necessary.';
 
   @override
   String get burnRecommendation7 =>
-      'If the burn affects the eyes, ensure both eyes are covered with a clean cloth or sterile eye dressing to prevent further damage.';
+      'For third-degree burns involving damage to all layers of the skin down to underlying tissues, immediately cover with a clean cloth or wet sterile gauze, do not apply any ointments or medications, maintain airway ,dan prevent hypothermia, and promptly refer to a healthcare facility for advanced care.';
 
   @override
   String get burnRecommendation8 =>
-      'Keep the patient\'s body temperature stable with a thin blanket or clean cloth to prevent hypothermia.';
-
-  @override
-  String get burnRecommendation9 =>
-      'For first-degree burns affecting only the outer layer of skin, apply aloe vera gel or an ointment such as Bioplacenton thinly after cooling, then cover with sterile gauze if necessary, and give pain relievers like paracetamol or ibuprofen if needed.';
-
-  @override
-  String get burnRecommendation10 =>
-      'For second-degree burns characterized by blisters, pain, and redness, after cooling and gentle cleaning, cover with a non-stick sterile gauze, use a topical antibiotic ointment such as silver sulfadiazine or Bioplacenton to prevent infection, and provide oral analgesics as needed.';
-
-  @override
-  String get burnRecommendation11 =>
-      'For third-degree burns involving damage to all layers of the skin down to underlying tissues, immediately cover with a clean cloth or sterile gauze, do not apply any ointments or medications, maintain airway and circulation, prevent hypothermia, and promptly refer to a healthcare facility for advanced care.';
-
-  @override
-  String get burnRecommendation12 =>
       'Immediately seek medical attention if the burn is extensive, affects the face, hands, feet, genitals, airways, or is accompanied by systemic symptoms such as shortness of breath, dizziness, or loss of consciousness.';
 
   @override
