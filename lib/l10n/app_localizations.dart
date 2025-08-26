@@ -1103,98 +1103,176 @@ abstract class AppLocalizations {
   /// No description provided for @bruiseRecommendation1.
   ///
   /// In en, this message translates to:
-  /// **'Apply ice compress for 15-20 minutes'**
+  /// **'Apply a cold compress or an ice pack wrapped in a cloth to the injured area for 10–15 minutes immediately after the injury to reduce swelling and subcutaneous bleeding.'**
   String get bruiseRecommendation1;
 
   /// No description provided for @bruiseRecommendation2.
   ///
   /// In en, this message translates to:
-  /// **'Rest the injured area'**
+  /// **'Repeat cold compress every 2–3 hours during the first 24 hours after the injury.'**
   String get bruiseRecommendation2;
 
   /// No description provided for @bruiseRecommendation3.
   ///
   /// In en, this message translates to:
-  /// **'Elevate the bruised part if possible'**
+  /// **'After 24 hours, switch to a warm compress for 10–15 minutes several times a day to improve blood flow and speed up healing.'**
   String get bruiseRecommendation3;
 
   /// No description provided for @bruiseRecommendation4.
   ///
   /// In en, this message translates to:
-  /// **'Consult doctor if pain persists'**
+  /// **'Elevate the injured area above heart level to reduce swelling.'**
   String get bruiseRecommendation4;
 
-  /// No description provided for @scratchRecommendation1.
+  /// No description provided for @bruiseRecommendation5.
   ///
   /// In en, this message translates to:
-  /// **'Clean wound with clean water'**
-  String get scratchRecommendation1;
+  /// **'Rest the injured area and avoid activities that worsen the pain and swollen.'**
+  String get bruiseRecommendation5;
 
-  /// No description provided for @scratchRecommendation2.
+  /// No description provided for @bruiseRecommendation6.
   ///
   /// In en, this message translates to:
-  /// **'Apply mild antiseptic'**
-  String get scratchRecommendation2;
+  /// **'Apply a thin layer of ointment containing heparin (e.g., Trombophob) to the bruise to help break down blood clots under the skin.'**
+  String get bruiseRecommendation6;
 
-  /// No description provided for @scratchRecommendation3.
+  /// No description provided for @bruiseRecommendation7.
   ///
   /// In en, this message translates to:
-  /// **'Cover with sterile bandage'**
-  String get scratchRecommendation3;
-
-  /// No description provided for @scratchRecommendation4.
-  ///
-  /// In en, this message translates to:
-  /// **'Change bandage regularly'**
-  String get scratchRecommendation4;
+  /// **'Take pain relievers such as paracetamol if the pain becomes bothersome.'**
+  String get bruiseRecommendation7;
 
   /// No description provided for @cutRecommendation1.
   ///
   /// In en, this message translates to:
-  /// **'Stop bleeding by applying pressure'**
+  /// **'Wash your hands with soap and running water before touching or handling the wound.'**
   String get cutRecommendation1;
 
   /// No description provided for @cutRecommendation2.
   ///
   /// In en, this message translates to:
-  /// **'Clean wound carefully'**
+  /// **'Clean the wound with running water to remove dirt.'**
   String get cutRecommendation2;
 
   /// No description provided for @cutRecommendation3.
   ///
   /// In en, this message translates to:
-  /// **'Apply antibiotic ointment'**
+  /// **'Gently press the wound area with sterile gauze or a clean tissue until the bleeding stops.'**
   String get cutRecommendation3;
 
   /// No description provided for @cutRecommendation4.
   ///
   /// In en, this message translates to:
-  /// **'Cover with bandage and monitor for infection'**
+  /// **'Apply antiseptic such as povidone-iodine (Betadine) on the wound area.'**
   String get cutRecommendation4;
+
+  /// No description provided for @cutRecommendation5.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover the wound with a plaster or sterile gauze to prevent contamination.'**
+  String get cutRecommendation5;
+
+  /// No description provided for @cutRecommendation6.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the dressing routine or immediately if it becomes dirty or wet.'**
+  String get cutRecommendation6;
+
+  /// No description provided for @cutRecommendation7.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch for signs of infection such as excessive redness, swelling, pus, or fever.'**
+  String get cutRecommendation7;
+
+  /// No description provided for @cutRecommendation8.
+  ///
+  /// In en, this message translates to:
+  /// **'If the cut is too wide, deep, or longer than approximately 2 cm, go to the nearest healthcare facility for evaluation and possible stitches.'**
+  String get cutRecommendation8;
+
+  /// No description provided for @scratchRecommendation1.
+  ///
+  /// In en, this message translates to:
+  /// **'Clean the wound with running water to remove dirt'**
+  String get scratchRecommendation1;
+
+  /// No description provided for @scratchRecommendation2.
+  ///
+  /// In en, this message translates to:
+  /// **'Use sterile tweezers to remove sand, dust, or foreign objects stuck to the skin.'**
+  String get scratchRecommendation2;
+
+  /// No description provided for @scratchRecommendation3.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply an antiseptic such as povidone-iodine (Betadine) or other antiseptic solutions to the wound area.'**
+  String get scratchRecommendation3;
+
+  /// No description provided for @scratchRecommendation4.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover the wound with a plaster or sterile gauze to prevent contamination.'**
+  String get scratchRecommendation4;
+
+  /// No description provided for @scratchRecommendation5.
+  ///
+  /// In en, this message translates to:
+  /// **'If swelling occurs, apply a cold compress in the early stages of the injury.'**
+  String get scratchRecommendation5;
+
+  /// No description provided for @scratchRecommendation6.
+  ///
+  /// In en, this message translates to:
+  /// **'If the cut is too wide, deep, longer than ±2 cm, or bleeding that is difficult to stop, immediately go to the nearest health facility for evaluation and possible stitches.'**
+  String get scratchRecommendation6;
 
   /// No description provided for @burnRecommendation1.
   ///
   /// In en, this message translates to:
-  /// **'Cool with running water for 10-20 minutes'**
+  /// **'Stop the burning process by moving away from the heat source or the cause of injury.'**
   String get burnRecommendation1;
 
   /// No description provided for @burnRecommendation2.
   ///
   /// In en, this message translates to:
-  /// **'Don\'t break any blisters that form'**
+  /// **'Remove clothing and jewelry around the burn area; if clothing sticks to the skin, cut around it without pulling the stuck part.'**
   String get burnRecommendation2;
 
   /// No description provided for @burnRecommendation3.
   ///
   /// In en, this message translates to:
-  /// **'Apply aloe vera gel or burn cream'**
+  /// **'Rinse the affected area with running water for 30 minutes.'**
   String get burnRecommendation3;
 
   /// No description provided for @burnRecommendation4.
   ///
   /// In en, this message translates to:
-  /// **'See doctor immediately if burn is severe'**
+  /// **'Determine degree of the burn, the location of the burn, and the presence of complicating factors such as respiratory distress or chemical burns.'**
   String get burnRecommendation4;
+
+  /// No description provided for @burnRecommendation5.
+  ///
+  /// In en, this message translates to:
+  /// **'For first-degree burns affecting only the outer layer of skin, apply aloe vera gel or an ointment such as Bioplacenton thinly after cooling, then cover with wet sterile gauze if necessary, and give pain relievers like paracetamol or ibuprofen if necessary.'**
+  String get burnRecommendation5;
+
+  /// No description provided for @burnRecommendation6.
+  ///
+  /// In en, this message translates to:
+  /// **'For second-degree burns characterized by blisters, pain, and redness, after cooling and gentle cleaning, cover with a non-stick wet sterile gauze, use a topical antibiotic ointment such as silver sulfadiazine or Bioplacenton to prevent infection, and paracetamol or ibuprofen if necessary.'**
+  String get burnRecommendation6;
+
+  /// No description provided for @burnRecommendation7.
+  ///
+  /// In en, this message translates to:
+  /// **'For third-degree burns involving damage to all layers of the skin down to underlying tissues, immediately cover with a clean cloth or wet sterile gauze, do not apply any ointments or medications, maintain airway ,dan prevent hypothermia, and promptly refer to a healthcare facility for advanced care.'**
+  String get burnRecommendation7;
+
+  /// No description provided for @burnRecommendation8.
+  ///
+  /// In en, this message translates to:
+  /// **'Immediately seek medical attention if the burn is extensive, affects the face, hands, feet, genitals, airways, or is accompanied by systemic symptoms such as shortness of breath, dizziness, or loss of consciousness.'**
+  String get burnRecommendation8;
 
   /// No description provided for @indonesiaLanguage.
   ///
@@ -1297,6 +1375,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Analyzing the wound'**
   String get processScan;
+
+  /// No description provided for @addNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Note'**
+  String get addNote;
+
+  /// No description provided for @addNoteDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a note for this history (optional):'**
+  String get addNoteDescription;
+
+  /// No description provided for @addNotePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: Wound occurred while cooking, already cleaned with water...'**
+  String get addNotePlaceholder;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @noNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes added'**
+  String get noNotes;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
 }
 
 class _AppLocalizationsDelegate

@@ -35,12 +35,119 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  bool _isSaving = false; // Status apakah sedang menyimpan ke riwayat
-  bool _isSaved = false; // Status apakah sudah pernah disimpan
+  bool _isSaving = false;
+  bool _isSaved = false;
+
+  /// Fungsi untuk menampilkan dialog input note
+  Future<String?> _showNoteDialog() async {
+    String noteText = '';
+    final localizations = AppLocalizations.of(context)!;
+    
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.note_add,
+                color: Color(0xFF4299E1),
+                size: 24,
+              ),
+              SizedBox(width: 8),
+              Text(
+                localizations.addNote,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF333333),
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                localizations.addNoteDescription,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF666666),
+                ),
+              ),
+              SizedBox(height: 16),
+              TextField(
+                maxLines: 4,
+                maxLength: 500,
+                decoration: InputDecoration(
+                  hintText: localizations.addNotePlaceholder,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Color(0xFF4299E1)),
+                  ),
+                  contentPadding: EdgeInsets.all(16),
+                ),
+                onChanged: (value) {
+                  noteText = value;
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(null); // Batal
+              },
+              child: Text(
+                localizations.cancel,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(noteText.isEmpty ? null : noteText);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF4299E1),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+              child: Text(
+                localizations.save,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   /// Fungsi untuk menyimpan riwayat hasil deteksi ke penyimpanan lokal/database
   Future<void> _saveHistory() async {
-    if (_isSaving || _isSaved) return; // Cegah jika sedang menyimpan atau sudah disimpan
+    if (_isSaving || _isSaved) return;
+
+    // Tampilkan dialog untuk input note
+    final note = await _showNoteDialog();
+    
+    // Jika user menekan batal, hentikan proses
+    if (note == null && !mounted) return;
 
     setState(() {
       _isSaving = true;
@@ -54,6 +161,7 @@ class _ResultScreenState extends State<ResultScreen> {
         recommendation: widget.rekomendasi.join(', '),
         detectedAt: DateTime.now(),
         scores: widget.score,
+        notes: note, // Tambahkan note ke parameter
       );
 
       // Tampilkan snackbar jika berhasil
@@ -359,6 +467,7 @@ class _ResultScreenState extends State<ResultScreen> {
               ],
 
               // Kartu rekomendasi penanganan luka
+              // Di dalam build method, bagian RecommendationList
               ResultCard(
                 title: localizations.treatmentRecommendation,
                 icon: Icons.medical_information,
@@ -366,9 +475,12 @@ class _ResultScreenState extends State<ResultScreen> {
                   constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height * 0.4,
                   ),
-                  child: SingleChildScrollView(
-                    child: RecommendationList(
-                      recommendations: widget.rekomendasi,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    child: SingleChildScrollView(
+                      child: RecommendationList(
+                        recommendations: widget.rekomendasi,
+                      ),
                     ),
                   ),
                 ),

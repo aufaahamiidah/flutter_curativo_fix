@@ -50,24 +50,37 @@ class _ScanScreenState extends State<ScanScreen> {
         localizations.bruiseRecommendation2,
         localizations.bruiseRecommendation3,
         localizations.bruiseRecommendation4,
+        localizations.bruiseRecommendation5,
+        localizations.bruiseRecommendation6,
+        localizations.bruiseRecommendation7,
       ],
       1: [
         localizations.scratchRecommendation1,
         localizations.scratchRecommendation2,
         localizations.scratchRecommendation3,
         localizations.scratchRecommendation4,
+        localizations.scratchRecommendation5,
+        localizations.scratchRecommendation6,
       ],
       2: [
         localizations.cutRecommendation1,
         localizations.cutRecommendation2,
         localizations.cutRecommendation3,
         localizations.cutRecommendation4,
+        localizations.cutRecommendation5,
+        localizations.cutRecommendation6,
+        localizations.cutRecommendation7,
+        localizations.cutRecommendation8,
       ],
       3: [
         localizations.burnRecommendation1,
         localizations.burnRecommendation2,
         localizations.burnRecommendation3,
         localizations.burnRecommendation4,
+        localizations.burnRecommendation5,
+        localizations.burnRecommendation6,
+        localizations.burnRecommendation7,
+        localizations.burnRecommendation8,
       ],
     };
   }
@@ -314,7 +327,10 @@ class _ScanScreenState extends State<ScanScreen> {
                 children: [
                   ImagePickerCard(
                     imageFile: imageFile,
-                    onTap: _isProcessing ? () {} : () => _showPickOptionsDialog(context),
+                    onTap:
+                        _isProcessing
+                            ? () {}
+                            : () => _showPickOptionsDialog(context),
                     hintText: localizations.tapToSelectPhoto,
                     height: 280,
                   ),

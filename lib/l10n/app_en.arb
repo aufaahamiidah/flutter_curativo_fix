@@ -180,26 +180,39 @@
   "scanInstruction3": "Avoid shadows in photo",
   "scanInstruction4": "Take photo from appropriate distance",
 
-  "bruiseRecommendation1": "Apply ice compress for 15-20 minutes",
-  "bruiseRecommendation2": "Rest the injured area",
-  "bruiseRecommendation3": "Elevate the bruised part if possible",
-  "bruiseRecommendation4": "Consult doctor if pain persists",
-  
-  "scratchRecommendation1": "Clean wound with clean water",
-  "scratchRecommendation2": "Apply mild antiseptic",
-  "scratchRecommendation3": "Cover with sterile bandage",
-  "scratchRecommendation4": "Change bandage regularly",
-  
-  "cutRecommendation1": "Stop bleeding by applying pressure",
-  "cutRecommendation2": "Clean wound carefully",
-  "cutRecommendation3": "Apply antibiotic ointment",
-  "cutRecommendation4": "Cover with bandage and monitor for infection",
-  
-  "burnRecommendation1": "Cool with running water for 10-20 minutes",
-  "burnRecommendation2": "Don't break any blisters that form",
-  "burnRecommendation3": "Apply aloe vera gel or burn cream",
-  "burnRecommendation4": "See doctor immediately if burn is severe",
-  
+  "bruiseRecommendation1": "Apply a cold compress or an ice pack wrapped in a cloth to the injured area for 10–15 minutes immediately after the injury to reduce swelling and subcutaneous bleeding.",
+  "bruiseRecommendation2": "Repeat cold compress every 2–3 hours during the first 24 hours after the injury.",
+  "bruiseRecommendation3": "After 24 hours, switch to a warm compress for 10–15 minutes several times a day to improve blood flow and speed up healing.",
+  "bruiseRecommendation4": "Elevate the injured area above heart level to reduce swelling.",
+  "bruiseRecommendation5": "Rest the injured area and avoid activities that worsen the pain and swollen.",
+  "bruiseRecommendation6": "Apply a thin layer of ointment containing heparin (e.g., Trombophob) to the bruise to help break down blood clots under the skin.",
+  "bruiseRecommendation7": "Take pain relievers such as paracetamol if the pain becomes bothersome.",
+
+  "cutRecommendation1": "Wash your hands with soap and running water before touching or handling the wound.",
+  "cutRecommendation2": "Clean the wound with running water to remove dirt.",
+  "cutRecommendation3": "Gently press the wound area with sterile gauze or a clean tissue until the bleeding stops.",
+  "cutRecommendation4": "Apply antiseptic such as povidone-iodine (Betadine) on the wound area.",
+  "cutRecommendation5": "Cover the wound with a plaster or sterile gauze to prevent contamination.",
+  "cutRecommendation6": "Change the dressing routine or immediately if it becomes dirty or wet.",
+  "cutRecommendation7": "Watch for signs of infection such as excessive redness, swelling, pus, or fever.",
+  "cutRecommendation8": "If the cut is too wide, deep, or longer than approximately 2 cm, go to the nearest healthcare facility for evaluation and possible stitches.",
+
+  "scratchRecommendation1": "Clean the wound with running water to remove dirt",
+  "scratchRecommendation2": "Use sterile tweezers to remove sand, dust, or foreign objects stuck to the skin.",
+  "scratchRecommendation3": "Apply an antiseptic such as povidone-iodine (Betadine) or other antiseptic solutions to the wound area.",
+  "scratchRecommendation4": "Cover the wound with a plaster or sterile gauze to prevent contamination.",
+  "scratchRecommendation5": "If swelling occurs, apply a cold compress in the early stages of the injury.",
+  "scratchRecommendation6": "If the cut is too wide, deep, longer than ±2 cm, or bleeding that is difficult to stop, immediately go to the nearest health facility for evaluation and possible stitches.",
+
+  "burnRecommendation1": "Stop the burning process by moving away from the heat source or the cause of injury.",
+  "burnRecommendation2": "Remove clothing and jewelry around the burn area; if clothing sticks to the skin, cut around it without pulling the stuck part.",
+  "burnRecommendation3": "Rinse the affected area with running water for 30 minutes.",
+  "burnRecommendation4": "Determine degree of the burn, the location of the burn, and the presence of complicating factors such as respiratory distress or chemical burns.",
+  "burnRecommendation5": "For first-degree burns affecting only the outer layer of skin, apply aloe vera gel or an ointment such as Bioplacenton thinly after cooling, then cover with wet sterile gauze if necessary, and give pain relievers like paracetamol or ibuprofen if necessary.",
+  "burnRecommendation6": "For second-degree burns characterized by blisters, pain, and redness, after cooling and gentle cleaning, cover with a non-stick wet sterile gauze, use a topical antibiotic ointment such as silver sulfadiazine or Bioplacenton to prevent infection, and paracetamol or ibuprofen if necessary.",
+  "burnRecommendation7": "For third-degree burns involving damage to all layers of the skin down to underlying tissues, immediately cover with a clean cloth or wet sterile gauze, do not apply any ointments or medications, maintain airway ,dan prevent hypothermia, and promptly refer to a healthcare facility for advanced care.",
+  "burnRecommendation8": "Immediately seek medical attention if the burn is extensive, affects the face, hands, feet, genitals, airways, or is accompanied by systemic symptoms such as shortness of breath, dizziness, or loss of consciousness.",
+
   "indonesiaLanguage": "🇮🇩 Indonesia",
   "englishLanguage": "🇺🇸 English",
   "scanTips": "Scan Tips",
@@ -229,7 +242,14 @@
   "logout": "LOGOUT",
 
   "noImage":"Image not found",
-  "processScan" : "Analyzing the wound"
+  "processScan" : "Analyzing the wound",
+  "addNote": "Add Note",
+  "addNoteDescription": "Add a note for this history (optional):",
+  "addNotePlaceholder": "Example: Wound occurred while cooking, already cleaned with water...",
+  "notes": "Notes",
+  "noNotes": "No notes added",
+  "save": "Save",
+  "cancel": "Cancel"
 }
 
   
